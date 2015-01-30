@@ -84,7 +84,7 @@ You can use theses functions :
 * **getPhrase()**, allow you to get the phrase contents
 * **setDistortion($distortion)**, enable or disable the distortion, call it before `build()`
 * **isOCRReadable()**, returns `true` if the OCR can be read using the `ocrad` software, you'll need to have shell_exec enabled, imagemagick and ocrad installed
-* **buildAgainstOCR()**, builds a code until it is not readable by `ocrad`
+* **buildAgainstOCR($width = 150, $height = 40, $font = null)**, builds a code until it is not readable by `ocrad`
 * **build($width = 150, $height = 40, $font = null)**, builds a code with the given $width, $height and $font. By default, a random font will be used from the library
 * **save($filename, $quality = 80)**, saves the captcha into a jpeg in the $filename, with the given quality
 * **get($quality = 80)**, returns the jpeg data
@@ -94,6 +94,8 @@ You can use theses functions :
 * **setInterpolation($interpolate)**, enable or disable the interpolation (enabled by default), disabling it will be quicker but the images will look uglier
 * **setIgnoreAllEffects($ignoreAllEffects)**, disable all effects on the captcha image. Recommended to use when passing custom background images for the captcha.
 * **testPhrase($phrase)**, returns true if the given phrase is good
+* **setMaxBehindLines($lines)**, sets the maximum number of lines behind the code
+* **setMaxFrontLines($lines)**, sets the maximum number of lines on the front of the code
 
 Symfony 2 Bundle
 ================

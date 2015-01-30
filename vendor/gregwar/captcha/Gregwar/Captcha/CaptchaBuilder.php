@@ -328,7 +328,7 @@ class CaptchaBuilder implements CaptchaBuilderInterface
         } else {
             $textColor = $this->textColor;
         }
-        $col = imagecolorallocate($image, $textColor[0], $textColor[1], $textColor[1]);
+        $col = imagecolorallocate($image, $textColor[0], $textColor[1], $textColor[2]);
 
         // Write the letters one by one, with random angle
         $length = strlen($phrase);
@@ -372,7 +372,7 @@ class CaptchaBuilder implements CaptchaBuilderInterface
     public function buildAgainstOCR($width = 150, $height = 40, $font = null, $fingerprint = null)
     {
         do {
-            $this->build();
+            $this->build($width, $height, $font, $fingerprint);
         } while ($this->isOCRReadable());
     }
 

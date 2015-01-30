@@ -6,7 +6,9 @@
     "homepage": "https://github.com/panique/php-login",
     "license": "MIT",
     "require-dev": {
-        "gregwar/captcha": "~1.0.11"
+        "php": ">=5.3.0",
+        "gregwar/captcha": "~1.0.11",
+        "phpunit/phpunit": "4.4.*"
     },
     "autoload": {
         "psr-4": { "": ["application/core/", "application/model/"] }

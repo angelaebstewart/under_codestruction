@@ -1,20 +1,19 @@
-<!doctype html>
-<html>
-<head>
-    <!-- META -->
-    <meta charset="utf-8">
-    <!-- CSS -->
-    <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/style.css" />
-</head>
-<body>
-    <!-- wrapper, to center website -->
-    <div class="wrapper">
-
-        <!-- logo -->
-        <div class="logo"></div>
-
-        <!-- navigation -->
-        <ul class="navigation">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Under Codestruction</title>
+    <!-- Bootstrap core CSS -->
+    <link href="<?php echo Config::get('URL'); ?>css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo Config::get('URL'); ?>css/custom_content.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <img class="navbar-brand" src="<?php echo Config::get('URL'); ?>images/combo_logon_ui.png">
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
             <li <?php if (View::checkForActiveController($filename, "index")) { echo ' class="active" '; } ?> >
                 <a href="<?php echo Config::get('URL'); ?>index/index">Index</a>
             </li>
@@ -37,34 +36,13 @@
                     <a href="<?php echo Config::get('URL'); ?>login/register">Register</a>
                 </li>
             <?php } ?>
-        </ul>
-
-        <!--
-        <?php if (Session::userIsLoggedIn()) : ?>
-            <div class="header_right_box">
-                <div class="namebox">
-                    Hello <?php echo Session::get('user_name'); ?> !
-                </div>
-                <div class="avatar">
-                    <?php if (Config::get('USE_GRAVATAR')) { ?>
-                        <img src='<?php echo Session::get('user_gravatar_image_url'); ?>'
-                             style='width:<?php echo Config::get('AVATAR_SIZE'); ?>px; height:<?php echo Config::get('AVATAR_SIZE'); ?>px;' />
-                    <?php } else { ?>
-                        <img src='<?php echo Session::get('user_avatar_file'); ?>'
-                             style='width:<?php echo Config::get('AVATAR_SIZE'); ?>px; height:<?php echo Config::get('AVATAR_SIZE'); ?>px;' />
-                    <?php } ?>
-                </div>
-            </div>
-        <?php endif; ?>
-        -->
-
-        <!-- my account -->
-        <ul class="navigation right">
-        <?php if (Session::userIsLoggedIn()) : ?>
-            <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                <a href="<?php echo Config::get('URL'); ?>login/showprofile">My Account</a>
-                <ul class="navigation-submenu">
-                    <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
+            
+			
+			<?php if (Session::userIsLoggedIn()) : ?>
+            <li class="dropdown"  >
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+ <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
                         <a href="<?php echo Config::get('URL'); ?>login/changeaccounttype">Change account type</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
@@ -77,9 +55,16 @@
                         <a href="<?php echo Config::get('URL'); ?>login/edituseremail">Edit my email</a>
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
+                        <a href="<?php echo Config::get('URL'); ?>login/showprofile">My Profile</a>
+                    </li>
+                    
+                    <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
                         <a href="<?php echo Config::get('URL'); ?>login/logout">Logout</a>
                     </li>
-                </ul>
+              </ul>
             </li>
-        <?php endif; ?>
-        </ul>
+            <?php endif; ?>
+          </ul>
+        </div><!--/.nav-collapse -->
+
+    </nav>
