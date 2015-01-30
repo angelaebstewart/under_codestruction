@@ -13,5 +13,5 @@
  */
 
 require '../vendor/autoload.php';
-// Start our application
+// Start our application.
 new Application();
