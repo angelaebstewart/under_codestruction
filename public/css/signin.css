@@ -1,0 +1,62 @@
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.btn{
+background-color:#5A216D;
+border-color:#5A216D;
+color: rgb(202,194,209);
+}
+
+.checkbox  >label{
+color: rgb(221,236,239);
+}
+
+.form-signin-heading{
+color:rgb(221,236,239);
+}
+
+.btn:hover{
+background-color: rgb(170,0,120);
+border-color:rgb(170,0,120);
+}
+.btn:focus{
+background-color: rgb(170,0,120);
+border-color:rgb(170,0,120);
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
