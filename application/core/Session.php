@@ -72,4 +72,14 @@ class Session
     {
         return (Session::get('user_logged_in') ? true : false);
     }
+     
+    /**
+     * Checks what the role of the logged in user is.
+     *
+     * @return 1 for a Teacher 0 for Student
+     */
+    public static function getUserRole()
+    {
+        return(Session::get('user_logged_in_role'));
+    }
 }
