@@ -15,20 +15,27 @@ body{
 }
 
 .navbar-header{
-    background-color: #371243;   
+background-color:#5A216D;  
 }
 
 #navbar{
-    background-color: #371243;   
+background-color:#5A216D;   
 }
 .navbar-default .navbar-nav>li>a {
-    color: #DDECEF;
+color: rgb(202,194,209);
 }
 .navbar-default .navbar-nav>li>a:hover {
     color: #DDECEF;
 }
 .navbar-default .navbar-nav>li>a:after {
     color: #DDECEF;
+}
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:focus,
+.navbar-default .navbar-nav>.active>a:hover{
+background-color:rgb(170,0,120);
+
+color: rgb(202,194,209);
 }
 
 .sidebar-nav {

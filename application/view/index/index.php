@@ -1,6 +1,6 @@
-<div class="container">
+<div class="jumbotron">
     <h1>IndexController/index</h1>
-    <div class="box">
+    <div class="container">
 
         <!-- echo out the system feedback (error and success messages) -->
         <?php $this->renderFeedbackMessages(); ?>

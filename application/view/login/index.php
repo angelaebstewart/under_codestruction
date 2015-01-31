@@ -1,8 +1,6 @@
 
 <div class="container">
 
-    <!-- echo out the system feedback (error and success messages) -->
-    <?php $this->renderFeedbackMessages(); ?>
 
 
 
@@ -21,6 +19,9 @@
         <label>
                     <a href="<?php echo Config::get('URL'); ?>login/requestPasswordReset">I forgot my password</a>
 </label>
+        
+    <!-- echo out the system feedback (error and success messages) -->
+    <?php $this->renderFeedbackMessages(); ?>
       </form>
     
 

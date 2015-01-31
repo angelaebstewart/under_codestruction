@@ -12,13 +12,10 @@
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="navbar-header">
-            <img class="navbar-brand" src="<?php echo Config::get('URL'); ?>images/combo_logon_ui.png">
+            <img class="navbar-brand" src="<?php echo Config::get('URL'); ?>images/Logo_sm.png">
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li <?php if (View::checkForActiveController($filename, "index")) { echo ' class="active" '; } ?> >
-                <a href="<?php echo Config::get('URL'); ?>index/index">Index</a>
-            </li>            
+          <ul class="nav navbar-nav">       
             <?php if (Session::userIsLoggedIn()) { ?>
                 
                     <li><a href="<?php echo Config::get('URL'); ?>Lesson/index">Lessons</a></li>
