@@ -1,8 +1,4 @@
-body {
-    font-family: Arial, sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-}
+
 .wrapper {
     width: 960px;
     margin: 0 auto;
@@ -17,7 +13,6 @@ body {
 }
 .container {
     max-width: 960px;
-    border: 1px solid #ccc;
     padding: 20px;
     margin: 30px 0 30px 0;
 }
@@ -66,62 +61,6 @@ body {
 
 
 
-/* navigation dropdown menu */
-.navigation, .navigation-submenu {
-    display: inline-block;
-    list-style: none;
-    /* btw this is necessary to remove most browsers's "hidden" default <ul> intent */
-    margin: 0;
-    padding: 0;
-}
-/* TODO */
-.navigation {
-}
-.navigation.right {
-    float: right;
-}
-.navigation li {
-    float: left;
-    margin-right: 5px;
-}
-.navigation .navigation-submenu {
-    display: none;
-}
-.navigation li a {
-    display: block;
-    text-decoration: none;
-    padding: 10px 15px;
-    border: 2px solid #454545;
-    background: #454545;
-    color: #fff;
-    float:none;
-    font-size: 10px;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-.navigation li:hover .navigation-submenu {
-    display: block;
-    position: absolute;
-    float: left;
-}
-.navigation li:hover li,
-.navigation li:hover a {
-    float: none;
-}
-.navigation li a:hover,
-.navigation li:hover li a:hover {
-    background: #fff;
-    color: #454545;
-}
-
-.navigation > li.active a {
-    background: #fff;
-    color: #454545;
-}
-.navigation > li.active li a {
-    background: #454545;
-    color: #fff;
-}
 
 /* overview */
 .overview-table img {
