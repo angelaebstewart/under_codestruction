@@ -5,7 +5,7 @@
     <!-- Bootstrap core CSS -->
     <link href="<?php echo Config::get('URL'); ?>css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo Config::get('URL'); ?>css/custom_content.css" rel="stylesheet">
-    <-- Custom styles for this template -->
+    <!-- Custom styles for this template -->
     <link href="<?php echo Config::get('URL'); ?>css/signin.css" rel="stylesheet">
   </head>
   <body>
