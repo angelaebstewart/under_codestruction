@@ -16,7 +16,7 @@ class UserModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT user_id, user_name, user_email, user_active, user_has_avatar FROM users";
+        $sql = "SELECT uid, FirstName, LastName, Email, Role, verified, passwordUpdated, passwordHash FROM codestructionuser";
         $query = $database->prepare($sql);
         $query->execute();
 
@@ -25,20 +25,15 @@ class UserModel
         foreach ($query->fetchAll() as $user) {
             // a new object for every user. This is eventually not really optimal when it comes
             // to performance, but it fits the view style better
-            $all_users_profiles[$user->user_id] = new stdClass();
-            $all_users_profiles[$user->user_id]->user_id = $user->user_id;
-            $all_users_profiles[$user->user_id]->user_name = $user->user_name;
-            $all_users_profiles[$user->user_id]->user_email = $user->user_email;
-
-            if (Config::get('USE_GRAVATAR')) {
-                $all_users_profiles[$user->user_id]->user_avatar_link =
-                    AvatarModel::getGravatarLinkByEmail($user->user_email);
-            } else {
-                $all_users_profiles[$user->user_id]->user_avatar_link =
-                    AvatarModel::getPublicAvatarFilePathOfUser($user->user_has_avatar, $user->user_id);
-            }
-
-            $all_users_profiles[$user->user_id]->user_active = $user->user_active;
+            $all_users_profiles[$user->uid] = new stdClass();
+            $all_users_profiles[$user->uid]->user_id = $user->uid;
+            $all_users_profiles[$user->uid]->user_firstName = $user->FirstName;
+            $all_users_profiles[$user->uid]->user_lastName = $user->LastName;
+            $all_users_profiles[$user->uid]->user_email = $user->Email;
+            $all_users_profiles[$user->uid]->user_role = $user->Role;
+            $all_users_profiles[$user->uid]->user_verified = $user->verified;
+            $all_users_profiles[$user->uid]->user_passwordUpdated = $user->passwordUpdated;
+            $all_users_profiles[$user->uid]->user_passwordHash = $user->passwordHash;
         }
 
         return $all_users_profiles;
@@ -53,41 +48,20 @@ class UserModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT user_id, user_name, user_email, user_active, user_has_avatar
-                FROM users WHERE user_id = :user_id LIMIT 1";
+        $sql = "SELECT uid, FirstName, LastName, Email, Role, 
+                        CAST(verified AS unsigned integer) AS verified
+                FROM codestructionuser 
+                WHERE uid = :user_id LIMIT 1";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id));
 
         $user = $query->fetch();
-
-        if ($query->rowCount() == 1) {
-            if (Config::get('USE_GRAVATAR')) {
-                $user->user_avatar_link = AvatarModel::getGravatarLinkByEmail($user->user_email);
-            } else {
-                $user->user_avatar_link = AvatarModel::getPublicAvatarFilePathOfUser($user->user_has_avatar, $user->user_id);
-            }
-        } else {
+        
+        if ($query->rowCount() != 1) {
             Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
         }
 
         return $user;
-    }
-
-    /**
-     * @param $user_name_or_email
-     *
-     * @return mixed
-     */
-    public static function getUserDataByUserNameOrEmail($user_name_or_email)
-    {
-        $database = DatabaseFactory::getFactory()->getConnection();
-
-        $query = $database->prepare("SELECT user_id, user_name, user_email FROM users
-                                     WHERE (user_name = :user_name_or_email OR user_email = :user_name_or_email)
-                                           AND user_provider_type = :provider_type LIMIT 1");
-        $query->execute(array(':user_name_or_email' => $user_name_or_email, ':provider_type' => 'DEFAULT'));
-
-        return $query->fetch();
     }
 
     /**
@@ -99,14 +73,7 @@ class UserModel
      */
     public static function doesUsernameAlreadyExist($user_name)
     {
-        $database = DatabaseFactory::getFactory()->getConnection();
-
-        $query = $database->prepare("SELECT user_id FROM users WHERE user_name = :user_name LIMIT 1");
-        $query->execute(array(':user_name' => $user_name));
-        if ($query->rowCount() == 0) {
-            return false;
-        }
-        return true;
+        return UserModel::doesEmailAlreadyExist($user_name);
     }
 
     /**
@@ -120,7 +87,7 @@ class UserModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $query = $database->prepare("SELECT user_id FROM users WHERE user_email = :user_email LIMIT 1");
+        $query = $database->prepare("SELECT uid FROM codestructionuser WHERE Email = :user_email LIMIT 1");
         $query->execute(array(':user_email' => $user_email));
         if ($query->rowCount() == 0) {
             return false;
@@ -136,6 +103,7 @@ class UserModel
      *
      * @return bool
      */
+    /*
     public static function saveNewUserName($user_id, $new_user_name)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -146,7 +114,7 @@ class UserModel
             return true;
         }
         return false;
-    }
+    }*/
 
     /**
      * Writes new email address to database
@@ -156,6 +124,7 @@ class UserModel
      *
      * @return bool
      */
+    /*
     public static function saveNewEmailAddress($user_id, $new_user_email)
     {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -167,7 +136,7 @@ class UserModel
             return true;
         }
         return false;
-    }
+    }*/
 
     /**
      * Edit the user's name, provided in the editing form
@@ -176,6 +145,7 @@ class UserModel
      *
      * @return bool success status
      */
+    /*
     public static function editUserName($new_user_name)
     {
         // new username provided ?
@@ -215,7 +185,7 @@ class UserModel
         // default fallback
         Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
         return false;
-    }
+    }*/
 
     /**
      * Edit the user's email
@@ -224,6 +194,7 @@ class UserModel
      *
      * @return bool success status
      */
+    /*
     public static function editUserEmail($new_user_email)
     {
         // email provided ?
@@ -266,7 +237,7 @@ class UserModel
 
         Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
         return false;
-    }
+    }*/
 
     /**
      * Gets the user's id
@@ -279,14 +250,19 @@ class UserModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT user_id FROM users WHERE user_name = :user_name AND user_provider_type = :provider_type LIMIT 1";
+        $sql = "SELECT uid FROM codestructionuser WHERE Email = :user_name LIMIT 1";
         $query = $database->prepare($sql);
 
-        // DEFAULT is the marker for "normal" accounts (that have a password etc.)
-        $query->execute(array(':user_name' => $user_name, ':provider_type' => 'DEFAULT'));
-
-        // return one row (we only have one result or nothing)
-        return $query->fetch()->user_id;
+        $query->execute(array(':user_name' => $user_name));
+        
+        $result = $query->fetch();
+        
+        if (!empty($result)) {
+            return $result->uid;
+        }
+        else {
+            return -1;
+        }
     }
 
     /**
@@ -300,44 +276,28 @@ class UserModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT user_id, user_name, user_email, user_password_hash, user_active, user_account_type,
-                       user_failed_logins, user_last_failed_login
-                  FROM users
-                 WHERE (user_name = :user_name OR user_email = :user_name)
-                       AND user_provider_type = :provider_type
+        $sql = "SELECT  uid, FirstName, LastName, Email, Role, 
+                        CAST(verified AS unsigned integer) AS verified, 
+                        CAST(passwordUpdated AS unsigned integer) AS passwordUpdated, 
+                        passwordHash
+                  FROM codestructionuser
+                 WHERE Email = :user_name
                  LIMIT 1";
         $query = $database->prepare($sql);
 
-        // DEFAULT is the marker for "normal" accounts (that have a password etc.)
-        $query->execute(array(':user_name' => $user_name, ':provider_type' => 'DEFAULT'));
+        $query->execute(array(':user_name' => $user_name));
 
         // return one row (we only have one result or nothing)
         return $query->fetch();
     }
-
+    
     /**
-     * Gets the user's data by user's id and a token (used by login-via-cookie process)
+     * @param $user_name_or_email
      *
-     * @param $user_id
-     * @param $token
-     *
-     * @return mixed Returns false if user does not exist, returns object with user's data when user exists
+     * @return mixed
      */
-    public static function getUserDataByUserIdAndToken($user_id, $token)
+    public static function getUserDataByUserNameOrEmail($user_name_or_email)
     {
-        $database = DatabaseFactory::getFactory()->getConnection();
-
-        // get real token from database (and all other data)
-        $query = $database->prepare("SELECT user_id, user_name, user_email, user_password_hash, user_active,
-                                          user_account_type,  user_has_avatar, user_failed_logins, user_last_failed_login
-                                     FROM users
-                                     WHERE user_id = :user_id
-                                       AND user_remember_me_token = :user_remember_me_token
-                                       AND user_remember_me_token IS NOT NULL
-                                       AND user_provider_type = :provider_type LIMIT 1");
-        $query->execute(array(':user_id' => $user_id, ':user_remember_me_token' => $token, ':provider_type' => 'DEFAULT'));
-
-        // return one row (we only have one result or nothing)
-        return $query->fetch();
+        return UserModel::getUserDataByUsername($user_name_or_email);
     }
 }
