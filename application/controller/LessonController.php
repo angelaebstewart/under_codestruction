@@ -4,7 +4,7 @@
  *
  * @author WalterC
  */
-class LessonController {
+class LessonController extends Controller{
     
     /**
      * Construct this object by extending the basic Controller class
