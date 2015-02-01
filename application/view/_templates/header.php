@@ -7,7 +7,8 @@
     <link href="<?php echo Config::get('URL','gen'); ?>css/custom_content.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="<?php echo Config::get('URL','gen'); ?>css/signin.css" rel="stylesheet">    
-    <link href="<?php echo Config::get('URL','gen'); ?>css/list.css" rel="stylesheet">
+    <link href="<?php echo Config::get('URL','gen'); ?>css/list.css" rel="stylesheet">   
+    <link href="<?php echo Config::get('URL','gen'); ?>css/register.css" rel="stylesheet">
   </head>
   <body>
     <!-- Fixed navbar -->
