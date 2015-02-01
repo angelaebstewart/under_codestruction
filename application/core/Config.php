@@ -1,16 +1,20 @@
 <?php
 
-class Config
-{
+class Config {
+
     private static $config;
 
-    public static function get($key)
-    {
-        if (!self::$config) {
-            self::$config = require('../application/config/config.' . Environment::get() . '.php');
+    public static function get($key, $configType = null) {
+        if (isset($configType)) {
+            $fileName = '../application/config/' . $configType . '.config.php';
+
+            if (file_exists($fileName)) {
+                if (!self::$config) {
+                    self::$config = require($fileName);
+                }
+                return self::$config[$key];
+            }
         }
-
-        return self::$config[$key];
     }
-
 }
+    

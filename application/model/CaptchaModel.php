@@ -18,8 +18,8 @@ class CaptchaModel
 		// create a captcha with the CaptchaBuilder lib (loaded via Composer)
 		$captcha = new Gregwar\Captcha\CaptchaBuilder;
 		$captcha->build(
-			Config::get('CAPTCHA_WIDTH'),
-			Config::get('CAPTCHA_HEIGHT')
+			Config::get('CAPTCHA_WIDTH','captcha'),
+			Config::get('CAPTCHA_HEIGHT','captcha')
 		);
 
 		// write the captcha character into session

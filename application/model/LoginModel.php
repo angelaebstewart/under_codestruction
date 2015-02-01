@@ -18,7 +18,7 @@ class LoginModel
      */
     public static function login($user_name, $user_password)
     {
-        $pwdHasher = new PasswordHash(Config::get("HASH_COST_LOG2"), Config::get("HASH_PORTALBE"));
+        $pwdHasher = new PasswordHash(Config::get("HASH_COST_LOG2",'gen'), Config::get("HASH_PORTALBE",'gen'));
         // we do negative-first checks here, for simplicity empty username and empty password in one line
         if (empty($user_name) OR empty($user_password)) {
             Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_OR_PASSWORD_FIELD_EMPTY'));

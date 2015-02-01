@@ -17,7 +17,7 @@ class RegistrationModel
 	public static function registerNewUser()
 	{
 		
-                $pwdHasher = new PasswordHash(Config::get("HASH_COST_LOG2"), Config::get("HASH_PORTALBE"));
+                $pwdHasher = new PasswordHash(Config::get("HASH_COST_LOG2",'gen'), Config::get("HASH_PORTALBE",'gen'));
                 
 		// clean the input
 		$user_name = strip_tags(Request::post('user_name'));
@@ -178,16 +178,16 @@ class RegistrationModel
 	public static function sendVerificationEmail($user_id, $user_email, $user_activation_hash)
 	{
 		// create email body
-		$body = Config::get('EMAIL_VERIFICATION_CONTENT') . Config::get('URL') . Config::get('EMAIL_VERIFICATION_URL')
+		$body = Config::get('EMAIL_VERIFICATION_CONTENT','email') . Config::get('URL','gen') . Config::get('EMAIL_VERIFICATION_URL','email')
 		        . '/' . urlencode($user_id) . '/' . urlencode($user_activation_hash);
 
 		// create instance of Mail class, try sending and check
 		$mail = new Mail;
 		$mail_sent = $mail->sendMail(
 			$user_email,
-			Config::get('EMAIL_VERIFICATION_FROM_EMAIL'),
-			Config::get('EMAIL_VERIFICATION_FROM_NAME'),
-			Config::get('EMAIL_VERIFICATION_SUBJECT'),
+			Config::get('EMAIL_VERIFICATION_FROM_EMAIL','email'),
+			Config::get('EMAIL_VERIFICATION_FROM_NAME','email'),
+			Config::get('EMAIL_VERIFICATION_SUBJECT','email'),
 			$body
 		);
 

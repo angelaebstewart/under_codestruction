@@ -4,7 +4,7 @@
 
 
 
-<form class="form-signin" action="<?php echo Config::get('URL'); ?>login/login" method="post">
+<form class="form-signin" action="<?php echo Config::get('URL','gen'); ?>login/login" method="post">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="text" id="inputEmail" class="form-control" name="user_name" placeholder="Email address" required autofocus>
@@ -17,7 +17,7 @@
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <label>
-                    <a href="<?php echo Config::get('URL'); ?>login/requestPasswordReset">I forgot my password</a>
+                    <a href="<?php echo Config::get('URL','gen'); ?>login/requestPasswordReset">I forgot my password</a>
 </label>
         
     <!-- echo out the system feedback (error and success messages) -->
