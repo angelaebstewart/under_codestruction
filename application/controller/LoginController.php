@@ -23,7 +23,7 @@ class LoginController extends Controller
     {
         // if user is logged in redirect to main-page, if not show the view
         if (LoginModel::isUserLoggedIn()) {
-            Redirect::home();
+            Redirect::to('login/loginHome');
         } else {
             $this->View->render('login/index');
         }
@@ -41,9 +41,19 @@ class LoginController extends Controller
 
         // check login status: if true, then redirect user login/showProfile, if false, then to login form again
         if ($login_successful) {
-            Redirect::to('login/showProfile');
+            Redirect::to('login/loginHome');
         } else {
             Redirect::to('login/index');
+        }
+    }
+    
+    
+    public function loginHome()
+    {
+        if (UserModel::isTeacher(Session::getUserRole())) {
+            Redirect::to('Class/index');
+        } else {
+            Redirect::to('Lesson/index');
         }
     }
 
@@ -79,15 +89,21 @@ class LoginController extends Controller
      * Show user's PRIVATE profile
      * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
      */
-    public function showProfile()
+    public function profile()
     {
         Auth::checkAuthentication();
-        $this->View->render('login/showProfile', array(
-            'user_name' => Session::get('user_name'),
+        
+        if (Session::get('user_role') == Config::get('ROLE_TEACHER', 'gen')) {
+            $roleName = 'Teacher';
+        } else {
+            $roleName = 'Student';
+        }
+        
+        $this->View->render('login/profile', array(
+            'user_firstName' => Session::get('user_firstName'),
+            'user_lastName' => Session::get('user_lastName'),
             'user_email' => Session::get('user_email'),
-            'user_gravatar_image_url' => Session::get('user_gravatar_image_url'),
-            'user_avatar_file' => Session::get('user_avatar_file'),
-            'user_account_type' => Session::get('user_account_type')
+            'user_roleName' => $roleName
         ));
     }
 

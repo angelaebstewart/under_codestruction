@@ -16,7 +16,9 @@
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="navbar-header">
-            <img class="navbar-brand" src="<?php echo Config::get('URL','gen'); ?>images/Logo_sm.png">
+            <a href="<?php echo Config::get('URL','gen'); ?>">
+                <img class="navbar-brand" src="<?php echo Config::get('URL','gen'); ?>images/Logo_sm.png">
+            </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">       
@@ -25,26 +27,26 @@
                     <li><a href="<?php echo Config::get('URL','gen'); ?>Lesson/index">Lessons</a></li>
                 
                <?php
-                if (Session::getUserRole() == Config::get('TEACHER','gen')) {
+                if (Session::getUserRole() == Config::get('ROLE_TEACHER','gen')) {
                     ?>
                     <li><a href="<?php echo Config::get('URL','gen'); ?>Class/index">Classes</a></li>
-                    <li><a href="<?php echo Config::get('URL','gen'); ?>/Manual.pdf">Manual</a></li>
+                    <li><a href="<?php echo Config::get('URL','gen'); ?>UnderCodestruction_UserManual.pdf">Manual</a></li>
             <?php }
             
                 } else { ?>
-                <!-- for not logged in users -->
-                <li <?php if (View::checkForActiveControllerAndAction($filename, "login/index")) { echo ' class="active" '; } ?> >
-                    <a href="<?php echo Config::get('URL','gen'); ?>login/index">Login</a>
-                </li>
-                <li <?php if (View::checkForActiveControllerAndAction($filename, "login/register")) { echo ' class="active" '; } ?> >
-                    <a href="<?php echo Config::get('URL','gen'); ?>login/register">Register</a>
-                </li>
-            <?php } ?>
+                    <!-- for not logged in users -->
+                    <li <?php if (View::checkForActiveControllerAndAction($filename, "login/index")) { echo ' class="active" '; } ?> >
+                        <a href="<?php echo Config::get('URL','gen'); ?>login/index">Login</a>
+                    </li>
+                    <li <?php if (View::checkForActiveControllerAndAction($filename, "login/register")) { echo ' class="active" '; } ?> >
+                        <a href="<?php echo Config::get('URL','gen'); ?>login/register">Register</a>
+                    </li>
+          <?php } ?>
             
 			
 			<?php if (Session::userIsLoggedIn()) : ?>
             <li class="dropdown"  >
-              <a href="<?php echo Config::get('URL','gen'); ?>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account<span class="caret"></span></a>
+              <a href="<?php echo Config::get('URL','gen'); ?>login/profile" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
  <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
                         <a href="<?php echo Config::get('URL','gen'); ?>login/editUsername">Options</a>

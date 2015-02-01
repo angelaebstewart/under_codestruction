@@ -34,6 +34,6 @@ return array(
     /*
      * What Token is used to id a teacher or student.
      */
-    'STUDENT' => 1,
-    'TEACHER' => 0,
+    'ROLE_STUDENT' => 0,
+    'ROLE_TEACHER' => 1,
 );

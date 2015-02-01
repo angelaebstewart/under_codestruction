@@ -84,7 +84,7 @@ class LoginModel
         Session::set('user_firstName', $user_firstName);
         Session::set('user_lastName', $user_lastName);
         Session::set('user_email', $user_email);
-        Session::set('user_logged_in_role', $user_role);
+        Session::set('user_role', $user_role);
         Session::set('user_provider_type', 'DEFAULT');
 
         Session::set('user_logged_in', true);

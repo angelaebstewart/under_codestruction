@@ -10,7 +10,7 @@
         <input type="text" id="inputEmail" class="form-control" name="user_name" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" name="user_password" placeholder="Password" required>
-        <div class="checkbox">
+        <div class="checkbox" style="display:none;">
           <label>
             <input type="checkbox" value="remember-me" name="set_remember_me_cookie"> Remember me
           </label>

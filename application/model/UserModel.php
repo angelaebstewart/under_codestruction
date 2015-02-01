@@ -48,7 +48,8 @@ class UserModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT uid, FirstName, LastName, Email, Role, 
+        $sql = "SELECT uid, FirstName, LastName, Email, 
+                        CAST(Role AS unsigned integer) AS Role, 
                         CAST(verified AS unsigned integer) AS verified
                 FROM codestructionuser 
                 WHERE uid = :user_id LIMIT 1";
@@ -276,7 +277,8 @@ class UserModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT  uid, FirstName, LastName, Email, Role, 
+        $sql = "SELECT  uid, FirstName, LastName, Email,
+                        CAST(Role AS unsigned integer) AS Role,
                         CAST(verified AS unsigned integer) AS verified, 
                         CAST(passwordUpdated AS unsigned integer) AS passwordUpdated, 
                         passwordHash
@@ -299,5 +301,10 @@ class UserModel
     public static function getUserDataByUserNameOrEmail($user_name_or_email)
     {
         return UserModel::getUserDataByUsername($user_name_or_email);
+    }
+    
+    public static function isTeacher($role)
+    {
+        return ($role == Config::get('ROLE_TEACHER', 'gen'));
     }
 }

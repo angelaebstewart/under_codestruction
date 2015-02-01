@@ -80,6 +80,6 @@ class Session
      */
     public static function getUserRole()
     {
-        return(Session::get('user_logged_in_role'));
+        return(Session::get('user_role'));
     }
 }
