@@ -32,7 +32,7 @@
                 if (Session::getUserRole() == Config::get('ROLE_TEACHER','gen')) {
                     ?>
                     <li><a href="<?php echo Config::get('URL','gen'); ?>Class/index">Classes</a></li>
-                    <li><a href="<?php echo Config::get('URL','gen'); ?>UnderCodestruction_UserManual.pdf">Manual</a></li>
+                    <li><a href="<?php echo Config::get('URL','gen'); ?>UnderCodestruction_UserManual.pdf" target="_blank">Manual</a></li>
             <?php }
             
                 } else { ?>
