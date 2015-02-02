@@ -265,6 +265,11 @@ class UserModel
             return -1;
         }
     }
+    
+    public static function getUserIdByEmail($user_email)
+    {
+        return UserModel::getUserIdByUsername($user_email);
+    }
 
     /**
      * Gets the user's data

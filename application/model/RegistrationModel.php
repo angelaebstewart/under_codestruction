@@ -20,25 +20,20 @@ class RegistrationModel
                 $pwdHasher = new PasswordHash(Config::get("HASH_COST_LOG2",'gen'), Config::get("HASH_PORTALBE",'gen'));
                 
 		// clean the input
-		$user_name = strip_tags(Request::post('user_name'));
+                $user_firstName = strip_tags(Request::post('user_firstName'));
+                $user_lastName = strip_tags(Request::post('user_lastName'));
 		$user_email = strip_tags(Request::post('user_email'));
 		$user_password_new = Request::post('user_password_new');
 		$user_password_repeat = Request::post('user_password_repeat');
 
 		// stop registration flow if registrationInputValidation() returns false (= anything breaks the input check rules)
-		$validation_result = RegistrationModel::registrationInputValidation(Request::post('captcha'), $user_name, $user_password_new, $user_password_repeat, $user_email);
+		$validation_result = RegistrationModel::registrationInputValidation(Request::post('captcha'), $user_firstName, $user_lastName, $user_email, $user_password_new, $user_password_repeat);
 		if (!$validation_result) {
 			return false;
 		}
 
 		
 		$user_password_hash = $pwdHasher->HashPassword($user_password_new);
-
-		// check if username already exists
-		if (UserModel::doesUsernameAlreadyExist($user_name)) {
-			Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_ALREADY_TAKEN'));
-			return false;
-		}
 
 		// check if email already exists
 		if (UserModel::doesEmailAlreadyExist($user_email)) {
@@ -50,12 +45,12 @@ class RegistrationModel
 		$user_activation_hash = sha1(uniqid(mt_rand(), true));
 
 		// write user data to database
-		if (!RegistrationModel::writeNewUserToDatabase($user_name, $user_password_hash, $user_email, time(), $user_activation_hash)) {
+		if (!RegistrationModel::writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, $user_password_hash, $user_activation_hash)) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_CREATION_FAILED'));
 		}
 
 		// get user_id of the user that has been created, to keep things clean we DON'T use lastInsertId() here
-		$user_id = UserModel::getUserIdByUsername($user_name);
+		$user_id = UserModel::getUserIdByEmail($user_email);
 
 		if (!$user_id) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
@@ -85,12 +80,12 @@ class RegistrationModel
 	 *
 	 * @return bool
 	 */
-	public static function registrationInputValidation($captcha, $user_name, $user_password_new, $user_password_repeat, $user_email)
+	public static function registrationInputValidation($captcha, $user_firstName, $user_lastName, $user_email, $user_password_new, $user_password_repeat)
 	{
 		// perform all necessary checks
 		if (!CaptchaModel::checkCaptcha($captcha)) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_CAPTCHA_WRONG'));
-		} else if (empty($user_name)) {
+		} else if (empty($user_firstName) OR empty($user_lastName)) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_FIELD_EMPTY'));
 		} else if (empty($user_password_new) OR empty($user_password_repeat)) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_FIELD_EMPTY'));
@@ -98,10 +93,6 @@ class RegistrationModel
 			Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_REPEAT_WRONG'));
 		} else if (strlen($user_password_new) < 6) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_TOO_SHORT'));
-		} else if (strlen($user_name) > 64 OR strlen($user_name) < 2) {
-			Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_TOO_SHORT_OR_TOO_LONG'));
-		} else if (!preg_match('/^[a-zA-Z0-9]{2,64}$/', $user_name)) {
-			Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_DOES_NOT_FIT_PATTERN'));
 		} else if (empty($user_email)) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_EMAIL_FIELD_EMPTY'));
 		} else if (strlen($user_email) > 254) {
@@ -130,20 +121,19 @@ class RegistrationModel
 	 *
 	 * @return bool
 	 */
-	public static function writeNewUserToDatabase($user_name, $user_password_hash, $user_email, $user_creation_timestamp, $user_activation_hash)
+	public static function writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, $user_password_hash, $user_activation_hash)
 	{
 		$database = DatabaseFactory::getFactory()->getConnection();
 
 		// write new users data into database
-		$sql = "INSERT INTO users (user_name, user_password_hash, user_email, user_creation_timestamp, user_activation_hash, user_provider_type)
-                    VALUES (:user_name, :user_password_hash, :user_email, :user_creation_timestamp, :user_activation_hash, :user_provider_type)";
+		$sql = "INSERT INTO codestructionuser (FirstName, LastName, Email, Role, verified, passwordUpdated, passwordHash, activationHash)
+                    VALUES (:user_firstName, :user_lastName, :user_email, 1, 0, 0, :user_password_hash, :user_activation_hash)";
 		$query = $database->prepare($sql);
-		$query->execute(array(':user_name' => $user_name,
+		$query->execute(array(':user_firstName' => $user_firstName,
+                                      ':user_lastName' => $user_lastName,
+                                      ':user_email' => $user_email,
 		                      ':user_password_hash' => $user_password_hash,
-		                      ':user_email' => $user_email,
-		                      ':user_creation_timestamp' => $user_creation_timestamp,
-		                      ':user_activation_hash' => $user_activation_hash,
-		                      ':user_provider_type' => 'DEFAULT'));
+		                      ':user_activation_hash' => $user_activation_hash));
 		$count =  $query->rowCount();
 		if ($count == 1) {
 			return true;
@@ -162,7 +152,7 @@ class RegistrationModel
 	{
 		$database = DatabaseFactory::getFactory()->getConnection();
 
-		$query = $database->prepare("DELETE FROM users WHERE user_id = :user_id");
+		$query = $database->prepare("DELETE FROM codestructionuser WHERE uid = :user_id");
 		$query->execute(array(':user_id' => $user_id));
 	}
 
@@ -180,6 +170,8 @@ class RegistrationModel
 		// create email body
 		$body = Config::get('EMAIL_VERIFICATION_CONTENT','email') . Config::get('URL','gen') . Config::get('EMAIL_VERIFICATION_URL','email')
 		        . '/' . urlencode($user_id) . '/' . urlencode($user_activation_hash);
+                
+                Session::add('feedback_positive', "Email sent:<br><br>" . $body);
 
 		// create instance of Mail class, try sending and check
 		$mail = new Mail;
@@ -212,8 +204,8 @@ class RegistrationModel
 	{
 		$database = DatabaseFactory::getFactory()->getConnection();
 
-		$sql = "UPDATE users SET user_active = 1, user_activation_hash = NULL
-                WHERE user_id = :user_id AND user_activation_hash = :user_activation_hash LIMIT 1";
+		$sql = "UPDATE codestructionuser SET verified = 1, activationHash = NULL
+                WHERE uid = :user_id AND activationHash = :user_activation_hash LIMIT 1";
 		$query = $database->prepare($sql);
 		$query->execute(array(':user_id' => $user_id, ':user_activation_hash' => $user_activation_verification_code));
 
