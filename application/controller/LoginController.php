@@ -51,9 +51,9 @@ class LoginController extends Controller
     public function loginHome()
     {
         if (UserModel::isTeacher(Session::getUserRole())) {
-            Redirect::to('Class/index');
+            Redirect::to('class/index');
         } else {
-            Redirect::to('Lesson/index');
+            Redirect::to('lesson/index');
         }
     }
 

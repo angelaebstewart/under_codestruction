@@ -7,12 +7,12 @@
 
   <!-- List group -->
   <ul class="list-group">
-    <li class="list-group-item">Lesson One</li>
-    <li class="list-group-item">Lesson One</li>
-    <li class="list-group-item">Lesson One</li>
-    <li class="list-group-item">Lesson One</li>
-    <li class="list-group-item">Lesson One</li>
-    <li class="list-group-item">Lesson One</li>
+    <li class="list-group-item"><a href="<?php echo Config::get('URL','gen'); ?>lesson/viewLesson/?id=1">Lesson One</a></li>
+    <li class="list-group-item">Lesson Two</li>
+    <li class="list-group-item">Lesson Three</li>
+    <li class="list-group-item">Lesson Four</li>
+    <li class="list-group-item">Lesson Five</li>
+    <li class="list-group-item">Lesson Six</li>
   </ul>
 </div>
 </div>
