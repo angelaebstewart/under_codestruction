@@ -10,6 +10,7 @@
     <link href="<?php echo Config::get('URL','gen'); ?>css/list.css" rel="stylesheet">   
     <link href="<?php echo Config::get('URL','gen'); ?>css/register.css" rel="stylesheet">
     <link href="<?php echo Config::get('URL','gen'); ?>css/request.css" rel="stylesheet">
+    <link href="<?php echo Config::get('URL','gen'); ?>css/prettyPhoto.css" type="text/css" rel="stylesheet" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
 
   </head>
   <body>
