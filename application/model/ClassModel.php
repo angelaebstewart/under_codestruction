@@ -12,5 +12,19 @@
  * @author WalterC
  */
 class ClassModel {
-    //put your code here
+    
+/*
+ * Check if this class is accessable by the teacher
+ * This should stop another teacher from looking at 
+ * another teacher's students.
+ */
+    public static function canViewClass($classID, $teacherID) {
+        
+        if($classID == 1 && $teacherID == 1){
+            return true;
+        }
+        return false;
+    }
+    
+    
 }

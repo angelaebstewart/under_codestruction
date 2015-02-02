@@ -13,7 +13,7 @@
  */
 class LessonModel {
     
-    public function canViewLesson($lessonID) {
+    public static function canViewLesson($lessonID) {
         
         // TO DO: validate that the student has access to this lesson
         
@@ -27,11 +27,11 @@ class LessonModel {
         }
     }
     
-    public function canViewGame($lessonID) {
+    public static function canViewGame($lessonID) {
         return LessonModel::canViewLesson($lessonID);
     }
     
-    public function canViewAssessment($lessonID) {
+    public static function canViewAssessment($lessonID) {
         //TO DO: also needs to take into consideration whether or not
         //the student has viewed the video and played the game
         
@@ -39,7 +39,7 @@ class LessonModel {
     }
     
     
-    public function didPassAssessment($lessonID, $question1) {
+    public static function didPassAssessment($lessonID, $question1) {
         if ($lessonID == 1) {
             if ($question1 == 'answer3') {
                 return true;

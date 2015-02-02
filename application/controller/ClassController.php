@@ -34,8 +34,12 @@ class ClassController extends Controller{
         
     }
     
-    public function viewClass($classID=''){
-        $this->View->render('class/class');
+    public function viewClass(){
+        if(ClassModel::canViewClass(Request::get('classID'), Request::get('teacherID'))){            
+            $this->View->render('class/class');
+        } else{
+            Redirect::to("class/index");
+        }
         
     }
 }
