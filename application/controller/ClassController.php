@@ -35,7 +35,7 @@ class ClassController extends Controller{
     }
     
     public function viewClass($classID=''){
-        $this->View->render('class/class');
+        $this->View->render('class/viewClass');
         
     }
 }
