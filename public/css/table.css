@@ -1,0 +1,27 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 1, 2015, 8:24:46 PM
+    Author     : WalterC
+*/
+
+.class-list{
+  min-width: 630px;
+  padding: 15px;
+  margin: 0 auto;  
+  padding-top: 50px;
+}
+
+.panel-default>.panel-body{
+background-color: rgb(94,97,120);
+
+color:rgb(221,236,239);
+}
+
+.table-striped>tbody>tr:nth-of-type(odd){
+    background-color: rgb(170,0,120);
+    
+}

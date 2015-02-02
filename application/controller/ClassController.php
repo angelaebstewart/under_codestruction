@@ -33,4 +33,9 @@ class ClassController extends Controller{
     public function deleteClass($classID) {
         
     }
+    
+    public function viewClass($classID=''){
+        $this->View->render('class/class');
+        
+    }
 }
