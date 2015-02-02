@@ -1,9 +1,13 @@
 <?php
 
 /*
- * The Config will reload the array each time a configuration needs to be obtained
- * This is not great performace for the long run, need to think of a way to do 
- * this more efficiently.  
+ * fixed the configuration file so it will be a little faster since it won't have 
+ * to reload an array list each time it is used. If the array list was just used 
+ * it won't have to reload it, but if the array list was replaced with another list 
+ * and then it would have to replace it again. Will have to maybe optimize this by 
+ * having an associative array to perform a lookup of the configuration file to see 
+ * if it has even been called and if it has to return that array. This will be done 
+ * later.
  */
 
 class Config {
