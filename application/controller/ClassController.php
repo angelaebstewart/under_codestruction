@@ -22,7 +22,7 @@ class ClassController extends Controller{
         $this->View->render('class/index');
     }
     
-    public function edit($classID) {
+    public function edit($classID='') {
         $this->View->render('class/editClass', null);
     }
     
