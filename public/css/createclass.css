@@ -1,0 +1,26 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 2, 2015, 2:34:53 PM
+    Author     : WalterC
+*/
+
+.create-class{
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+  padding-top: 50px;
+  margin-bottom: 10px;
+}
+.add-student-class{
+  max-width: 630px;
+  max-height: 400px;
+  padding: 15px;
+  margin: 0 auto;
+  padding-top: 50px;
+  margin-bottom: 10px;
+  overflow-y:auto;
+}
