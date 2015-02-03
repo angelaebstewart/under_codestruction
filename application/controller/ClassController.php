@@ -31,6 +31,12 @@ class ClassController extends Controller{
         $this->View->render('class/createClass', null);
     }
     
+    public function createClass_action(){        
+        //Auth::checkAuthentication();
+        $result = ClassModel::canStudentBeAddedToClass(Request::post('classTitle'),Request::post('uid'));
+        $this->View->render('class/createClass', $result);
+    }
+    
     public function deleteClass($classID) {
         
     }

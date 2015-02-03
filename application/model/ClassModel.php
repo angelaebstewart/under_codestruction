@@ -26,5 +26,23 @@ class ClassModel {
         return false;
     }
     
+    public static function doesTeacherAlreadyTeachThisClass($className, $teacherID=2){
+//        $db = DatabaseFactory::getFactory();        
+//        $db.getConnection();
+//        $sql = "SELECT title FROM class C WHERE C.uid = $teacherID AND C.title = $className";
+//        $query = $database->prepare($sql);
+//        $query->execute();
+        return "true";
+        
+    }
+    
+    public static function canStudentBeAddedToClass($classID){
+        
+    }
+    
+    public static function getStudentsFromClass($classID){
+        
+    }
+    
     
 }
