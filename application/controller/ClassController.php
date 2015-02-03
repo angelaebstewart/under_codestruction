@@ -23,11 +23,12 @@ class ClassController extends Controller{
     }
     
     public function edit($classID) {
-        $this->View->render('class/edit', null);
+        $this->View->render('class/editClass', null);
     }
     
-    public function newClass() {
+    public function createClass() {
         
+        $this->View->render('class/createClass', null);
     }
     
     public function deleteClass($classID) {
@@ -36,7 +37,7 @@ class ClassController extends Controller{
     
     public function viewClass(){
         if(ClassModel::canViewClass(Request::get('classID'), Request::get('teacherID'))){            
-            $this->View->render('class/class');
+            $this->View->render('class/viewClass');
         } else{
             Redirect::to("class/index");
         }

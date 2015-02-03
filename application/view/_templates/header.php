@@ -12,6 +12,7 @@
     <link href="<?php echo Config::get('URL','gen'); ?>css/request.css" rel="stylesheet">
     <link href="<?php echo Config::get('URL','gen'); ?>css/prettyPhoto.css" type="text/css" rel="stylesheet" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
     <link href="<?php echo Config::get('URL','gen'); ?>css/table.css" rel="stylesheet">
+    <link href="<?php echo Config::get('URL','gen'); ?>css/createclass.css" rel="stylesheet">
 
   </head>
   <body>
