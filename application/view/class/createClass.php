@@ -33,7 +33,7 @@
                                 <td><input id="fnInput" required pattern=".{1,}" name="first_name" type="text" placeholder="First Name" class="form-control" ></td>
                                 <td><input id="lnInput" required pattern=".{1,}" name="last_name" type="text" placeholder="Last Name" class="form-control" ></td>
                                 <td><input id="emInput" required pattern=".{1,}" name="e_mail" type="text" placeholder="E-mail" class="form-control" ></td>
-                                <td><button id="addStudentBtn" class="btn btn-lg btn-primary btn-block" type="submit" onclick="addStudent()">+</button></td>
+                                <td><button id="addStudentBtn" class="btn btn-small btn-primary btn-block" type="submit" onclick="addStudent()">+</button></td>
                             </tr>
                         </tbody>
                     </table>
