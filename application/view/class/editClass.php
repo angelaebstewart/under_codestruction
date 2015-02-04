@@ -17,27 +17,27 @@
                     <tbody>
                         <tr>
                             <td>Student 1</td>
-                            <td><button type="button" class="btn btn-small btn-danger" onclick="alertMsg(this)">Delete</button></td>
+                            <td><button type="button" class="btn btn-xs btn-danger" onclick="alertMsg(this)">Delete</button></td>
                         </tr>
                         <tr>
                             <td>Student 2</td>
-                            <td><button type="button" class="btn btn-small btn-danger" onclick="alertMsg(this)">Delete</button></td>
+                            <td><button type="button" class="btn btn-xs btn-danger" onclick="alertMsg(this)">Delete</button></td>
                         </tr>
                         <tr>
                             <td>Student 3</td>
-                            <td><button type="button" class="btn btn-small btn-danger" onclick="alertMsg(this)">Delete</button></td>
+                            <td><button type="button" class="btn btn-xs btn-danger" onclick="alertMsg(this)">Delete</button></td>
                         </tr>
                         <tr>
                             <td>Student 4</td>
-                            <td><button type="button" class="btn btn-small btn-danger" onclick="alertMsg(this)">Delete</button></td>
+                            <td><button type="button" class="btn btn-xs btn-danger" onclick="alertMsg(this)">Delete</button></td>
                         </tr>
                         <tr>
                             <td>Student 5</td>
-                            <td><button type="button" class="btn btn-small btn-danger" onclick="alertMsg(this)">Delete</button></td>
+                            <td><button type="button" class="btn btn-xs btn-danger" onclick="alertMsg(this)">Delete</button></td>
                         </tr>
                         <tr>
                             <td>Student 6</td>
-                            <td><button type="button" class="btn btn-small btn-danger" onclick="alertMsg(this)">Delete</button></td>
+                            <td><button type="button" class="btn btn-xs btn-danger" onclick="alertMsg(this)">Delete</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -50,7 +50,7 @@
 <script>
 function alertMsg(param){
 var result = window.confirm("Are you sure you want to delete this student");
-if(result == true){
+if(result === true){
 var row = param.parentElement.parentElement;
 row.parentElement.removeChild(row);
 }
