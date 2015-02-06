@@ -29,15 +29,16 @@ class ClassModel {
     public static function doesTeacherAlreadyTeachThisClass($className, $teacherID=2){
 //        $db = DatabaseFactory::getFactory();        
 //        $db.getConnection();
+//        There needs to be a input sanitizer
 //        $sql = "SELECT title FROM class C WHERE C.uid = $teacherID AND C.title = $className";
 //        $query = $database->prepare($sql);
 //        $query->execute();
-        return "true";
+        return true;
         
     }
     
     public static function canStudentBeAddedToClass($classID){
-        
+        return $classID . " is Alive and well and yes you can add it.";
     }
     
     public static function getStudentsFromClass($classID){

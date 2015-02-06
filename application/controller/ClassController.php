@@ -33,8 +33,10 @@ class ClassController extends Controller{
     
     public function createClass_action(){        
         //Auth::checkAuthentication();
-        $result = ClassModel::canStudentBeAddedToClass(Request::post('classTitle'),Request::post('uid'));
-        $this->View->render('class/createClass', $result);
+        $classTitle = Request::post('clsname');
+        $resultText = ClassModel::canStudentBeAddedToClass($classTitle);
+        $resultJSON = json_encode($resultText);
+        $this->View->renderJSON($resultJSON);
     }
     
     public function deleteClass($classID) {
@@ -48,5 +50,9 @@ class ClassController extends Controller{
             Redirect::to("class/index");
         }
         
+    }
+    
+    public function viewTest() {
+        $this->View->render('class/test');
     }
 }

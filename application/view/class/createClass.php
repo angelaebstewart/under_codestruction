@@ -14,7 +14,6 @@
             </div>
         </div>
     </div>
-    <p id="rData"></p>
     <div class="add-student-class">
         <div class="panel panel-default">
             <div class="panel-heading">Add students to class</div>

@@ -150,29 +150,6 @@ class LoginController extends Controller
         Redirect::to('login/editUserEmail');
     }
 
-    /**
-     * Upload avatar
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     */
-    public function uploadAvatar()
-    {
-        Auth::checkAuthentication();
-        $this->View->render('login/uploadAvatar', array(
-            'avatar_file_path' => AvatarModel::getPublicUserAvatarFilePathByUserId(Session::get('user_id'))
-        ));
-    }
-
-    /**
-     * Perform the upload of the avatar
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     * POST-request
-     */
-    public function uploadAvatar_action()
-    {
-        Auth::checkAuthentication();
-        AvatarModel::createAvatar();
-        Redirect::to('login/uploadAvatar');
-    }
 
     /**
      * Show the change-account-type page

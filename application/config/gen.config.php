@@ -14,12 +14,6 @@ return array(
     'PATH_CONTROLLER' => realpath(dirname(__FILE__) . '/../../') . '/application/controller/',
     'PATH_VIEW' => realpath(dirname(__FILE__) . '/../../') . '/application/view/',
     /**
-     * Configuration for: Avatar paths
-     * Internal path to save avatars. Make sure this folder is writable. The slash at the end is VERY important!
-     */
-    'PATH_AVATARS' => realpath(dirname(__FILE__) . '/../../') . '/public/avatars/',
-    'PATH_AVATARS_PUBLIC' => 'avatars/',
-    /**
      * Configuration for: Default controller and action
      */
     'DEFAULT_CONTROLLER' => 'login',
