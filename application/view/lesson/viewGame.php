@@ -8,7 +8,7 @@
              }
                 
             else {
-                alert("Not quite. You need to increase the value of x to end the loop. The correct answer is x++.");
+                alert("Not quite! You need to increase the value of x to end the loop. The correct answer is x++.");
             }
         }
         
