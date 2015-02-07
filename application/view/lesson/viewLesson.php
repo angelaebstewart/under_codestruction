@@ -8,7 +8,7 @@
             <!-- List group -->
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a href="https://www.youtube.com/watch?v=iWSu6U0Ujs8" rel="prettyPhoto">
+                    <a href="https://www.youtube.com/watch?v=xgeWnEP7Kq4&feature=em-upload_owner" rel="prettyPhoto">
                         Video
                     </a>
                 </li>

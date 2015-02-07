@@ -1,20 +1,20 @@
 <div class="container">
 
-    <h4>Game for Lesson <?php echo Request::get('id'); ?></h4>
+    <h4><br>Game for Lesson <?php echo Request::get('id'); ?></h4>
     <script language ="JavaScript">
         function checkAnswer (form) {
-            if (form.B.checked == true) {
-                alert("Correct answer!");
+            if (form.B.checked) {
+                alert("Correct answer! You need to increase the value of x to end the loop.");
              }
                 
             else {
-                alert("Incorrect answer!");
+                alert("Not quite. You need to increase the value of x to end the loop. The correct answer is x++.");
             }
         }
         
     </script>
     
-    <p>Select the correct statement for the loop body so that the loop terminates.
+    <p><br>Select the correct statement for the loop body so that the loop terminates.
     <br>x = 0 <br> while (x < 10) <br> _____________</p>
     <form name ="GameQ1" method="POST" action="viewLesson.php">
         <input type="radio" name="q1" value="A" id="A"/>x--<br>
