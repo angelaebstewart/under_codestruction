@@ -8,38 +8,6 @@
 class UserModel
 {
     /**
-     * Gets an array that contains all the users in the database. The array's keys are the user ids.
-     * Each array element is an object, containing a specific user's data.
-     * @return array The profiles of all users
-     */
-    public static function getPublicProfilesOfAllUsers()
-    {
-        $database = DatabaseFactory::getFactory()->getConnection();
-
-        $sql = "SELECT uid, FirstName, LastName, Email, Role, verified, passwordUpdated, passwordHash FROM codestructionuser";
-        $query = $database->prepare($sql);
-        $query->execute();
-
-        $all_users_profiles = array();
-
-        foreach ($query->fetchAll() as $user) {
-            // a new object for every user. This is eventually not really optimal when it comes
-            // to performance, but it fits the view style better
-            $all_users_profiles[$user->uid] = new stdClass();
-            $all_users_profiles[$user->uid]->user_id = $user->uid;
-            $all_users_profiles[$user->uid]->user_firstName = $user->FirstName;
-            $all_users_profiles[$user->uid]->user_lastName = $user->LastName;
-            $all_users_profiles[$user->uid]->user_email = $user->Email;
-            $all_users_profiles[$user->uid]->user_role = $user->Role;
-            $all_users_profiles[$user->uid]->user_verified = $user->verified;
-            $all_users_profiles[$user->uid]->user_passwordUpdated = $user->passwordUpdated;
-            $all_users_profiles[$user->uid]->user_passwordHash = $user->passwordHash;
-        }
-
-        return $all_users_profiles;
-    }
-
-    /**
      * Gets a user's profile data, according to the given $user_id
      * @param int $user_id The user's id
      * @return mixed The selected user's profile
@@ -311,5 +279,9 @@ class UserModel
     public static function isTeacher($role)
     {
         return ($role == Config::get('ROLE_TEACHER', 'gen'));
+    }
+    
+    public static function isStudent($role){        
+        return ($role == Config::get('ROLE_STUDENT', 'gen'));
     }
 }
