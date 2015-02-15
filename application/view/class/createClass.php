@@ -1,4 +1,6 @@
-<div class="component">
+  <div id="contentArea">
+    <div class="contentDivision"> 
+
     <!-- echo out the system feedback (error and success messages) -->
     <?php $this->renderFeedbackMessages(); ?>
 
@@ -39,4 +41,6 @@
                 </div>
             </div>
         </div>
+    </div>
+    </div>
      <script src="<?php echo Config::get('URL','gen'); ?>js/newClass.js"></script>

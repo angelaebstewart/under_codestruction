@@ -3,28 +3,13 @@ body {
   padding-bottom: 40px;
 }
 
-.btn{
-background-color:#5A216D;
-border-color:#5A216D;
-color: rgb(202,194,209);
-}
 
-.checkbox  >label{
-color: rgb(221,236,239);
-}
+
 
 .form-signin-heading{
-color:rgb(221,236,239);
+color: #000;
 }
 
-.btn:hover{
-background-color: rgb(170,0,120);
-border-color:rgb(170,0,120);
-}
-.btn:focus{
-background-color: rgb(170,0,120);
-border-color:rgb(170,0,120);
-}
 
 .form-signin {
   max-width: 330px;

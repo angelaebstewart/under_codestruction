@@ -1,4 +1,5 @@
-<div class="content">
+<div id="contentArea">
+    <div class="contentDivision"> 
     
 
     <!-- echo out the system feedback (error and success messages) -->
@@ -13,4 +14,5 @@
         </label>
         <input type="submit" class="btn btn-lg btn-primary btn-block" value="Send me a password-reset mail" />
     </form>
+</div>
 </div>

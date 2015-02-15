@@ -1,91 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html  lang="en">
     <head>
         <title>Under Codestruction</title>
         <!-- Bootstrap core CSS -->
         <link href="<?php echo Config::get('URL', 'gen'); ?>css/bootstrap.min.css" rel="stylesheet">
-        <!-- Custom styles for this template -->
-        <link href="<?php echo Config::get('URL', 'gen'); ?>css/custom_content.css" rel="stylesheet">
-        <link href="<?php echo Config::get('URL', 'gen'); ?>css/signin.css" rel="stylesheet">    
-        <link href="<?php echo Config::get('URL', 'gen'); ?>css/list.css" rel="stylesheet">   
-        <link href="<?php echo Config::get('URL', 'gen'); ?>css/register.css" rel="stylesheet">
-        <link href="<?php echo Config::get('URL', 'gen'); ?>css/request.css" rel="stylesheet">
-        <link href="<?php echo Config::get('URL', 'gen'); ?>css/prettyPhoto.css" type="text/css" rel="stylesheet" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
-        <link href="<?php echo Config::get('URL', 'gen'); ?>css/table.css" rel="stylesheet">
-        <link href="<?php echo Config::get('URL', 'gen'); ?>css/createclass.css" rel="stylesheet">
-        <link href="<?php echo Config::get('URL', 'gen'); ?>css/custom_modal.css" rel="stylesheet">
-
-        <!-- javascripts -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script src="<?php echo Config::get('URL', 'gen'); ?>js/bootstrap.min.js"></script>
-        <script src="<?php echo Config::get('URL', 'gen'); ?>js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
-
-
+        <!-- Pretty Photo css for the video stuff -->
+        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
+        <!-- Auburn's Styling -->
+        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/stretch.css" media="screen" type="text/css" />
+        <!-- Custom styling -->
+        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/signin.css"  type="text/css">
+        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/register.css" type="text/css">
+        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/list.css" type="text/css">
+        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/createclass.css" type="text/css">
+        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/request.css" type="text/css">
+        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/table.css" type="text/css">
+        <!-- javascripts that will be used on every page-->
+        <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/bootstrap.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/jquery.prettyPhoto.js"></script>
 
     </head>
     <body>
-        <!-- Fixed navbar -->
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="navbar-header">
-                <a href="<?php echo Config::get('URL', 'gen'); ?>">
-                    <img class="navbar-brand" src="<?php echo Config::get('URL', 'gen'); ?>images/Logo_sm.png">
-                </a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">       
-                    <?php if (Session::userIsLoggedIn()) { ?>
+        <div id="pageWrap"> 
+            <div id="headerWrap">
+                <div id="header">
+                    <div id="logo">
+                        <a href="http://www.auburn.edu"><img src="<?php echo Config::get('URL', 'gen'); ?>images/headerLogo.png" alt="Auburn University Homepage" /></a>
+                    </div>
+                    <div id="headerTitle">
 
-                        <li><a href="<?php echo Config::get('URL', 'gen'); ?>Lesson/index">Lessons</a></li>
-
-                        <?php
-                        if (Session::getUserRole() == Config::get('ROLE_TEACHER', 'gen')) {
-                            ?>
-                            <li><a href="<?php echo Config::get('URL', 'gen'); ?>Class/index">Classes</a></li>
-                            <li><a href="<?php echo Config::get('URL', 'gen'); ?>UnderCodestruction_UserManual.pdf" target="_blank">Manual</a></li>
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <!-- for not logged in users -->
-                        <li <?php
+                        <div class="titleArea">
+                            <span class="mainHeading"><img src="<?php echo Config::get('URL', 'gen'); ?>images/mockup9.png"></span>
+                            <span class="subHeading"></span>
+                        </div>
+                    </div>
+                </div>
+                <table class="nav">
+                    <tr>
+                        <?php if (Session::userIsLoggedIn()) { ?>
+                            <td><a href="<?php echo Config::get('URL', 'gen'); ?>Lesson/index">Lessons</a></td>
+                            <?php
+                            if (Session::getUserRole() == Config::get('ROLE_TEACHER', 'gen')) {
+                                ?>
+                                <td><a href="<?php echo Config::get('URL', 'gen'); ?>Class/index">Classes</a></td>
+                                <td><a href="<?php echo Config::get('URL', 'gen'); ?>UnderCodestruction_UserManual.pdf" target="_blank">Manual</a></dt>
+                                    <?php
+                                }
+                            } else {
+                                ?>
+                                <!-- for not logged in users -->
+                            <td <?php
                             if (View::checkForActiveControllerAndAction($filename, "login/index")) {
                                 echo ' class="active" ';
                             }
                             ?> >
-                            <a href="<?php echo Config::get('URL', 'gen'); ?>login/index">Login</a>
-                        </li>
-                        <li <?php
-                    if (View::checkForActiveControllerAndAction($filename, "login/register")) {
-                        echo ' class="active" ';
-                    }
-                    ?> >
-                            <a href="<?php echo Config::get('URL', 'gen'); ?>login/register">Register</a>
-                        </li>
-<?php } ?>
+                                <a href="<?php echo Config::get('URL', 'gen'); ?>login/index">Login</a>
+                            </td>
+                            <td <?php
+                            if (View::checkForActiveControllerAndAction($filename, "login/register")) {
+                                echo ' class="active" ';
+                            }
+                            ?> >
+                                <a href="<?php echo Config::get('URL', 'gen'); ?>login/register">Register</a>
+                            </td>
+                        <?php } ?>
 
 
-                            <?php if (Session::userIsLoggedIn()) : ?>
-                        <li class="dropdown"  >
-                            <a href="<?php echo Config::get('URL', 'gen'); ?>login/profile" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account<span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li <?php
-                                if (View::checkForActiveController($filename, "login")) {
-                                    echo ' class="active" ';
-                                }
-                                ?> >
-                                    <a href="<?php echo Config::get('URL', 'gen'); ?>login/editUsername">Options</a>
-                                </li>                 
-                                <li <?php
-                                if (View::checkForActiveController($filename, "login")) {
-                                    echo ' class="active" ';
-                                }
-                                ?> >
-                                    <a href="<?php echo Config::get('URL', 'gen'); ?>login/logout">Logout</a>
-                                </li>
-                            </ul>
-                        </li>
-<?php endif; ?>
-                </ul>
-            </div><!--/.nav-collapse -->
+                        <?php if (Session::userIsLoggedIn()) { ?>
 
-        </nav>
+                            <td <?php
+                            if (View::checkForActiveController($filename, "login")) {
+                                echo ' class="active" ';
+                            }
+                            ?> >
+                                <a href="<?php echo Config::get('URL', 'gen'); ?>login/editUsername">Options</a>
+                            </td>                 
+                            <td <?php
+                            if (View::checkForActiveController($filename, "login")) {
+                                echo ' class="active" ';
+                            }
+                            ?> >
+                                <a href="<?php echo Config::get('URL', 'gen'); ?>login/logout">Logout</a>
+                            </td>
+
+                        <?php } ?>
+                    </tr>
+                </table>
+            </div>

@@ -1,4 +1,5 @@
-<div class="container">
+  <div id="contentArea">
+    <div class="contentDivision"> 
 
     <h4>Assessment for Lesson <?php echo Request::get('id'); ?></h4>
 
@@ -14,7 +15,8 @@
     </form>
 
     <a href="<?php echo Config::get('URL','gen'); ?>lesson/viewLesson/?id=<?php echo Request::get('id'); ?>"><- Back to lesson page</a>
-</div> <!-- /container -->
+</div>
+  </div>
 
 <!-- echo out the system feedback (error and success messages) -->
 <?php $this->renderFeedbackMessages(); ?>

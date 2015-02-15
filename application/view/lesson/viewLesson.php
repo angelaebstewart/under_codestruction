@@ -1,5 +1,8 @@
+  <div id="contentArea">
+    <div class="contentDivision"> 
 
-<div class="container">
+
+
     <div class="item-list">
         <div class="panel panel-default">
             <!-- Default panel contents -->
@@ -27,7 +30,8 @@
 
         <a href="<?php echo Config::get('URL', 'gen'); ?>lesson/index"><- Back to home page</a>
     </div>
-</div> <!-- /container -->
+</div> 
+  </div>
 
 <!-- echo out the system feedback (error and success messages) -->
 <?php $this->renderFeedbackMessages(); ?>

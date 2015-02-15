@@ -1,5 +1,7 @@
+  <div id="contentArea">
+    <div class="contentDivision"> 
 
-    <div class="container">
+
 <div class="item-list">
 <div class="panel panel-default">
   <!-- Default panel contents -->
@@ -16,7 +18,8 @@
   </ul>
 </div>
 </div>
-    </div> <!-- /container -->
+    </div> 
+  </div>
     
             <!-- echo out the system feedback (error and success messages) -->
         <?php $this->renderFeedbackMessages(); ?>

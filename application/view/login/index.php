@@ -1,5 +1,5 @@
-
-<div class="container">
+  <div id="contentArea">
+    <div class="contentDivision"> 
 
 
 
@@ -25,5 +25,5 @@
       </form>
     
 
-
-        </div>
+    </div>
+  </div>

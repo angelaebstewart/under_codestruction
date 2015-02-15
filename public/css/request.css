@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 .form-request-heading{
-color:rgb(221,236,239);
+color:rgb(0,0,0);
 }
 
 .form-request{
@@ -35,5 +35,5 @@ color:rgb(221,236,239);
   z-index: 2;
 }
 .form-request > label{
-color: rgb(221,236,239);
+color: rgb(0,0,0);
 }

@@ -16,14 +16,8 @@ and open the template in the editor.
   margin-bottom: 10px;
 }
 
-.panel-default>.panel-heading{
-background-color: #5A216D;
-
-color:rgb(221,236,239);
-}
 
 .panel-heading+.list-group .list-group-item{
-background-color: rgb(94,97,120);
-color:rgb(221,236,239);
+color:rgb(0,0,0);
 font-weight: bold;
 }
