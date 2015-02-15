@@ -6,8 +6,7 @@
         <link href="<?php echo Config::get('URL', 'gen'); ?>css/bootstrap.min.css" rel="stylesheet">
         <!-- Pretty Photo css for the video stuff -->
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
-        <!-- Auburn's Styling -->
-        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/stretch.css" media="screen" type="text/css" />
+
         <!-- Custom styling -->
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/signin.css"  type="text/css">
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/register.css" type="text/css">
@@ -15,6 +14,8 @@
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/createclass.css" type="text/css">
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/request.css" type="text/css">
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/table.css" type="text/css">
+        <!-- Auburn's Styling -->
+        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/stretch.css" media="screen" type="text/css" />
         <!-- javascripts that will be used on every page-->
         <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/jquery.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/bootstrap.min.js"></script>
