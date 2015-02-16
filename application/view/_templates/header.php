@@ -87,5 +87,5 @@
 
                         <?php } ?>
                     </tr>
-                </table>
+                </table><!-- end of nav table-->
             </div>
