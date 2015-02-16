@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/createclass.css" type="text/css">
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/request.css" type="text/css">
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/table.css" type="text/css">
+        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/navmenu.css" type="text/css">
         <!-- Auburn's Styling -->
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/stretch.css" media="screen" type="text/css" />
         <!-- javascripts that will be used on every page-->
@@ -37,55 +38,69 @@
                         </div>
                     </div>
                 </div>
-                <table class="nav">
-                    <tr>
-                        <?php if (Session::userIsLoggedIn()) { ?>
-                            <td><a href="<?php echo Config::get('URL', 'gen'); ?>Lesson/index">Lessons</a></td>
-                            <?php
-                            if (Session::getUserRole() == Config::get('ROLE_TEACHER', 'gen')) {
-                                ?>
-                                <td><a href="<?php echo Config::get('URL', 'gen'); ?>Class/index">Classes</a></td>
-                                <td><a href="<?php echo Config::get('URL', 'gen'); ?>UnderCodestruction_UserManual.pdf" target="_blank">Manual</a></dt>
-                                    <?php
+                <nav id="ucnav">
+                    <ul>
+                        <?php
+                        if (Session::userIsLoggedIn()) {
+                            ?>
+                            <!-- Will be seen by a student and a teacher -->
+                            <li<?php
+                            if (View::checkForActiveControllerAndAction($filename, "lesson/index")) {
+                                echo ' class="activeMenuItem" ';
+                            }
+                            ?>><a href="<?php echo Config::get('URL', 'gen'); ?>Lesson/index">Lessons</a></li>
+                                <?php
+                                if (Session::getUserRole() == Config::get('ROLE_TEACHER', 'gen')) {
+                                    ?>
+                                <!-- Will be seen by only a teacher -->
+                                <li<?php
+                                if (View::checkForActiveControllerAndAction($filename, "class/index")) {
+                                    echo ' class="activeMenuItem" ';
                                 }
-                            } else {
-                                ?>
-                                <!-- for not logged in users -->
-                            <td <?php
+                                ?>><a href="<?php echo Config::get('URL', 'gen'); ?>Class/index">Classes</a></li>
+                                <li><a href="<?php echo Config::get('URL', 'gen'); ?>/documents/UnderCodestruction_UserManual.pdf" target="_blank">Manual</a></li>
+                                <?php
+                            }
+                        } else {
+                            ?>
+                            <!-- Will only be seen by a visitor -->
+                            <li<?php
                             if (View::checkForActiveControllerAndAction($filename, "login/index")) {
-                                echo ' class="active" ';
+                                echo ' class="activeMenuItem" ';
                             }
-                            ?> >
-                                <a href="<?php echo Config::get('URL', 'gen'); ?>login/index">Login</a>
-                            </td>
-                            <td <?php
+                            ?>><a href="<?php echo Config::get('URL', 'gen'); ?>login/index">Login</a></li>
+                            <li<?php
                             if (View::checkForActiveControllerAndAction($filename, "login/register")) {
-                                echo ' class="active" ';
+                                echo ' class="activeMenuItem" ';
                             }
-                            ?> >
-                                <a href="<?php echo Config::get('URL', 'gen'); ?>login/register">Register</a>
-                            </td>
-                        <?php } ?>
-
-
-                        <?php if (Session::userIsLoggedIn()) { ?>
-
-                            <td <?php
-                            if (View::checkForActiveController($filename, "login")) {
-                                echo ' class="active" ';
+                            ?>><a href="<?php echo Config::get('URL', 'gen'); ?>login/register">Register</a></li>
+                                <?php
                             }
-                            ?> >
-                                <a href="<?php echo Config::get('URL', 'gen'); ?>login/editUsername">Options</a>
-                            </td>                 
-                            <td <?php
-                            if (View::checkForActiveController($filename, "login")) {
-                                echo ' class="active" ';
-                            }
-                            ?> >
-                                <a href="<?php echo Config::get('URL', 'gen'); ?>login/logout">Logout</a>
-                            </td>
-
-                        <?php } ?>
-                    </tr>
-                </table><!-- end of nav table-->
+                            ?>
+                            <?php
+                            if (Session::userIsLoggedIn()) {
+                                ?>                       
+                            <!-- Will only be seen by an actual user -->
+                            <li><a href="#">Account <span class="caret"></span></a>
+                                <ul>
+                                    <li><a href="<?php echo Config::get('URL', 'gen'); ?>login/editUsername">Options</a></li>
+                                    <li><a href="<?php echo Config::get('URL', 'gen'); ?>login/logout">Logout</a></li>
+                                </ul>
+                            </li>
+                            <?php
+                        }
+                        ?>
+                        <!-- Will be seen regardless-->
+                        <li<?php
+                        if (View::checkForActiveControllerAndAction($filename, "index/faq")) {
+                            echo ' class="activeMenuItem" ';
+                        }
+                        ?>><a href="<?php echo Config::get('URL', 'gen'); ?>index/faq">FAQ</a></li>
+                        <li<?php
+                        if (View::checkForActiveControllerAndAction($filename, "index/about")) {
+                            echo ' class="activeMenuItem" ';
+                        }
+                        ?>><a href="<?php echo Config::get('URL', 'gen'); ?>index/about">About</a></li>
+                    </ul>
+                </nav>
             </div>

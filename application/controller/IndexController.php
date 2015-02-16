@@ -18,4 +18,13 @@ class IndexController extends Controller
     {
         $this->View->render('index/index');
     }
+    
+    public function about(){
+        
+        $this->View->render('index/about');
+    }
+    
+    public function faq(){
+        $this->View->render('index/faq');
+    }
 }
