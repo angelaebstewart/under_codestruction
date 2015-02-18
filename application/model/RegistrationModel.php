@@ -6,8 +6,7 @@
  * Everything registration-related happens here.
  */
 require ('../vendor/phpass-0.3/PasswordHash.php');
-class RegistrationModel
-{
+class RegistrationModel {
 	/**
 	 * Handles the entire registration process for DEFAULT users and 
          * creates a new user in the database if everything is fine
@@ -36,7 +35,7 @@ class RegistrationModel
 		$user_password_hash = $pwdHasher->HashPassword($user_password_new);
 
 		// check if email already exists
-		if (UserModel::doesEmailAlreadyExist($user_email)) {
+		if (AccountModel::doesEmailAlreadyExist($user_email)) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_USER_EMAIL_ALREADY_TAKEN'));
 			return false;
 		}
@@ -50,7 +49,7 @@ class RegistrationModel
 		}
 
 		// get user_id of the user that has been created, to keep things clean we DON'T use lastInsertId() here
-		$user_id = UserModel::getUserIdByEmail($user_email);
+		$user_id = AccountModel::getUserIdByEmail($user_email);
 
 		if (!$user_id) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));

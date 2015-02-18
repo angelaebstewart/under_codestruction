@@ -11,6 +11,8 @@
  *
  * @author WalterC
  */
-class GameModel {
-    //put your code here
+class GameModel {    
+    public static function canViewGame($lessonID) {
+        return LessonModel::canViewLesson($lessonID);
+    }
 }

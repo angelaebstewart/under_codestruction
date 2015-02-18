@@ -22,7 +22,7 @@ class PasswordResetModel
 		}
 
 		// check if that username exists
-		$result = UserModel::getUserDataByUserNameOrEmail($user_name_or_email);
+		$result = AccountModel::getUserDataByUserNameOrEmail($user_name_or_email);
 		if (!$result) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
 			return false;
