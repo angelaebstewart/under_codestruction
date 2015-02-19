@@ -10,16 +10,11 @@ class LessonModel {
             $user_id = Session::get('user_id');
         }
         
-        $database = DatabaseFactory::getFactory()->getConnection();
-
-        // Eventually there be a way to pick the modules for a class?
-        $sql = "SELECT ModuleID, ModuleName FROM codestructionmodule";
-        $query = $database->prepare($sql);
-        $query->execute();
+        // Get all the lessons in the system
+        $lessonData = LessonModel::getAllLessons();
         
-        $lessonData = $query->fetchAll();
-        $lessons = array("lessonList" => array());
-        
+        // If it's a teacher, all the lessons will be available.
+        // If it's a student, we need to figure out which is the latest available to them
         $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
         $highestLesson = -1;
         if (!$isTeacher) {
@@ -30,20 +25,34 @@ class LessonModel {
             }
         }
         
+        $processedLessons = array("lessonList" => array());
+        
+        // Go through each lesson, only associate an 'id' with it if
+        // they're allowed to view it.
         foreach ($lessonData as $key => $lesson) {
             if ($isTeacher || intval($lesson->ModuleID) <= $highestLesson+1) {
-                array_push($lessons["lessonList"], array(
+                array_push($processedLessons["lessonList"], array(
                     "name" => $lesson->ModuleName,
                     "id" => $lesson->ModuleID
                 ));
             } else {
-                array_push($lessons["lessonList"], array(
+                array_push($processedLessons["lessonList"], array(
                     "name" => $lesson->ModuleName
                 ));
             }
         }
         
-        return $lessons;
+        return $processedLessons;
+    }
+    
+    public static function getAllLessons() {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "SELECT ModuleID, ModuleName FROM codestructionmodule";
+        $query = $database->prepare($sql);
+        $query->execute();
+        
+        return $query->fetchAll();
     }
     
     public static function getHighestCompletedLesson($user_id) {
@@ -67,14 +76,14 @@ class LessonModel {
         return $highestLesson;
     }
     
-    public static function canViewLesson($lessonID) {
+    public static function canViewLesson($lesson_id) {
         
         // TO DO: validate that the student has access to this lesson
         
         // For now, we'll simulate it by pretending that the student only has
         // access to the lesson with ID = 1
         
-        if ($lessonID == '1') {
+        if ($lesson_id == '1') {
             return true;
         } else {
             return false;
