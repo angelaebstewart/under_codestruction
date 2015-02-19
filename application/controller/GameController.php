@@ -1,15 +1,8 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of GameController
  *
- * @author WalterC
  */
 class GameController extends Controller {
 
@@ -24,7 +17,7 @@ class GameController extends Controller {
      * When you click on a game link, it goes to the game for that lesson.
      */
     public function viewGame() {
-        if (LessonModel::canViewGame(Request::get('id'))) {
+        if (GameModel::canViewGame(Request::get('id'))) {
             $this->View->render('lesson/viewGame');
         } else {
             Redirect::to('lesson/index');

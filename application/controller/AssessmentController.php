@@ -6,7 +6,6 @@
  * specified assessment
  * Any action regarding an assessment should be routed to here.
  *
- * @author WalterC
  */
 class AssessmentController extends Controller {
 
@@ -36,7 +35,7 @@ class AssessmentController extends Controller {
      * When you click on an assessment link, it goes to the assessment for that lesson.
      */
     public function viewAssessment() {
-        if (LessonModel::canViewGame(Request::get('id'))) {
+        if (GameModel::canViewGame(Request::get('id'))) {
             $this->View->render('lesson/viewAssessment');
         } else {
             Redirect::to('lesson/index');

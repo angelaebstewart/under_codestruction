@@ -6,7 +6,7 @@
     <?php $this->renderFeedbackMessages(); ?>
 
     <!-- request password reset form box -->
-    <form method="post" class="form-request" action="<?php echo Config::get('URL','gen'); ?>login/requestPasswordReset_action">
+    <form method="post" class="form-request" action="<?php echo Config::get('URL','gen'); ?>account/requestPasswordReset_action">
         <h3 class="form-request-heading">Request a password reset</h3>
         <label>
             Enter your username or email and you'll get a mail with instructions:

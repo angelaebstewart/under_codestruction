@@ -2,7 +2,6 @@
 /**
  * Description of ClassController
  *
- * @author WalterC
  */
 class ClassController extends Controller{
      /**

@@ -10,7 +10,7 @@
         <p>FYI: ... Idenfitication process works via password-reset-token (hidden input field)</p>
 
         <!-- new password form box -->
-        <form method="post" action="<?php echo Config::get('URL','gen'); ?>login/setNewPassword" name="new_password_form">
+        <form method="post" action="<?php echo Config::get('URL','gen'); ?>account/setNewPassword" name="new_password_form">
             <input type='hidden' name='user_name' value='<?php echo $this->user_name; ?>' />
             <input type='hidden' name='user_password_reset_hash' value='<?php echo $this->user_password_reset_hash; ?>' />
             <label for="reset_input_password_new">New password (min. 6 characters)</label>

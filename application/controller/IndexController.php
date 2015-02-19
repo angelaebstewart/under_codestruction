@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Description of IndexController
+ *
+ */
 class IndexController extends Controller
 {
     /**

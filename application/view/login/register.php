@@ -5,7 +5,7 @@
 
 
     <!-- register form -->
-    <form method="post" class="form-register" action="<?php echo Config::get('URL', 'gen'); ?>login/register_action">            
+    <form method="post" class="form-register" action="<?php echo Config::get('URL', 'gen'); ?>account/register_action">            
         <h3 class="form-register-heading">Register a new account</h3>
         <!-- the user name input field uses a HTML5 pattern check -->
         <input type="text" class="form-control" name="user_firstName" placeholder="first name" required />

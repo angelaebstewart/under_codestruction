@@ -2,7 +2,6 @@
 /**
  * Description of LessonController
  *
- * @author WalterC
  */
 class LessonController extends Controller{
     

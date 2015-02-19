@@ -70,10 +70,10 @@
                             }
                             ?>><a href="<?php echo Config::get('URL', 'gen'); ?>login/index">Login</a></li>
                             <li<?php
-                            if (View::checkForActiveControllerAndAction($filename, "login/register")) {
+                            if (View::checkForActiveControllerAndAction($filename, "account/register")) {
                                 echo ' class="activeMenuItem" ';
                             }
-                            ?>><a href="<?php echo Config::get('URL', 'gen'); ?>login/register">Register</a></li>
+                            ?>><a href="<?php echo Config::get('URL', 'gen'); ?>account/register">Register</a></li>
                                 <?php
                             }
                             ?>
@@ -83,7 +83,7 @@
                             <!-- Will only be seen by an actual user -->
                             <li><a href="#">Account <span class="caret"></span></a>
                                 <ul>
-                                    <li><a href="<?php echo Config::get('URL', 'gen'); ?>login/editUsername">Options</a></li>
+                                    <li><a href="<?php echo Config::get('URL', 'gen'); ?>account/editUsername">Options</a></li>
                                     <li><a href="<?php echo Config::get('URL', 'gen'); ?>login/logout">Logout</a></li>
                                 </ul>
                             </li>

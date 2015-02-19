@@ -2,7 +2,8 @@
 
 /**
  * Class Error
- * This controller simply shows a page that will be displayed when a controller/method is not found. Simple 404.
+ * This controller simply shows a page that will be displayed when a
+ *  controller/method is not found. Simple 404.
  */
 class ErrorController extends Controller
 {

@@ -16,12 +16,12 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a href="<?php echo Config::get('URL', 'gen'); ?>lesson/viewGame/?id=<?php echo Request::get('id'); ?>">
+                    <a href="<?php echo Config::get('URL', 'gen'); ?>game/viewGame/?id=<?php echo Request::get('id'); ?>">
                         Game
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a href="<?php echo Config::get('URL', 'gen'); ?>lesson/viewAssessment/?id=<?php echo Request::get('id'); ?>">
+                    <a href="<?php echo Config::get('URL', 'gen'); ?>assessment/viewAssessment/?id=<?php echo Request::get('id'); ?>">
                         Assessment
                     </a>
                 </li>
