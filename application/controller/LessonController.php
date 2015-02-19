@@ -19,7 +19,8 @@ class LessonController extends Controller{
      */
     public function index()
     {
-        $this->View->render('lesson/index');
+        $lessons = LessonModel::getLessonList(Request::get('id'));
+        $this->View->render('lesson/index', $lessons);
     }
     
     

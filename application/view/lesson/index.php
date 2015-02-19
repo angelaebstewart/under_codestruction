@@ -1,5 +1,5 @@
   <div id="contentArea">
-    <div class="contentDivision"> 
+    <div class="contentDivision">
 
 
 <div class="item-list">
@@ -9,12 +9,25 @@
 
   <!-- List group -->
   <ul class="list-group">
-    <li class="list-group-item"><a href="<?php echo Config::get('URL','gen'); ?>lesson/viewLesson/?id=1">Lesson One</a></li>
-    <li class="list-group-item">Lesson Two</li>
-    <li class="list-group-item">Lesson Three</li>
-    <li class="list-group-item">Lesson Four</li>
-    <li class="list-group-item">Lesson Five</li>
-    <li class="list-group-item">Lesson Six</li>
+    
+    <?php
+        
+        $lessonList = $this->lessonList;
+        
+        foreach ($lessonList as $lessonID => $lesson ) {
+            ?><li class="list-group-item"><?php
+            
+            if (isset($lesson["id"])) {
+                echo "<a href='" . Config::get('URL','gen') . "lesson/viewLesson/?id=" . $lesson["id"] . "'>" . $lesson["name"] . "</a>";
+            } else {
+                echo $lesson["name"];
+            }
+            
+            ?></li><?php
+        }
+
+    ?>
+
   </ul>
 </div>
 </div>
