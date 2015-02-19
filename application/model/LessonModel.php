@@ -5,8 +5,8 @@
  */
 class LessonModel {
     
-    public static function getLessonList($user_id) {
-        if (!$user_id) {
+    public static function getLessonList($user_id = -1) {
+        if ($user_id == -1) {
             $user_id = Session::get('user_id');
         }
         
@@ -77,16 +77,21 @@ class LessonModel {
     }
     
     public static function canViewLesson($lesson_id) {
-        
-        // TO DO: validate that the student has access to this lesson
-        
-        // For now, we'll simulate it by pretending that the student only has
-        // access to the lesson with ID = 1
-        
-        if ($lesson_id == '1') {
+        if (AccountModel::isTeacher(Session::get('user_role'))) {
             return true;
         } else {
-            return false;
+            $user_id = Session::get('user_id');
+            $highestCompleted = LessonModel::getHighestCompletedLesson($user_id);
+            
+            if ($highestCompleted == -1) { // No lessons have been started
+                $highestCompleted = 0;
+            }
+
+            if ($lesson_id <= $highestCompleted+1) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }    
 }
