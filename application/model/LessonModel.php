@@ -52,7 +52,7 @@ class LessonModel {
         // Eventually there should be a way to pick the modules for a class?
         $sql = "SELECT ModuleID
             FROM codestructionmoduleprogress
-            WHERE uid = :user_id AND AssessmentStatus='Completed'";
+            WHERE UserID = :user_id AND AssessmentStatus='Completed'";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id));
         

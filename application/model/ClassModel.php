@@ -22,7 +22,7 @@ class ClassModel {
 //        $db = DatabaseFactory::getFactory();        
 //        $db.getConnection();
 //        There needs to be a input sanitizer
-//        $sql = "SELECT title FROM class C WHERE C.uid = $teacherID AND C.title = $className";
+//        $sql = "SELECT title FROM class C WHERE C.UserID = $teacherID AND C.title = $className";
 //        $query = $database->prepare($sql);
 //        $query->execute();
         return true;
