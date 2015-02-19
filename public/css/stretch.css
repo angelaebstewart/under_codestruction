@@ -15,7 +15,7 @@
 /**************  Content Section **************************/
 #contentArea { background-color: #fff; border:none; border-bottom:#d7d7d7 1px solid; display:block; float:left; margin-bottom:10px; min-width:950px; width:100%; }
 #contentArea_bottom { display:none; }
-.contentDivision { display:block; float:none; margin:0; min-width:910px; padding:0 20px; width:auto; }
+.contentDivision { display:block; float:none; margin:0; min-width:910px; padding:15px 20px; width:auto; }
 
 /**************  Footer Section **************************/
 #footerWrap { background:url(https://www.auburn.edu/template/styles/images/footer.png) top center no-repeat; color:#f4f4f4; display:block; font-size:8pt; margin:0; min-width:950px; padding:87px 0 0 0; width:100%; }

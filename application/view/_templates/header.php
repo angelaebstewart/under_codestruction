@@ -58,7 +58,6 @@
                                     echo ' class="activeMenuItem" ';
                                 }
                                 ?>><a href="<?php echo Config::get('URL', 'gen'); ?>Class/index">Classes</a></li>
-                                <li><a href="<?php echo Config::get('URL', 'gen'); ?>/documents/UnderCodestruction_UserManual.pdf" target="_blank">Manual</a></li>
                                 <?php
                             }
                         } else {
@@ -77,7 +76,19 @@
                                 <?php
                             }
                             ?>
-                            <?php
+                        <!-- Will be seen regardless-->
+                        <li<?php
+                        if (View::checkForActiveControllerAndAction($filename, "index/faq")) {
+                            echo ' class="activeMenuItem" ';
+                        }
+                        ?>><a href="<?php echo Config::get('URL', 'gen'); ?>index/faq">FAQ</a></li>
+                        <li<?php
+                        if (View::checkForActiveControllerAndAction($filename, "index/about")) {
+                            echo ' class="activeMenuItem" ';
+                        }
+                        ?>><a href="<?php echo Config::get('URL', 'gen'); ?>index/about">About</a></li>
+                        
+                        <?php
                             if (Session::userIsLoggedIn()) {
                                 ?>                       
                             <!-- Will only be seen by an actual user -->
@@ -90,17 +101,6 @@
                             <?php
                         }
                         ?>
-                        <!-- Will be seen regardless-->
-                        <li<?php
-                        if (View::checkForActiveControllerAndAction($filename, "index/faq")) {
-                            echo ' class="activeMenuItem" ';
-                        }
-                        ?>><a href="<?php echo Config::get('URL', 'gen'); ?>index/faq">FAQ</a></li>
-                        <li<?php
-                        if (View::checkForActiveControllerAndAction($filename, "index/about")) {
-                            echo ' class="activeMenuItem" ';
-                        }
-                        ?>><a href="<?php echo Config::get('URL', 'gen'); ?>index/about">About</a></li>
                     </ul>
                 </nav>
             </div>

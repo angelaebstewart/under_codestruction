@@ -27,10 +27,10 @@ color:rgb(0,0,0);
 }
 
 .table-striped>tbody>tr:nth-of-type(odd){
-    background-color: rgb(170,0,120);
+    background-color: rgb(246,216,194);
     
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-  background-color: rgb(170,0,120);
+  background-color: rgb(246,216,194);
 }
