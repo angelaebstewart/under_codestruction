@@ -76,7 +76,7 @@ class AccountModel {
     public static function doesEmailAlreadyExist($user_email) {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $query = $database->prepare("SELECT uid FROM codestructionuser WHERE Email = :user_email LIMIT 1");
+        $query = $database->prepare("SELECT UserID FROM codestructionuser WHERE Email = :user_email LIMIT 1");
         $query->execute(array(':user_email' => $user_email));
         if ($query->rowCount() == 0) {
             return false;
@@ -92,11 +92,11 @@ class AccountModel {
     public static function getPublicProfileOfUser($user_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT uid, FirstName, LastName, Email, 
-                        CAST(Role AS unsigned integer) AS Role, 
+        $sql = "SELECT UserID, FirstName, LastName, Email, 
+                        CAST(Type AS unsigned integer) AS Type, 
                         CAST(verified AS unsigned integer) AS verified
                 FROM codestructionuser 
-                WHERE uid = :user_id LIMIT 1";
+                WHERE UserID = :user_id LIMIT 1";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id));
 
@@ -119,7 +119,7 @@ class AccountModel {
     public static function getUserIdByUsername($user_name) {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT uid FROM codestructionuser WHERE Email = :user_name LIMIT 1";
+        $sql = "SELECT UserID FROM codestructionuser WHERE Email = :user_name LIMIT 1";
         $query = $database->prepare($sql);
 
         $query->execute(array(':user_name' => $user_name));
@@ -127,7 +127,7 @@ class AccountModel {
         $result = $query->fetch();
 
         if (!empty($result)) {
-            return $result->uid;
+            return $result->UserID;
         } else {
             return -1;
         }
@@ -147,8 +147,8 @@ class AccountModel {
     public static function getUserDataByUsername($user_name) {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT  uid, FirstName, LastName, Email,
-                        CAST(Role AS unsigned integer) AS Role,
+        $sql = "SELECT  UserID, FirstName, LastName, Email,
+                        CAST(Type AS unsigned integer) AS Type,
                         CAST(verified AS unsigned integer) AS verified, 
                         CAST(passwordUpdated AS unsigned integer) AS passwordUpdated, 
                         passwordHash

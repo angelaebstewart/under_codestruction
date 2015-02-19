@@ -151,7 +151,7 @@ class RegistrationModel {
 	{
 		$database = DatabaseFactory::getFactory()->getConnection();
 
-		$query = $database->prepare("DELETE FROM codestructionuser WHERE uid = :user_id");
+		$query = $database->prepare("DELETE FROM codestructionuser WHERE UserID = :user_id");
 		$query->execute(array(':user_id' => $user_id));
 	}
 
@@ -204,7 +204,7 @@ class RegistrationModel {
 		$database = DatabaseFactory::getFactory()->getConnection();
 
 		$sql = "UPDATE codestructionuser SET verified = 1, activationHash = NULL
-                WHERE uid = :user_id AND activationHash = :user_activation_hash LIMIT 1";
+                WHERE UserID = :user_id AND activationHash = :user_activation_hash LIMIT 1";
 		$query = $database->prepare($sql);
 		$query->execute(array(':user_id' => $user_id, ':user_activation_hash' => $user_activation_verification_code));
 
