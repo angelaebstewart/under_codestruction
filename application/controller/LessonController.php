@@ -19,7 +19,7 @@ class LessonController extends Controller{
      */
     public function index()
     {
-        $lessons = LessonModel::getLessonList(Request::get('id'));
+        $lessons = LessonModel::getLessonList();
         $this->View->render('lesson/index', $lessons);
     }
     

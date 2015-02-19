@@ -6,6 +6,10 @@
 class LessonModel {
     
     public static function getLessonList($user_id) {
+        if (!$user_id) {
+            $user_id = Session::get('user_id');
+        }
+        
         $database = DatabaseFactory::getFactory()->getConnection();
 
         // Eventually there be a way to pick the modules for a class?
@@ -14,12 +18,20 @@ class LessonModel {
         $query->execute();
         
         $lessonData = $query->fetchAll();
-        $highestLesson = LessonModel::getHighestCompletedLesson($user_id);
-        
         $lessons = array("lessonList" => array());
         
+        $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
+        $highestLesson = -1;
+        if (!$isTeacher) {
+            $highestLesson = LessonModel::getHighestCompletedLesson($user_id);
+
+            if ($highestLesson == -1) { // No lessons have been started
+                $highestLesson = 0;
+            }
+        }
+        
         foreach ($lessonData as $key => $lesson) {
-            if (intval($lesson->ModuleID) <= $highestLesson+1) {
+            if ($isTeacher || intval($lesson->ModuleID) <= $highestLesson+1) {
                 array_push($lessons["lessonList"], array(
                     "name" => $lesson->ModuleName,
                     "id" => $lesson->ModuleID
@@ -37,9 +49,9 @@ class LessonModel {
     public static function getHighestCompletedLesson($user_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        // Eventually there be a way to pick the modules for a class?
+        // Eventually there should be a way to pick the modules for a class?
         $sql = "SELECT ModuleID
-            FROM codestructionmoduleprogress;
+            FROM codestructionmoduleprogress
             WHERE uid = :user_id AND AssessmentStatus='Completed'";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id));
