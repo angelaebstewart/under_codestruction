@@ -50,7 +50,7 @@
                             }
                             ?>><a href="<?php echo Config::get('URL', 'gen'); ?>Lesson/index">Lessons</a></li>
                                 <?php
-                                if (Session::getUserRole() == Config::get('ROLE_TEACHER', 'gen')) {
+                                if (Session::get('user_role') == Config::get('ROLE_TEACHER', 'gen')) {
                                     ?>
                                 <!-- Will be seen by only a teacher -->
                                 <li<?php

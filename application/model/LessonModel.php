@@ -5,17 +5,15 @@
  */
 class LessonModel {
     
-    public static function getLessonList($user_id = -1) {
-        if ($user_id == -1) {
-            $user_id = Session::get('user_id');
-        }
-        
+    public static function getLessonList($user_id, $user_role) {
+        if (isset($user_id)) {
+            
         // Get all the lessons in the system
         $lessonData = LessonModel::getAllLessons();
         
         // If it's a teacher, all the lessons will be available.
         // If it's a student, we need to figure out which is the latest available to them
-        $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
+        $isTeacher = AccountModel::isTeacher($user_role);
         $highestLesson = -1;
         if (!$isTeacher) {
             $highestLesson = LessonModel::getHighestCompletedLesson($user_id);
@@ -43,6 +41,10 @@ class LessonModel {
         }
         
         return $processedLessons;
+        
+        } else{
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
     
     public static function getAllLessons() {
@@ -59,19 +61,13 @@ class LessonModel {
         $database = DatabaseFactory::getFactory()->getConnection();
 
         // Eventually there should be a way to pick the modules for a class?
-        $sql = "SELECT ModuleID
+        $sql = "SELECT MAX(ModuleID) AS ModuleID
             FROM codestructionmoduleprogress
             WHERE UserID = :user_id AND AssessmentStatus='Completed'";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id));
         
-        $lessonsCompleted = $query->fetchAll();
-        
-        $highestLesson = -1;
-        foreach ($lessonsCompleted as $key => $lesson) {
-            $lessonNum = intval($lesson->ModuleID);
-            if ($lessonNum > $highestLesson) $highestLesson = $lessonNum;
-        }
+        $highestLesson = $query->fetch()->ModuleID;
         
         return $highestLesson;
     }

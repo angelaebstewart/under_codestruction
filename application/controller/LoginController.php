@@ -45,7 +45,7 @@ class LoginController extends Controller {
     }
 
     public function loginHome() {
-        if (AccountModel::isTeacher(Session::getUserRole())) {
+        if (AccountModel::isTeacher(Session::get('user_role'))) {
             Redirect::to('class/index');
         } else {
             Redirect::to('lesson/index');

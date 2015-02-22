@@ -50,7 +50,7 @@ class LoginModel
 
         // successfully logged in, so we write all necessary data into the session and set "user_logged_in" to true
         LoginModel::setSuccessfulLoginIntoSession(
-            $result->UserID, $result->FirstName, $result->LastName, $result->Email, $result->Role
+            $result->UserID, $result->FirstName, $result->LastName, $result->Email, $result->Type
         );
 
         // return true to make clear the login was successful

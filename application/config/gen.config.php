@@ -28,6 +28,6 @@ return array(
     /*
      * What Token is used to id a teacher or student.
      */
-    'ROLE_STUDENT' => 0,
-    'ROLE_TEACHER' => 1,
+    'ROLE_STUDENT' => 1,
+    'ROLE_TEACHER' => 2,
 );
