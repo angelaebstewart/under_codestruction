@@ -1,41 +1,67 @@
 <?php
+
 /**
  * Description of ClassModel
- *
+ * Handles the business logic for anything class related.
  */
 class ClassModel {
-    
-/*
- * Check if this class is accessable by the teacher
- * This should stop another teacher from looking at 
- * another teacher's students.
- */
-    public static function canViewClass($classID, $teacherID) {
-        
-        if($classID == 1 && $teacherID == 1){
+    /*
+     * Name: isClassTaughtByTeacher
+     * Description:
+     *  Checks to see if the class that was specified is taught by the teacher
+     * that was specified.
+     * @author Walter Conway
+     * @Date 2/21/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @param string $className Class Name
+     * @param int $teacherID The teacher's userID
+     * @return boolean True if the class is taught by the teacher and false if it is not taught by the teacher.
+     */
+
+    public static function isClassTaughtByTeacher($classID, $teacherID) {
+        if (isset($classID) && isset($teacherID)) {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT ClassName FROM codestructionclass C WHERE C.TeacherID = :teacher_ID AND C.ClassID = :class_ID LIMIT 1";
+            $arrayVariable = array(':teacher_ID' => $teacherID, ':class_ID' => $classID);
+            $query = $db->prepare($sql);
+            $query->execute($arrayVariable);
+            if ($query->rowCount() == 0) {
+                return false;
+            }
             return true;
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
         }
-        return false;
     }
-    
-    public static function doesTeacherAlreadyTeachThisClass($className, $teacherID=2){
-//        $db = DatabaseFactory::getFactory();        
-//        $db.getConnection();
-//        There needs to be a input sanitizer
-//        $sql = "SELECT title FROM class C WHERE C.UserID = $teacherID AND C.title = $className";
-//        $query = $database->prepare($sql);
-//        $query->execute();
-        return true;
+
+    /*
+     * Name: getClassList
+     * Description:
+     *  Obtains a list of classes that the teacher specified teaches.
+     * @author Walter Conway
+     * @Date 2/21/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @param int $teacherID The teacher's userID
+     * @return array of the the sql query: 
+     * SELECT ClassID, ClassName FROM codestructionclass C WHERE C.TeacherID = teacherid;
+     */
+
+    public static function getClassList($teacherID) {
+        if (isset($teacherID)) {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT ClassID, ClassName FROM codestructionclass C WHERE C.TeacherID = :teacher_ID AND C.isValid = 1";
+            $query = $db->prepare($sql);
+            $arrayVariable = array(':teacher_ID' => $teacherID);
+            $query->execute($arrayVariable);
+            $allClasses = $query->fetchAll();
+            return $allClasses;
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }
+
+    public static function getStudentsFromClass($classID) {
         
     }
-    
-    public static function canStudentBeAddedToClass($classID){
-        return $classID . " is Alive and well and yes you can add it.";
-    }
-    
-    public static function getStudentsFromClass($classID){
-        
-    }
-    
-    
+
 }

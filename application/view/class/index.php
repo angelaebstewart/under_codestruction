@@ -17,31 +17,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><a href="<?php echo Config::get('URL', 'gen'); ?>class/viewClass/?classID=1&teacherID=1">Class One</a></td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>class/edit'">Edit</button></td>
+                            <?php
+                            foreach ($this as $key => $value) {
+                                $className = $value->ClassName;
+                                $classID = $value->ClassID;
+                                ?>
+                                <tr>
+                                    <td><a href="<?php echo Config::get('URL', 'gen'); ?>class/viewClass/?classID=<?php echo $classID ?>"><?php echo $className ?></a></td>
+                                    <td><button type="button" class="btn btn-xs btn-danger" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>class/edit'">Edit</button></td>
+                                </tr>
 
-                            </tr>
-                            <tr>
-                                <td><a href="<?php echo Config::get('URL', 'gen'); ?>class/viewClass/?classID=1&teacherID=1">Class One</a></td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>class/edit'">Edit</button></td>
-                            </tr>
-                            <tr>
-                                <td><a href="<?php echo Config::get('URL', 'gen'); ?>class/viewClass/?classID=1&teacherID=1">Class One</a></td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>class/edit'">Edit</button></td>
-                            </tr>
-                            <tr>
-                                <td><a href="<?php echo Config::get('URL', 'gen'); ?>class/viewClass/?classID=1&teacherID=1">Class One</a></td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>class/edit'">Edit</button></td>
-                            </tr>
-                            <tr>
-                                <td><a href="<?php echo Config::get('URL', 'gen'); ?>class/viewClass/?classID=1&teacherID=1">Class One</a></td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>class/edit'">Edit</button></td>
-                            </tr>
-                            <tr>
-                                <td><a href="<?php echo Config::get('URL', 'gen'); ?>class/viewClass/?classID=1&teacherID=1">Class One</a></td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>class/edit'">Edit</button></td>
-                            </tr>
+                                <?php
+                            }
+                            ?>
+
                         </tbody>
                     </table>
 
@@ -64,8 +53,7 @@
                 </div>
                 <div class="panel-body">
                     <form action="#">
-                        <input id="classTitle" pattern=".{5,}" required name="classTitle" type="text" placeholder="Class Title" class="form-control" >                
-                        <input id="classPwd" pattern=".{5,10}" required name="password" type="password" placeholder="Class Password" class="form-control" >
+                        <input id="classTitle" pattern="[A-Za-z\d]" required name="classTitle" type="text" placeholder="Class Title" class="form-control" >
                         <button id="createClassBtn" class="btn btn-lg btn-primary btn-block" type="submit">Create Class</button>
                     </form>
                 </div>
