@@ -69,19 +69,43 @@ class LessonModel {
         $query->execute();
         return $query->fetchAll();
     }
+    
+    /**
+     * For any given lesson, return its ModuleName, GameLink, AssessmentLink,
+     * and VideoLink.
+     * 
+     * @param $lesson_id int The ModuleID of the desired lesson
+     * 
+     * @return array containing the ModuleName, GameLink, AssessmentLink, and
+     * VideoLink of the lesson; if the lesson_id does not correspond to a
+     * lesson in the system, the lessonData key value will be set to NULL
+     */
+    public static function getLessonData($lesson_id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "SELECT ModuleName, GameLink, AssessmentLink, VideoLink 
+                    FROM codestructionmodule
+                    WHERE ModuleID = :lesson_id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':lesson_id' => $lesson_id));
+        
+        if ($query->rowCount() === 1) { // Data successfully pulled
+            return array("lessonData" => $query->fetch());
+        } else { // Data not successfully pulled
+            return array("lessonData" => NULL);
+        }
+    }
 
     /**
      * For any given user, get the ModuleID of the highest lesson he or she
      * has completed.
-     *
+     * 
      * @param $user_id int The user's UserID
      * 
      * @return int ModuleID of the highest lesson the user has completed; -1
-     * if no lessons have been completed, or if the given user ID is erroneous
+     * if no lessons have been completed, or if the given user ID is invalid
      */
     public static function getHighestCompletedLesson($user_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
-        // Eventually there should be a way to pick the modules for a class?
         $sql = "SELECT MAX(ModuleID) AS ModuleID
             FROM codestructionmoduleprogress
             WHERE UserID = :user_id AND AssessmentStatus='Completed'";
