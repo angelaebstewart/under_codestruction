@@ -16,8 +16,8 @@ class UserModelTest extends PHPUnit_Framework_TestCase{
     public function testDoesEmailAlreadyExisit_Success(){
         $db = DatabaseFactory::getFactory();
         $dbConn = $db->getConnection();
-        $test_email = "teacher@admin.com";
-        $result = UserModel::doesEmailAlreadyExist($test_email);
+        $test_email = "wconway.j@gmail.com";
+        $result = AccountModel::doesEmailAlreadyExist($test_email);
         
         $this->assertEquals($result, true);
         
@@ -25,18 +25,15 @@ class UserModelTest extends PHPUnit_Framework_TestCase{
     
         public function testDoesEmailAlreadyExisit_Failure(){            
         $test_email = "failure@failure.com";
-        $result = UserModel::doesEmailAlreadyExist($test_email);        
+        $result = AccountModel::doesEmailAlreadyExist($test_email);        
         $this->assertEquals($result, false);
         }
         
         public function testIsUserATeacher_Success(){
             
-            $result = UserModel::isTeacher($role);
-            $this->assertEquals($result, true);
         }
         
-        public function testIsUserATeacher_Failure(){            
-            $result = UserModel::isTeacher($role);
+        public function testIsUserATeacher_Failure(){      
         }
         
         public function testIsUserAStudent_Success(){
