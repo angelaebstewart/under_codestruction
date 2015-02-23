@@ -44,17 +44,18 @@ class RegistrationModel {
 		$user_activation_hash = sha1(uniqid(mt_rand(), true));
 
 		// write user data to database
-		if (!RegistrationModel::writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, $user_password_hash, $user_activation_hash)) {
+                $user_id = RegistrationModel::writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, $user_password_hash, $user_activation_hash);
+		if ($user_id < 0) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_CREATION_FAILED'));
 		}
 
 		// get user_id of the user that has been created, to keep things clean we DON'T use lastInsertId() here
-		$user_id = AccountModel::getUserIdByEmail($user_email);
+		/*$user_id = AccountModel::getUserIdByEmail($user_email);
 
 		if (!$user_id) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
 			return false;
-		}
+		}*/
 
 		// send verification email
 		if (RegistrationModel::sendVerificationEmail($user_id, $user_email, $user_activation_hash)) {
@@ -125,20 +126,31 @@ class RegistrationModel {
 		$database = DatabaseFactory::getFactory()->getConnection();
 
 		// write new users data into database
-		$sql = "INSERT INTO codestructionuser (FirstName, LastName, Email, Role, verified, passwordUpdated, passwordHash, activationHash)
-                    VALUES (:user_firstName, :user_lastName, :user_email, 1, 0, 0, :user_password_hash, :user_activation_hash)";
+		//$sql = "INSERT INTO codestructionuser (FirstName, LastName, Email, Role, verified, passwordUpdated, passwordHash, activationHash)
+                  //  VALUES (:user_firstName, :user_lastName, :user_email, 1, 0, 0, :user_password_hash, :user_activation_hash)";
+                $sql2 = "SELECT MAX(User.UserID) AS new_id FROM codestructionuser User";
+                $query2 = $database->prepare($sql2);
+                $query2->execute();
+                $results = $query2->fetchAll();
+                $user_id = $results[0]->new_id;
+                $user_id += 1;
+            
+                
+                $sql = "INSERT INTO codestructionuser (FirstName, LastName, Email, UserID, PasswordHash, VerificationHash, Type, Verified, PasswordUpdated, isValid) 
+                        VALUES ('$user_firstName', '$user_lastName', '$user_email', '$user_id','$user_password_hash', '$user_activation_hash','Teacher', 0, 0, 0)";
 		$query = $database->prepare($sql);
 		$query->execute(array(':user_firstName' => $user_firstName,
                                       ':user_lastName' => $user_lastName,
+                                      ':user_user_id' => $user_id,
                                       ':user_email' => $user_email,
 		                      ':user_password_hash' => $user_password_hash,
 		                      ':user_activation_hash' => $user_activation_hash));
 		$count =  $query->rowCount();
-		if ($count == 1) {
-			return true;
+		if ($count > 0) {
+			return $user_id;
 		}
 
-		return false;
+		return -1;
 	}
 
 	/**
@@ -195,18 +207,18 @@ class RegistrationModel {
 	 * checks the email/verification code combination and set the user's activation status to true in the database
 	 *
 	 * @param int $user_id user id
-	 * @param string $user_activation_verification_code verification token
+	 * @param string $user_activation_hash verification token
 	 *
 	 * @return bool success status
 	 */
-	public static function verifyNewUser($user_id, $user_activation_verification_code)
+	public static function verifyNewUser($user_id, $user_activation_hash)
 	{
 		$database = DatabaseFactory::getFactory()->getConnection();
 
-		$sql = "UPDATE codestructionuser SET verified = 1, activationHash = NULL
-                WHERE UserID = :user_id AND activationHash = :user_activation_hash LIMIT 1";
+		$sql = "UPDATE codestructionuser SET verified = 1, VerificationHash = NULL
+                WHERE UserID = '$user_id' AND VerificationHash = '$user_activation_hash' LIMIT 1";
 		$query = $database->prepare($sql);
-		$query->execute(array(':user_id' => $user_id, ':user_activation_hash' => $user_activation_verification_code));
+		$query->execute(array(':user_id' => $user_id, ':user_activation_hash' => $user_activation_hash));
 
 		if ($query->rowCount() == 1) {
 			Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_SUCCESSFUL'));
