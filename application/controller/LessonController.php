@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Description of LessonController
- *
+ * Controller for viewing the lesson list or a lesson page.
  */
 class LessonController extends Controller {
 
@@ -14,8 +13,9 @@ class LessonController extends Controller {
     }
 
     /**
-     * This method controls what happens when you move to /lesson/index in your app.
-     * Gets all lessons (of the user).
+     * Called when you move to /lesson/index. Shows a list of lessons, with
+     * links to lesson pages for the lessons that are currenlty available to
+     * the user.
      */
     public function index() {
         $userID = Session::get('user_id');
@@ -29,11 +29,13 @@ class LessonController extends Controller {
     }
 
     /**
-     * When you click on a lesson, it goes to the lesson's page.
-     * Lists the video, game, and assessment for this lesson.
+     * Displays a lesson page. Has links to the video, game, and 
+     * assessment for the given lesson.
      */
     public function viewLesson() {
-        if (LessonModel::canViewLesson(Request::get('id'))) {
+        $userID = Session::get('user_id');
+        $userRole = Session::get('user_role');
+        if (LessonModel::canViewLesson($userID, $userRole, Request::get('id'))) {
             $this->View->render('lesson/viewLesson');
         } else {
             Redirect::to('lesson/index');
