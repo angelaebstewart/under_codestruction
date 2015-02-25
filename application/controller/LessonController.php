@@ -35,8 +35,11 @@ class LessonController extends Controller {
     public function viewLesson() {
         $userID = Session::get('user_id');
         $userRole = Session::get('user_role');
-        if (LessonModel::canViewLesson($userID, $userRole, Request::get('id'))) {
-            $this->View->render('lesson/viewLesson');
+        $lesson_id = Request::get('id');
+        
+        if (LessonModel::canViewLesson($userID, $userRole, $lesson_id)) {
+            $lessonData = LessonModel::getLessonData($lesson_id);
+            $this->View->render('lesson/viewLesson', $lessonData);
         } else {
             Redirect::to('lesson/index');
         }
