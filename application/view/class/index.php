@@ -53,7 +53,7 @@
                 </div>
                 <div class="panel-body">
                     <form action="#">
-                        <input id="classTitle" pattern="[A-Za-z\d]" required name="classTitle" type="text" placeholder="Class Title" class="form-control" >
+                        <input id="classTitle" pattern="[A-Za-z\d\s]+" required name="classTitle" type="text" placeholder="Class Title" class="form-control" >
                         <button id="createClassBtn" class="btn btn-lg btn-primary btn-block" type="submit">Create Class</button>
                     </form>
                 </div>
@@ -61,6 +61,34 @@
         </div>
     </div>
 </div>
+
+<script>
+
+$(document).ready(function(){
+var $classNameInput = $('#classTitle');
+var $returnBox = $(".the-return");
+    
+    $("#createClassBtn").on('click', function(){
+        var data = {
+        classTitle: $classNameInput.val()
+        };
+        
+
+        $.ajax({
+        type: "POST",
+        url: "<?php echo Config::get('URL', 'gen'); ?>class/createClass_action",
+        data: data,
+        success: function (result) {
+            $returnBox.html(result);
+
+        },
+        error: function () {alert("error");}
+        });
+
+    });
+
+});
+</script>
 
 <!-- echo out the system feedback (error and success messages) -->
 <?php $this->renderFeedbackMessages(); ?>
