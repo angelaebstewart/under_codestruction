@@ -64,4 +64,36 @@ class ClassModel {
         
     }
 
+    
+    public static function createClassWithTitleAndTeacher($classTitle, $teacherID) {
+        if (isset($teacherID) && isset($classTitle)) {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            
+            // Obtain the next class ID to be used
+            $id_sql = "SELECT MAX(Class.ClassID) as max_id FROM codestructionclass Class";
+            $id_query = $db->prepare($id_sql);
+            $id_query->execute();
+            $id_result = $id_query->fetchAll();
+            
+            if ($id_result[0]->max_id == NULL) {
+                $classID = 1;
+            }
+            else {
+                $classID = $id_result[0]->max_id + 1;
+            }
+           
+            // Create the new class record$db = DatabaseFactory::getFactory()->getConnection();
+            $class_sql = "INSERT INTO codestructionclass (ClassID, TeacherID, ClassName, IsValid) VALUES (:classID, :teacherID, :className, 1)";
+            $class_query = $db->prepare($class_sql);
+            $arrayVariable = array(':classID' => $classID,':teacherID' => $teacherID,':className' => $classTitle);
+            $class_query->execute($arrayVariable);
+            $newClassEntry = $class_query->fetchAll();
+            
+            return $newClassEntry;
+            
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }
+          
 }

@@ -50,11 +50,15 @@ class ClassController extends Controller {
     }
 
     public function createClass_action() {
-        //Auth::checkAuthentication();
-        $classTitle = Request::post('clsname');
-        $resultText = ClassModel::canStudentBeAddedToClass($classTitle);
-        $resultJSON = json_encode($resultText);
-        $this->View->renderJSON($resultJSON);
+        $classTitle = Request::post('classTitle');
+        $teacherID = Session::get('user_id');
+        
+        $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
+        if (isset($isTeacher) && $isTeacher) {
+            $resultText = ClassModel::createClassWithTitleAndTeacher($classTitle, $teacherID);
+            $resultJSON = json_encode($resultText);
+            $this->View->renderJSON($resultJSON);
+        }
     }
 
     public function deleteClass($classID) {
