@@ -21,7 +21,7 @@ class ClassModel {
     public static function isClassTaughtByTeacher($classID, $teacherID) {
         if (isset($classID) && isset($teacherID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
-            $sql = "SELECT ClassName FROM codestructionclass C WHERE C.TeacherID = :teacher_ID AND C.ClassID = :class_ID LIMIT 1";
+            $sql = "SELECT ClassName FROM codestructionclass C WHERE C.TeacherID = '$teacherID' AND C.ClassID = '$classID' LIMIT 1";
             $arrayVariable = array(':teacher_ID' => $teacherID, ':class_ID' => $classID);
             $query = $db->prepare($sql);
             $query->execute($arrayVariable);
@@ -49,7 +49,7 @@ class ClassModel {
     public static function getClassList($teacherID) {
         if (isset($teacherID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
-            $sql = "SELECT ClassID, ClassName FROM codestructionclass C WHERE C.TeacherID = :teacher_ID AND C.isValid = 1";
+            $sql = "SELECT ClassID, ClassName FROM codestructionclass C WHERE C.TeacherID = '$teacherID' AND C.isValid = 1";
             $query = $db->prepare($sql);
             $arrayVariable = array(':teacher_ID' => $teacherID);
             $query->execute($arrayVariable);
