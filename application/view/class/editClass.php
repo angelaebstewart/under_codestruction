@@ -18,12 +18,13 @@
                         <tbody>
                             <?php
                             foreach ($this as $key => $value) {
-                                $className = $value->ClassName;
-                                $classID = $value->ClassID;
+                                $firstName = $value->fname;
+                                $lastName = $value->lname;
+                                $userID = $value->uid;
                                 ?>
                                 <tr>
-                                    <td><a href="<?php echo Config::get('URL', 'gen'); ?>class/viewClass/?classID=<?php echo $classID ?>"><?php echo $className ?></a></td>
-                                    <td><button type="button" class="btn btn-xs btn-danger" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>class/edit'">Edit</button></td>
+                                    <td><?php echo $firstName." ".$lastName; ?></td>
+                                    <td><button type="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this)">Delete</button></td>
                                 </tr>
 
                                 <?php
@@ -53,13 +54,15 @@
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>E-mail</th>
+                                        <th>Password</th>
                                     </tr>
                                 </thead>
                                 <tbody id="studentList">
                                     <tr>
-                                        <td><input id="fnInput" required pattern=".{1,}" name="first_name" type="text" placeholder="First Name" class="form-control" ></td>
-                                        <td><input id="lnInput" required pattern=".{1,}" name="last_name" type="text" placeholder="Last Name" class="form-control" ></td>
-                                        <td><input id="emInput" required pattern=".{1,}" name="e_mail" type="text" placeholder="E-mail" class="form-control" ></td>
+                                        <td><input id="fnInput" required pattern="[\u00C0-\u00FFA-Za-z]+" name="first_name" type="text" placeholder="First Name" class="form-control" ></td>
+                                        <td><input id="lnInput" required pattern="[\u00C0-\u00FFA-Za-z]+" name="last_name" type="text" placeholder="Last Name" class="form-control" ></td>
+                                        <td><input id="emInput" required pattern=".+@.+\..+" name="e_mail" type="text" placeholder="E-mail" class="form-control" ></td>
+                                        <td><input id="passInput" required pattern=".+" name="password" type="text" placeholder="Password" class="form-control" ></td>
                                         <td><button id="addStudentBtn" class="btn btn-small btn-primary btn-block" type="submit" onclick="addStudent()">+</button></td>
                                     </tr>
                                 </tbody>
@@ -85,7 +88,7 @@ var $returnBox = $(".the-return");
 
         $.ajax({
         type: "POST",
-        url: "<?php echo Config::get('URL', 'gen'); ?>class/createClass_action",
+        url: "<?php echo Config::get('URL', 'gen'); ?>class/editClassAddStudent_action",
         data: data,
         success: function (result) {
             $returnBox.html(result);
