@@ -17,10 +17,16 @@ class GameController extends Controller {
      * When you click on a game link, it goes to the game for that lesson.
      */
     public function viewGame() {
-        if (GameModel::canViewGame(Request::get('id'))) {
-            $this->View->render('lesson/viewGame');
+        $userID = Session::get('user_id');
+        $userRole = Session::get('user_role');
+        if(isset($userID) && isset($userRole)) {
+            if (GameModel::canViewGame($userID, $userRole, Request::get('id'))) {
+                $this->View->render('lesson/viewGame');
+            } else {
+                Redirect::to('lesson/index');
+            }
         } else {
-            Redirect::to('lesson/index');
+            $this->View->render('error/index');
         }
     }
 

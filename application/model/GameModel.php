@@ -4,7 +4,7 @@
  *
  */
 class GameModel {    
-    public static function canViewGame($lessonID) {
-        return LessonModel::canViewLesson($lessonID);
+    public static function canViewGame($userID, $userRole, $lessonID) {
+        return LessonModel::canViewLesson($userID, $userRole, $lessonID);
     }
 }
