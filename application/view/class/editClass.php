@@ -16,30 +16,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Student 1</td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this)">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td>Student 2</td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this)">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td>Student 3</td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this)">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td>Student 4</td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this)">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td>Student 5</td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this)">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td>Student 6</td>
-                                <td><button type="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this)">Delete</button></td>
-                            </tr>
+                            <?php
+                            foreach ($this as $key => $value) {
+                                $className = $value->ClassName;
+                                $classID = $value->ClassID;
+                                ?>
+                                <tr>
+                                    <td><a href="<?php echo Config::get('URL', 'gen'); ?>class/viewClass/?classID=<?php echo $classID ?>"><?php echo $className ?></a></td>
+                                    <td><button type="button" class="btn btn-xs btn-danger" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>class/edit'">Edit</button></td>
+                                </tr>
+
+                                <?php
+                            }
+                            ?>
+                            
                         </tbody>
                     </table>
 
@@ -81,6 +71,35 @@
         </div>
     </div>
 </div>
+<script>
 
+$(document).ready(function(){
+var $classNameInput = $('#classTitle');
+var $returnBox = $(".the-return");
+    
+    $("#createClassBtn").on('click', function(){
+        var data = {
+        classTitle: $classNameInput.val()
+        };
+        
+
+        $.ajax({
+        type: "POST",
+        url: "<?php echo Config::get('URL', 'gen'); ?>class/createClass_action",
+        data: data,
+        success: function (result) {
+            $returnBox.html(result);
+
+        },
+        error: function () {alert("error");}
+        });
+
+    });
+
+});
+</script>
+
+<!-- echo out the system feedback (error and success messages) -->
+<?php $this->renderFeedbackMessages(); ?>
     <script src="<?php echo Config::get('URL', 'gen'); ?>js/student.js"></script>
     <script src="<?php echo Config::get('URL', 'gen'); ?>js/newClass.js"></script>

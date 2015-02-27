@@ -13,7 +13,7 @@ class RegistrationModel {
 	 *
 	 * @return boolean Gives back the success status of the registration
 	 */
-	public static function registerNewUser()
+	public static function registerNewUser($user_type)
 	{
 		
                 $pwdHasher = new PasswordHash(Config::get("HASH_COST_LOG2",'gen'), Config::get("HASH_PORTALBE",'gen'));
@@ -44,7 +44,7 @@ class RegistrationModel {
 		$user_activation_hash = sha1(uniqid(mt_rand(), true));
 
 		// write user data to database
-                $user_id = RegistrationModel::writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, $user_password_hash, $user_activation_hash);
+                $user_id = RegistrationModel::writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, $user_password_hash, $user_activation_hash, $user_type);
 		if ($user_id < 0) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_CREATION_FAILED'));
 		}
@@ -121,7 +121,7 @@ class RegistrationModel {
 	 *
 	 * @return bool
 	 */
-	public static function writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, $user_password_hash, $user_activation_hash)
+	public static function writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, $user_password_hash, $user_activation_hash, $user_type)
 	{
 		$database = DatabaseFactory::getFactory()->getConnection();
 
@@ -137,14 +137,15 @@ class RegistrationModel {
             
                 
                 $sql = "INSERT INTO codestructionuser (FirstName, LastName, Email, UserID, PasswordHash, VerificationHash, Type, Verified, PasswordUpdated, isValid) 
-                        VALUES ('$user_firstName', '$user_lastName', '$user_email', '$user_id','$user_password_hash', '$user_activation_hash','Teacher', 0, 0, 0)";
+                        VALUES (:user_firstName, :user_lastName, :user_email, :user_id,:user_password_hash, :user_activation_hash, :user_type, 0, 0, 0)";
 		$query = $database->prepare($sql);
 		$query->execute(array(':user_firstName' => $user_firstName,
                                       ':user_lastName' => $user_lastName,
-                                      ':user_user_id' => $user_id,
                                       ':user_email' => $user_email,
+                                      ':user_id' => $user_id,
 		                      ':user_password_hash' => $user_password_hash,
-		                      ':user_activation_hash' => $user_activation_hash));
+		                      ':user_activation_hash' => $user_activation_hash,
+                                      ':user_type' => $user_type,));
 		$count =  $query->rowCount();
 		if ($count > 0) {
 			return $user_id;

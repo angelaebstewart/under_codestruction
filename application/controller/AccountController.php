@@ -80,8 +80,8 @@ class AccountController extends Controller {
      * Register page action
      * POST-request after form submit
      */
-    public function register_action() {
-        $registration_successful = RegistrationModel::registerNewUser();
+    public function register_action($user_type) {
+        $registration_successful = RegistrationModel::registerNewUser($user_type);
 
         if ($registration_successful) {
             Redirect::to('login/index');
