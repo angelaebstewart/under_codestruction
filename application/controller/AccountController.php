@@ -122,14 +122,20 @@ class AccountController extends Controller {
             'user_roleName' => $roleName
         ));
     }
+    
+    public function options() {
+        Auth::checkAuthentication();
+        $this->View->render('login/options');
+    }
 
     /**
      * Show edit-my-username page
      * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
      */
     public function editUsername() {
-        Auth::checkAuthentication();
-        $this->View->render('login/editUsername');
+        Redirect::to('login/index');
+        //Auth::checkAuthentication();
+        //$this->View->render('login/editUsername');
     }
 
     /**

@@ -94,7 +94,7 @@
                             <!-- Will only be seen by an actual user -->
                             <li><a href="#">Account <span class="caret"></span></a>
                                 <ul>
-                                    <li><a href="<?php echo Config::get('URL', 'gen'); ?>account/editUsername">Options</a></li>
+                                    <li><a href="<?php echo Config::get('URL', 'gen'); ?>account/options">Options</a></li>
                                     <li><a href="<?php echo Config::get('URL', 'gen'); ?>login/logout">Logout</a></li>
                                 </ul>
                             </li>

@@ -16,7 +16,7 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a href="<?php echo $this->lessonData->GameLink; ?>">
+                    <a href="<?php echo Config::get('URL', 'gen') . $this->lessonData->GameLink; ?>">
                         Game
                     </a>
                 </li>
