@@ -16,7 +16,7 @@ class RegistrationModel {
 	public static function registerNewUser($user_type)
 	{
 		
-                $pwdHasher = new PasswordHash(Config::get("HASH_COST_LOG2",'gen'), Config::get("HASH_PORTALBE",'gen'));
+                //$pwdHasher = new PasswordHash(Config::get("HASH_COST_LOG2",'gen'), Config::get("HASH_PORTALBE",'gen'));
                 
 		// clean the input
                 $user_firstName = strip_tags(Request::post('user_firstName'));
@@ -26,13 +26,15 @@ class RegistrationModel {
 		$user_password_repeat = Request::post('user_password_repeat');
 
 		// stop registration flow if registrationInputValidation() returns false (= anything breaks the input check rules)
-		$validation_result = RegistrationModel::registrationInputValidation(Request::post('captcha'), $user_firstName, $user_lastName, $user_email, $user_password_new, $user_password_repeat);
+		$validation_result = RegistrationModel::registrationInputValidation(Request::post('captcha'), $user_firstName, 
+                        $user_lastName, $user_email, $user_password_new, $user_password_repeat);
 		if (!$validation_result) {
 			return false;
 		}
 
 		
-		$user_password_hash = $pwdHasher->HashPassword($user_password_new);
+		//$user_password_hash = $pwdHasher->HashPassword($user_password_new);
+                $user_password_hash = RegistrationModel::hashPassword($user_password_new);
 
 		// check if email already exists
 		if (AccountModel::doesEmailAlreadyExist($user_email)) {
@@ -41,10 +43,11 @@ class RegistrationModel {
 		}
 
 		// generate random hash for email verification (40 char string)
-		$user_activation_hash = sha1(uniqid(mt_rand(), true));
+		$user_activation_hash = RegistrationModel::generateActivationHash();
 
 		// write user data to database
-                $user_id = RegistrationModel::writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, $user_password_hash, $user_activation_hash, $user_type);
+                $user_id = RegistrationModel::writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, 
+                        $user_password_hash, $user_activation_hash, $user_type);
 		if ($user_id < 0) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_CREATION_FAILED'));
 		}
@@ -80,7 +83,8 @@ class RegistrationModel {
 	 *
 	 * @return bool
 	 */
-	public static function registrationInputValidation($captcha, $user_firstName, $user_lastName, $user_email, $user_password_new, $user_password_repeat)
+	public static function registrationInputValidation($captcha, $user_firstName, $user_lastName, $user_email, 
+                $user_password_new, $user_password_repeat)
 	{
 		// perform all necessary checks
 		if (!CaptchaModel::checkCaptcha($captcha)) {
@@ -121,7 +125,8 @@ class RegistrationModel {
 	 *
 	 * @return bool
 	 */
-	public static function writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, $user_password_hash, $user_activation_hash, $user_type)
+	public static function writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, 
+                $user_password_hash, $user_activation_hash, $user_type)
 	{
 		$database = DatabaseFactory::getFactory()->getConnection();
 
@@ -153,7 +158,23 @@ class RegistrationModel {
 
 		return -1;
 	}
-
+        /**
+         * Creates the password hash. 
+         * @param type $user_password_new
+         */
+        public static function hashPassword($user_password_new)
+        {
+            $pwdHasher = new PasswordHash(Config::get("HASH_COST_LOG2",'gen'), Config::get("HASH_PORTALBE",'gen'));
+            return $pwdHasher->HashPassword($user_password_new);
+        }
+        
+        /**
+         * Generates the user's activation hash
+         */
+        public static function generateActivationHash()
+        {
+            return sha1(uniqid(mt_rand(), true));
+        }
 	/**
 	 * Deletes the user from users table. Currently used to rollback a registration when verification mail sending
 	 * was not successful.
