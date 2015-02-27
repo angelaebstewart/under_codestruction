@@ -1,4 +1,5 @@
-<div id="contentArea">
+<script src="<?php echo Config::get('URL', 'gen'); ?>js/student.js"></script>
+<script src="<?php echo Config::get('URL', 'gen'); ?>js/newClass.js"></script><div id="contentArea">
     <div class="contentDivision"> 
         <div class="class-list-edit">
             <div class="panel panel-default">
@@ -63,7 +64,7 @@
                                         <td><input id="lnInput" required pattern="[\u00C0-\u00FFA-Za-z]+" name="last_name" type="text" placeholder="Last Name" class="form-control" ></td>
                                         <td><input id="emInput" required pattern=".+@.+\..+" name="e_mail" type="text" placeholder="E-mail" class="form-control" ></td>
                                         <td><input id="passInput" required pattern=".+" name="password" type="text" placeholder="Password" class="form-control" ></td>
-                                        <td><button id="addStudentBtn" class="btn btn-small btn-primary btn-block" type="submit" onclick="addStudent()">+</button></td>
+                                        <td><button id="addStudentBtn" class="btn btn-small btn-primary btn-block" type="submit" onclick="addStudent(<?php echo $_GET['classID'] ?>)">+</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -74,35 +75,67 @@
         </div>
     </div>
 </div>
+
+
+<!-- echo out the system feedback (error and success messages) -->
+<?php $this->renderFeedbackMessages(); ?>
 <script>
+function addStudent(classID_in) {
 
-$(document).ready(function(){
-var $classNameInput = $('#classTitle');
-var $returnBox = $(".the-return");
+    var fnInputBox = document.getElementById('fnInput');
+    var firstNameValue = fnInputBox.value;
+    fnInputBox.value = '';
+
+    var lnInputBox = document.getElementById('lnInput');
+    var lastNameValue = lnInputBox.value;
+    lnInputBox.value = '';
+
+    var emInputBox = document.getElementById('emInput');
+    var emValue = emInputBox.value;
+    emInputBox.value = '';
     
-    $("#createClassBtn").on('click', function(){
-        var data = {
-        classTitle: $classNameInput.val()
-        };
-        
+    var passwordInputBox = document.getElementById('passInput');
+    var passwordValue = passwordInputBox.value;
+    passwordInputBox.value = '';
 
+
+    var tablerow = document.createElement("tr");
+    var stndCellFN = document.createElement("td");
+    var stndCellLN = document.createElement("td");
+    var stndCellEM = document.createElement("td");
+    var fnInput = document.createElement("h4");
+    var lnInput = document.createElement("h4");
+    var emInput = document.createElement("h4");
+    var fnTextNode = document.createTextNode(firstNameValue);
+    var lnTextNode = document.createTextNode(lastNameValue);
+    var emTextNode = document.createTextNode(emValue);
+    fnInput.setAttribute("placeholder", "First Name");
+    fnInput.appendChild(fnTextNode);
+    lnInput.setAttribute("placeholder", "Last Name");
+    lnInput.appendChild(lnTextNode);
+    emInput.setAttribute("placeholder", "E-mail");
+    emInput.appendChild(emTextNode);
+    stndCellFN.appendChild(fnInput);
+    stndCellLN.appendChild(lnInput);
+    stndCellEM.appendChild(emInput);
+    tablerow.appendChild(stndCellFN);
+    tablerow.appendChild(stndCellLN);
+    tablerow.appendChild(stndCellEM);
+    
+    var data = {
+        fname : firstNameValue,
+        lname : lastNameValue,
+        email : emValue,
+        password : passwordValue,
+        classID : classID_in
+        };
         $.ajax({
         type: "POST",
         url: "<?php echo Config::get('URL', 'gen'); ?>class/editClassAddStudent_action",
         data: data,
-        success: function (result) {
-            $returnBox.html(result);
-
+        success: function () {
+            document.getElementById("studentList").appendChild(tablerow);
         },
         error: function () {alert("error");}
         });
-
-    });
-
-});
-</script>
-
-<!-- echo out the system feedback (error and success messages) -->
-<?php $this->renderFeedbackMessages(); ?>
-    <script src="<?php echo Config::get('URL', 'gen'); ?>js/student.js"></script>
-    <script src="<?php echo Config::get('URL', 'gen'); ?>js/newClass.js"></script>
+}</script>

@@ -1,4 +1,4 @@
-function addStudent() {
+function addStudent(classID_in) {
 
     var fnInputBox = document.getElementById('fnInput');
     var firstNameValue = fnInputBox.value;
@@ -44,22 +44,18 @@ function addStudent() {
         fname : firstNameValue,
         lname : lastNameValue,
         email : emValue,
-        password : passwordValue
+        password : passwordValue,
+        classID : classID_in
         };
-        
-
         $.ajax({
         type: "POST",
-        url: "<?php echo Config::get('URL', 'gen'); ?>class/editClassAddStudent_action",
+        url: "<?php echo Config::get('URL', 'gen'); ?>class/test",
         data: data,
-        success: function (result) {
-            $returnBox.html(result);
-
+        success: function () {
+            document.getElementById("studentList").appendChild(tablerow);
         },
         error: function () {alert("error");}
         });
 
     
-    document.getElementById("studentList").appendChild(tablerow);
-
 }

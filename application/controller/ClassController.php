@@ -62,6 +62,7 @@ class ClassController extends Controller {
             $this->View->renderJSON($resultJSON);
         }
     }
+  
     
     public function editClassAddStudent_action() {
         // Create a new student:
@@ -71,16 +72,23 @@ class ClassController extends Controller {
          $email = Request::post('email');
          $password = Request::post('password');
          $classID = Request::post('classID');
-         // Compute the password hash:
-         $password_hash = RegistrationModel::hashPassword($password);
-         // Generate the activation hash:
-         $activation_hash = RegistrationModel::generateActivationHash();
-         // Add the student to the database
-         $user_id = RegistrationModel::writeNewUserToDatabase($fname, $lname, $email, $password_hash, $activation_hash, 'Student');
-         // Send a verification email:
-         RegistrationModel::sendVerificationEmail($user_id, $email, $activation_hash);
-         // Enroll the student
-         ClassModel::enrollStudentInClass($user_id, $classID);
+         if (isset($fname) && isset($lname) && isset($email) && isset($password) && isset($classID) ) {
+             // Compute the password hash:
+            $password_hash = RegistrationModel::hashPassword($password);
+               // Generate the activation hash:
+            $activation_hash = RegistrationModel::generateActivationHash();
+            // Add the student to the database
+            $user_id = RegistrationModel::writeNewUserToDatabase($fname, $lname, $email, $password_hash, $activation_hash, 'Student');
+            // Send a verification email:
+            RegistrationModel::sendVerificationEmail($user_id, $email, $activation_hash);
+            // Enroll the student
+            ClassModel::enrollStudentInClass($user_id, $classID);
+         
+            $response_array['status'] = 'success';    
+
+            echo json_encode($response_array);
+            
+         }
     }
 
     public function deleteClass($classID) {
