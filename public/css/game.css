@@ -1,0 +1,30 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 27, 2015, 1:48:02 PM
+    Author     : Angela Stewart
+*/
+
+            .gameContent #canvas
+            {
+                margin-left: 10px;
+                margin-top: 10px;
+                background: #3D3F49;
+                border: thin solid #aaaaaa;
+            }
+            .gameContent #gameDiv 
+            {
+                position: absolute;
+                left: 50px;
+                top: 100px;
+                color: #eeeeee;
+            }
+            
+            .gameContent select, 
+            .gameContent button
+            {
+                color: #000000;
+            }
