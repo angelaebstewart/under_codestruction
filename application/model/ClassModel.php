@@ -61,10 +61,82 @@ class ClassModel {
     }
 
     public static function getStudentsFromClass($classID) {
-        
+        if (isset($classID)) {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT U.FirstName as fname, U.LastName as lname,U.UserID as uid 
+                FROM codestructionuser U, codestructionenrollment E 
+                WHERE U.UserID = E.UserID AND E.ClassID = :classID AND U.IsValid = 1 AND E.IsValid = 1";
+            $query = $db->prepare($sql);
+            $arrayVariable = array(':classID' => $classID);
+            $query->execute($arrayVariable);
+            $studentList = $query->fetchAll();
+            return $studentList;
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
 
     
+    /*
+     * Name: enrollStudentInClass
+     * Description:
+     *  Enrolls a given user in a given class
+     * @author Ethan Mata
+     * @Date 2/27/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @param int studentID The students's userID
+     * @param int $classID The class' classID
+     * @return array of the the sql query: 
+     *   INSERT INTO codestructionenrollment (UserID, ClassID, IsValid) VALUES (:userID, :classID, 1)
+     */
+    public static function enrollStudentInClass($studentID, $classID) {
+        if (isset($studentID) && isset($classID))
+        {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            $sql = "INSERT INTO codestructionenrollment (UserID, ClassID, IsValid)
+                    VALUES (:userID, :classID, 1)";
+            $query = $db->prepare($sql);
+            $arrayVariable = array(':userID' => $studentID, ':classID' => $classID);
+            $query->execute($arrayVariable);
+            $studentList = $query->fetchAll();
+            return $studentList;
+
+            } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }  
+    
+    /*
+     * Name: removeStudentFromClass
+     * Description:
+     *  Removes a given user from a given class if they are enrolled
+     * @author Ethan Mata
+     * @Date 2/27/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @param int studentID The students's userID
+     * @param int $classID The class' classID
+     * @return Boolean, true if the student was removed, false otherwise
+     */
+    public static function removeStudentFromClass($studentID, $classID) {
+        if (isset($studentID) && isset($classID))
+        {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            $sql = "UPDATE codestructionenrollment SET IsValid=0 WHERE UserID = :userID AND ClassID = :classID AND IsValid = 1 LIMIT 1";
+            $query = $db->prepare($sql);
+            $arrayVariable = array(':userID' => $studentID, ':classID' => $classID);
+            $query->execute($arrayVariable);
+            if ($query->rowCount() == 1) {
+                return True; // Removal succeeded
+            }
+            return False;
+
+            } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }
+    
+    
+        
     public static function createClassWithTitleAndTeacher($classTitle, $teacherID) {
         if (isset($teacherID) && isset($classTitle)) {
             $db = DatabaseFactory::getFactory()->getConnection();

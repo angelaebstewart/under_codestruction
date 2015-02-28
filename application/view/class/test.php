@@ -31,7 +31,7 @@ var $returnBox = $(".the-return");
 
         $.ajax({
         type: "POST",
-        url: "<?php echo Config::get('URL', 'gen'); ?>class/createClass_action",
+        url: "<?php echo Config::get('URL', 'gen'); ?>class/reassure",
         data: data,
         success: function (result) {
             
