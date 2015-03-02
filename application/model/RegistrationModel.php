@@ -142,7 +142,7 @@ class RegistrationModel {
             
                 
                 $sql = "INSERT INTO codestructionuser (FirstName, LastName, Email, UserID, PasswordHash, VerificationHash, Type, Verified, PasswordUpdated, isValid) 
-                        VALUES (:user_firstName, :user_lastName, :user_email, :user_id,:user_password_hash, :user_activation_hash, :user_type, 0, 0, 0)";
+                        VALUES (:user_firstName, :user_lastName, :user_email, :user_id,:user_password_hash, :user_activation_hash, :user_type, 0, 0, 1)";
 		$query = $database->prepare($sql);
 		$query->execute(array(':user_firstName' => $user_firstName,
                                       ':user_lastName' => $user_lastName,
