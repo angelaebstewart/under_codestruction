@@ -1,4 +1,4 @@
-nbproject/
+nbproject/project.properties
 nbproject/private/
 application/config/config.development.php
 public/sandbox.php
