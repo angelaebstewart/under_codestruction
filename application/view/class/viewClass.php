@@ -11,51 +11,42 @@
                     <thead>
                         <tr>
                             <th>Students</th>
-                            <th>A1</th>
-                            <th>A2</th>
-                            <th>A3</th>
-                            <th>A4</th>
-                            <th>A5</th>
-                            <th>A6</th>
-                            <th>A1</th>
-                            <th>A2</th>
-                            <th>A3</th>
-                            <th>A4</th>
-                            <th>A5</th>
-                            <th>A6</th>
+                            <?php foreach ($this->lessons as $key => $lesson) { ?>
+                                <th><?php echo $lesson->ModuleName; ?></th>
+                            <?php } ?>
+
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Student 1</td>
-                            <td><span class="badge">2</span></td>
-                            <td><span class="label label-primary">Incomplete</span></td>
-                        </tr>
-                        <tr>
-                            <td>Student 2</td>
-                            <td><span class="badge">1</span></td>
-                            <td><span class="label label-primary">Incomplete</span></td>
-                        </tr>
-                        <tr>
-                            <td>Student 3</td>
-                            <td><span class="badge">12</span></td>
-                            <td><span class="label label-primary">Incomplete</span></td>
-                        </tr>
-                        <tr>
-                            <td>Student 4</td>
-                            <td><span class="badge">2</span></td>
-                            <td><span class="label label-primary">Incomplete</span></td>
-                        </tr>
-                        <tr>
-                            <td>Student 5</td>
-                            <td><span class="badge">1</span></td>
-                            <td><span class="label label-primary">Incomplete</span></td>
-                        </tr>
-                        <tr>
-                            <td>Student 6</td>
-                            <td><span class="badge">12</span></td>
-                            <td><span class="label label-primary">Incomplete</span></td>
-                        </tr>
+                        <?php
+                        foreach ($this->progress as $key => $value) {
+                            ?>                        
+                            <tr>
+
+                                <td><?php echo $value['studentName']; ?></td>
+                                <?php
+                                foreach ($value['studentProgress'] as $key2 => $value2) {
+                                    ?>
+                                    <td><span class="badge <?php
+                                              switch ($value2->AssessmentStatus) {
+                                                  case "In Progress":
+                                                      echo "inprogress \" >".$value2->CompletionAttemptNumber;
+                                                      break;
+                                                  case "Completed":
+                                                      echo "completed \" >".$value2->CompletionAttemptNumber;
+                                                      break;
+                                                  case "Not Started":
+                                                      echo "notstarted \" >";
+                                                      break;
+                                              }
+                                              ?></span></td>
+                                        <?php
+                                    }
+                                    ?>
+
+
+                            </tr>
+<?php } ?>                        
                     </tbody>
                 </table>
 
