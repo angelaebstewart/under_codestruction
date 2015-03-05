@@ -76,7 +76,49 @@ class ClassModel {
         }
     }
 
-    
+        public static function getAllStudentsInClassProgress($classID) {
+
+        $returnResult = array();
+        $allStudentsInClass = self::getStudentsFromClass($classID);
+        $studentName = "";
+        $studentID = "";
+        $allStudentsInClassProgress = array();
+        foreach ($allStudentsInClass as $key => $value) {
+            $studentName = $value->fname . " " . $value->lname;
+            $studentID = $value->uid;
+            array_push($allStudentsInClassProgress, array(
+                'studentName' => $studentName,
+                'userID' => $studentID,
+                'studentProgress' => self::getStudentProgressInAllModulesInClass($studentID, $classID)
+            ));
+        }
+        
+        $allLessons = LessonModel::getAllLessons();
+        $returnResult["lessons"] = $allLessons;
+        $returnResult["progress"] = $allStudentsInClassProgress;
+        return $returnResult;
+    }
+
+    public static function getStudentProgressInAllModulesInClass($userID, $classID) {
+        if (isset($userID)) {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT cmp.AssessmentStatus, m.ModuleName, cmp.CompletionAttemptNumber "
+                    . "FROM codestructionmoduleprogress as cmp,"
+                    . " codestructionenrollment as e, codestructionmodule as m"
+                    . " WHERE cmp.userID = :userID AND "
+                    . " cmp.userID = e.userID AND "
+                    . "m.ModuleID = cmp.ModuleID AND "
+                    . "e.classID = :classID";
+            $query = $db->prepare($sql);
+            $arrayVariable = array(':classID' => $classID, ':userID' => $userID);
+            $query->execute($arrayVariable);
+            $allProgressFromClass = $query->fetchAll();
+            return $allProgressFromClass;
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }
+
     /*
      * Name: enrollStudentInClass
      * Description:

@@ -21,6 +21,7 @@ class ClassController extends Controller {
      * @author Walter Conway
      * @Date 2/21/2015
      */
+
     public function index() {
         $teacherID = Session::get('user_id');
         $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
@@ -54,12 +55,38 @@ class ClassController extends Controller {
     public function createClass_action() {
         $classTitle = Request::post('classTitle');
         $teacherID = Session::get('user_id');
-        
+
         $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
         if (isset($isTeacher) && $isTeacher) {
             $resultText = ClassModel::createClassWithTitleAndTeacher($classTitle, $teacherID);
             $resultJSON = json_encode($resultText);
             $this->View->renderJSON($resultJSON);
+        }
+    }
+
+    public function editClassAddStudent_action() {
+        // Create a new student:
+        // Get the parameters from post
+        $fname = Request::post('fname');
+        $lname = Request::post('lname');
+        $email = Request::post('email');
+        $password = Request::post('password');
+        $classID = Request::post('classID');
+        if (isset($fname) && isset($lname) && isset($email) && isset($password) && isset($classID)) {
+            // Compute the password hash:
+            $password_hash = RegistrationModel::hashPassword($password);
+            // Generate the activation hash:
+            $activation_hash = RegistrationModel::generateActivationHash();
+            // Add the student to the database
+            $user_id = RegistrationModel::writeNewUserToDatabase($fname, $lname, $email, $password_hash, $activation_hash, 'Student');
+            // Send a verification email:
+            RegistrationModel::sendVerificationEmail($user_id, $email, $activation_hash);
+            // Enroll the student
+            ClassModel::enrollStudentInClass($user_id, $classID);
+
+            $response_array['status'] = 'success';
+
+            echo json_encode($response_array);
         }
     }
   
@@ -103,14 +130,20 @@ class ClassController extends Controller {
      * @author Walter Conway
      * @Date 2/21/2015
      */
+
     public function viewClass() {
-        $teacherID = Session::get('user_id');
-        $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
-        $classID = Request::get('classID');
-        if (isset($teacherID) && isset($isTeacher) && isset($classID)) {
-            if ($isTeacher) {
-                if (ClassModel::isClassTaughtByTeacher($classID, $teacherID)) {
-                    $this->View->render('class/viewClass');
+        if (LoginModel::isUserLoggedIn()) {
+            $teacherID = Session::get('user_id');
+            $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
+            $classID = Request::get('classID');
+            if (isset($teacherID) && isset($isTeacher) && isset($classID)) {
+                if ($isTeacher) {
+                    if (ClassModel::isClassTaughtByTeacher($classID, $teacherID)) {
+                        $allStudentsInClassProgress = ClassModel::getAllStudentsInClassProgress($classID);
+                        $this->View->render('class/viewClass', $allStudentsInClassProgress);
+                    } else {
+                        Redirect::to("error/index");
+                    }
                 } else {
                     Redirect::to("error/index");
                 }

@@ -34,3 +34,20 @@ color:rgb(0,0,0);
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: rgb(246,216,194);
 }
+
+
+.inprogress{
+    
+background-color: #dd550C;
+}
+
+
+.completed{
+    
+background-color: #03244D;
+}
+
+.notstarted{
+    
+background-color: #fff;
+}
