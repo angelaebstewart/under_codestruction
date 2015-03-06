@@ -33,6 +33,19 @@ class ClassModel {
             throw new InvalidArgumentException("Invalid Parameters");
         }
     }
+    
+        public static function getClassName($classID, $teacherID) {
+        if (isset($classID) && isset($teacherID)) {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT ClassName FROM codestructionclass C WHERE C.TeacherID = '$teacherID' AND C.ClassID = '$classID'";
+            $arrayVariable = array(':teacher_ID' => $teacherID, ':class_ID' => $classID);
+            $query = $db->prepare($sql);
+            $query->execute($arrayVariable);
+            return $query->fetch();
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }
 
     /*
      * Name: getClassList

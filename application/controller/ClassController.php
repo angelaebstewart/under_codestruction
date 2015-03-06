@@ -112,6 +112,8 @@ class ClassController extends Controller {
                 if ($isTeacher) {
                     if (ClassModel::isClassTaughtByTeacher($classID, $teacherID)) {
                         $allStudentsInClassProgress = ClassModel::getAllStudentsInClassProgress($classID);
+                        $className = ClassModel::getClassName($classID, $teacherID);
+                        $allStudentsInClassProgress["className"]=$className;
                         $this->View->render('class/viewClass', $allStudentsInClassProgress);
                     } else {
                         Redirect::to("error/index");
