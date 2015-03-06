@@ -10,7 +10,7 @@
         <!-- the user name input field uses a HTML5 pattern check -->
         <input type="text" class="form-control" name="user_firstName" placeholder="first name" required />
         <input type="text" class="form-control" name="user_lastName" placeholder="last name" required />
-        <input type="text" class="form-control" name="user_email" placeholder="email address (a real address)" required />
+        <input type="text" class="form-control" name="user_email" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|edu)\b" placeholder="email address (a real address)" required />
         <input type="password" class="form-control" name="user_password_new" pattern=".{6,}" placeholder="Password (6+ characters)" required autocomplete="off" />
         <input type="password" class="form-control" name="user_password_repeat" pattern=".{6,}" required placeholder="Repeat your password" autocomplete="off" />
 
