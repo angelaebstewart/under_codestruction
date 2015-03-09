@@ -179,6 +179,34 @@ class AccountModel {
         return ($role == Config::get('ROLE_STUDENT', 'gen'));
     }
 
+    /*
+     * Name: markUserInactive
+     * Description:
+     *  Marks a user as inactive
+     * @author Ethan Mata
+     * @Date 3/8/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @param int $userID The userID to change
+     * @return Boolean, whether a user was marked as inactive
+     */
+    public static function markUserInactive($userID)
+    {
+        if (isset($userID)) {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            $sql = "UPDATE codestructionuser SET IsValid=0 WHERE UserID = :userID AND IsValid = 1 LIMIT 1";
+            $query = $db->prepare($sql);
+            $arrayVariable = array(':userID' => $userID);
+            $query->execute($arrayVariable);
+            if ($query->rowCount() == 1) {
+                return True; // Update succeeded
+            }
+            return False;
+        }
+        else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }
+    
     /**
      * Edit the user's name, provided in the editing form
      *

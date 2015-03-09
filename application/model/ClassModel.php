@@ -191,24 +191,26 @@ class ClassModel {
     }
     
     
-        
+     /*
+     * Name: createClassWithTitleAndTeacher
+     * Description:
+     *  Creates a class with the given name and associated teacher
+     * @author Ethan Mata
+     * @Date 2/23/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @param int $teacherID The teacher's userID
+     * @param int $classTitle The class' name
+     * @return The new class entry
+     */
     public static function createClassWithTitleAndTeacher($classTitle, $teacherID) {
-        if (isset($teacherID) && isset($classTitle)) {
+        if (isset($teacherID) && isset($classTitle) && $classTitle != "")) {
             $db = DatabaseFactory::getFactory()->getConnection();
             
             // Obtain the next class ID to be used
-            $id_sql = "SELECT MAX(Class.ClassID) as max_id FROM codestructionclass Class";
-            $id_query = $db->prepare($id_sql);
-            $id_query->execute();
-            $id_result = $id_query->fetchAll();
-            
-            if ($id_result[0]->max_id == NULL) {
-                $classID = 1;
+            $classID = getNextClassID();
+            if (doesClassExistWithName($classTitle)) {
+                return false;
             }
-            else {
-                $classID = $id_result[0]->max_id + 1;
-            }
-           
             // Create the new class record$db = DatabaseFactory::getFactory()->getConnection();
             $class_sql = "INSERT INTO codestructionclass (ClassID, TeacherID, ClassName, IsValid) VALUES (:classID, :teacherID, :className, 1)";
             $class_query = $db->prepare($class_sql);
@@ -222,5 +224,118 @@ class ClassModel {
             throw new InvalidArgumentException("Invalid Parameters");
         }
     }
-          
+   
+    /*
+     * Name: getNextClassID
+     * Description:
+     *  Returns the next available ClassID
+     * @author Ethan Mata
+     * @Date 3/8/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @return The next classID
+     */
+    public static function getNextClassID() {
+        $db = DatabaseFactory::getFactory()->getConnection();
+        $id_sql = "SELECT MAX(Class.ClassID) as max_id FROM codestructionclass Class";
+        $id_query = $db->prepare($id_sql);
+        $id_query->execute();
+        $id_result = $id_query->fetchAll();
+            
+        if ($id_result[0]->max_id == NULL) {
+            $classID = 1;
+        }
+        else {
+            $classID = $id_result[0]->max_id + 1;
+        }
+        return $classID;
+    }
+    
+    /*
+     * Name: doesClassExistWithName
+     * Description:
+     *  Returns true if a class exists with that name, false otherwise
+     * @author Ethan Mata
+     * @Date 3/8/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @param String $classTitle The class' name
+     * @return Boolean, if the class exists
+     */
+    public static function doesClassExistWithName($className)
+    {
+        if (isset($className)) {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT COUNT(*) as result FROM codestructionclass Class WHERE ClassName = :className";
+            $query = $db->prepare($sql);
+            $query->execute(array(':className' => $className));
+            $result = $query->fetchAll();
+           
+            if ($result[0]->result == 0) {
+                return FALSE;
+            }
+            else {
+                return TRUE;
+            }
+        }
+        else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }
+    
+    /*
+     * Name: doesClassExistWithID
+     * Description:
+     *  Returns true if a class exists with that name, false otherwise
+     * @author Ethan Mata
+     * @Date 3/9/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @param int $classID The class' id number
+     * @return Boolean, if the class exists
+     */
+    public static function doesClassExistWithID($classID)
+    {
+        if (isset($className)) {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT COUNT(*) as result FROM codestructionclass Class WHERE ClassID = :classID";
+            $query = $db->prepare($sql);
+            $query->execute(array(':classID' => $classID));
+            $result = $query->fetchAll();
+           
+            if ($result[0]->result == 0) {
+                return FALSE;
+            }
+            else {
+                return TRUE;
+            }
+        }
+        else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }
+      /*
+     * Name: markClassInactive
+     * Description:
+     *  Marks a class as inactive
+     * @author Ethan Mata
+     * @Date 3/8/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @param int $classID The classID to change
+     * @return Boolean, whether a class was marked as inactive
+     */
+    public static function markClassInactive($classID)
+    {
+        if (isset($userID)) {
+            $db = DatabaseFactory::getFactory()->getConnection();
+            $sql = "UPDATE codestructionclass SET IsValid=0 WHERE ClassID = :classID AND IsValid = 1 LIMIT 1";
+            $query = $db->prepare($sql);
+            $arrayVariable = array(':classID' => $classID);
+            $query->execute($arrayVariable);
+            if ($query->rowCount() == 1) {
+                return True; // Update succeeded
+            }
+            return False;
+        }
+        else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }
 }

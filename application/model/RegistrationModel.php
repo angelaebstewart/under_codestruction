@@ -25,6 +25,14 @@ class RegistrationModel {
 		$user_password_new = Request::post('user_password_new');
 		$user_password_repeat = Request::post('user_password_repeat');
 
+                 // Check the email type for teacher accounts
+                 if ($user_type == 'Teacher') {
+                     $result = strpos($user_email, ".edu");
+                     if ($result == FALSE) {
+                         return false;
+                     }
+                 }
+                
 		// stop registration flow if registrationInputValidation() returns false (= anything breaks the input check rules)
 		$validation_result = RegistrationModel::registrationInputValidation(Request::post('captcha'), $user_firstName, 
                         $user_lastName, $user_email, $user_password_new, $user_password_repeat);
