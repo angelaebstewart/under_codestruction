@@ -20,23 +20,9 @@ class GameController extends Controller {
         $userID = Session::get('user_id');
         $userRole = Session::get('user_role');
         if(isset($userID) && isset($userRole)) {
-            if (GameModel::canViewGame($userID, $userRole, Request::get('id'))&&Request::get('page') === "1") {
+            if (GameModel::canViewGame($userID, $userRole, Request::get('id'))) {
                 $this->View->render('lesson/viewGame');
-            } 
-            
-            else if (GameModel::canViewGame($userID, $userRole, Request::get('id'))&&Request::get('page') === "2") {
-                $this->View->render('lesson/page2');
-            }
-
-            else if (GameModel::canViewGame($userID, $userRole, Request::get('id'))&&Request::get('page') === "3") {
-                $this->View->render('lesson/page3');
-            }            
-
-            else if (GameModel::canViewGame($userID, $userRole, Request::get('id'))&&Request::get('page') === "4") {
-                $this->View->render('lesson/page4');
-            }
-            
-            else {
+            } else {
                 Redirect::to('lesson/index');
             }
         } else {
@@ -44,4 +30,30 @@ class GameController extends Controller {
         }
     }
 
+    public function getGamePage_action() {
+        $gameID = Request::post('gameID');
+        $nextPage = Request::post('nextPage');
+        $userID = Session::get('user_id');
+        $userRole = Session::get('user_role');
+        
+        if(isset($userID) && isset($userRole)) {
+            if (GameModel::canViewGame($userID, $userRole, $gameID)) {
+                $pageFile = "../application/view/lesson/" . $gameID . "/page" . $nextPage . ".php";
+                
+                if (file_exists($pageFile)) {
+                    $response_array['pageData'] = file_get_contents($pageFile);
+                    $response_array['finished'] = "0";
+                } else {
+                    $response_array['pageData'] = "You completed the lesson!";
+                    $response_array['finished'] = "1";
+                }
+                
+                echo json_encode($response_array);
+            } else {
+                Redirect::to('lesson/index');
+            }
+        } else {
+            $this->View->render('error/index');
+        }
+    }
 }

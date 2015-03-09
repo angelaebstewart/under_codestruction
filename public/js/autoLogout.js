@@ -33,7 +33,7 @@ function incrementMinutesInactive() {
     minutesInactive++;
     if (minutesInactive >= 9 && autoLogoutTimer == -1) {
         $("#autoLogoutModal").modal("show");
-        autoLogoutTimer = window.setTimeout(doAutoLogout, 60000); // 30 seconds
+        autoLogoutTimer = window.setTimeout(doAutoLogout, 60000); // 1 minute
     }
 }
 
