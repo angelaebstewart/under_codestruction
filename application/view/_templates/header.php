@@ -22,7 +22,14 @@
         <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/jquery.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/bootstrap.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/jquery.prettyPhoto.js"></script>
-
+        
+        <?php
+        if (Session::userIsLoggedIn()) { ?>
+            <script type="text/javascript" charset="utf-8">var logoutURL = "<?php echo Config::get('URL', 'gen'); ?>login/logout";</script>
+            <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/autoLogout.js"></script>
+        <?php
+        }
+        ?>
     </head>
     <body>
         <div id="pageWrap"> 
