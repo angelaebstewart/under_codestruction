@@ -13,5 +13,24 @@ that also use javascript. Remember, anything that is placed in here is also in a
   </div>
   <!--#include virtual="/template/includes/gatc.html" --> 
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="autoLogoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                </div>
+                <div class="panel-body">
+                    <p>Are you still there? If not, you will be logged out momentarily.</p>
+                    <button id="dontLogoutBtn" class="btn btn-lg btn-primary btn-block" type="submit">Keep me logged in!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

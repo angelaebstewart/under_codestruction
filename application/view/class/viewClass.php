@@ -3,10 +3,12 @@
     <div class="class-list">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Class</h3>
+                <h3 class="panel-title"><?php echo $this->className->ClassName; ?></h3>
             </div>
             <div class="panel-body">
-
+                <span class="badge inprogress">In Progress</span>
+                <span class="badge completed">Completed</span><br>
+                Note: The number in the label identifies the number of attempts per lesson.
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -16,8 +18,10 @@
                             <?php } ?>
 
                         </tr>
+
                     </thead>
                     <tbody>
+
                         <?php
                         foreach ($this->progress as $key => $value) {
                             ?>                        
@@ -30,27 +34,29 @@
                                     <td><span class="badge <?php
                                               switch ($value2->AssessmentStatus) {
                                                   case "In Progress":
-                                                      echo "inprogress \" >".$value2->CompletionAttemptNumber;
+                                                      echo "inprogress \" >" . $value2->CompletionAttemptNumber;
                                                       break;
                                                   case "Completed":
-                                                      echo "completed \" >".$value2->CompletionAttemptNumber;
+                                                      echo "completed \" >" . $value2->CompletionAttemptNumber;
                                                       break;
                                                   case "Not Started":
                                                       echo "notstarted \" >";
                                                       break;
                                               }
                                               ?></span></td>
-                                        <?php
-                                    }
-                                    ?>
+                                              <?php
+                                          }
+                                          ?>
 
 
-                            </tr>
-<?php } ?>                        
-                    </tbody>
-                </table>
+                                          </tr>
+                                      <?php } ?>                        
 
-            </div>
-        </div>
-    </div>
-</div>
+                                      </tbody>
+
+                                      </table>
+
+                                      </div>
+                                      </div>
+                                      </div>
+                                      </div>
