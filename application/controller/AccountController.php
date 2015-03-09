@@ -54,6 +54,7 @@ class AccountController extends Controller {
     public function verify($user_id, $user_activation_verification_code) {
         if (isset($user_id) && isset($user_activation_verification_code)) {
             RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
+            AccountModel::createLoginRecord($user_id);
             $this->View->render('login/verify');
         } else {
             Redirect::to('login/index');

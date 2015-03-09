@@ -231,7 +231,6 @@ class ClassModel {
      *  Returns the next available ClassID
      * @author Ethan Mata
      * @Date 3/8/2015
-     * @throws InvalidArgumentException when parameters are not used.
      * @return The next classID
      */
     public static function getNextClassID() {
@@ -293,7 +292,7 @@ class ClassModel {
      */
     public static function doesClassExistWithID($classID)
     {
-        if (isset($className)) {
+        if (isset($classID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
             $sql = "SELECT COUNT(*) as result FROM codestructionclass Class WHERE ClassID = :classID";
             $query = $db->prepare($sql);
@@ -323,7 +322,7 @@ class ClassModel {
      */
     public static function markClassInactive($classID)
     {
-        if (isset($userID)) {
+        if (isset($classID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
             $sql = "UPDATE codestructionclass SET IsValid=0 WHERE ClassID = :classID AND IsValid = 1 LIMIT 1";
             $query = $db->prepare($sql);
