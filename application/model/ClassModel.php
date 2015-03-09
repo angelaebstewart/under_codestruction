@@ -203,7 +203,7 @@ class ClassModel {
      * @return The new class entry
      */
     public static function createClassWithTitleAndTeacher($classTitle, $teacherID) {
-        if (isset($teacherID) && isset($classTitle) && $classTitle != "")) {
+        if (isset($teacherID) && isset($classTitle) && $classTitle != "") {
             $db = DatabaseFactory::getFactory()->getConnection();
             
             // Obtain the next class ID to be used
