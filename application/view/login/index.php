@@ -7,7 +7,7 @@
 <form class="form-signin" action="<?php echo Config::get('URL','gen'); ?>login/login" method="post">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="text" id="inputEmail" class="form-control" name="user_name" placeholder="Email address" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|edu)\b" required autofocus>
+        <input type="text" id="inputEmail" class="form-control" name="user_name" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" name="user_password" placeholder="Password" required>
         <div class="checkbox" style="display:none;">

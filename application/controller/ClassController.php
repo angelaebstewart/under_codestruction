@@ -119,7 +119,15 @@ class ClassController extends Controller {
     }*/
 
     public function deleteClass($classID) {
-        
+        if (isset($classID)) {
+            $studentList = ClassModel::getStudentsFromClass($classID);
+            foreach ($studentList as $value)
+            {
+                ClassModel::removeStudentFromClass($value->uid, $classID);
+                AccountModel::markUserInactive($value->uid);
+            }
+            ClassModel::markClassInactive($classID);
+        }
     }
 
     /*
