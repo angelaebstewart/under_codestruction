@@ -91,7 +91,7 @@ class ClassController extends Controller {
     }
   
     
-    public function editClassAddStudent_action() {
+    /*public function editClassAddStudent_action() {
         // Create a new student:
         // Get the parameters from post
          $fname = Request::post('fname');
@@ -116,7 +116,7 @@ class ClassController extends Controller {
             echo json_encode($response_array);
             
          }
-    }
+    }*/
 
     public function deleteClass($classID) {
         

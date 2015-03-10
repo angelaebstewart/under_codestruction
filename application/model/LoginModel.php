@@ -37,6 +37,11 @@ class LoginModel
         if (!$pwdHasher->CheckPassword($user_password, $result->passwordHash)) {
             // we say "password wrong" here, but less details like "login failed" would be better (= less information)
             Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_WRONG'));
+            
+            //increments the login in lock out
+            $userID = $result->UserID;
+            LoginModel::invalidLogin($userID);
+            
             return false;
         }
 
@@ -58,6 +63,48 @@ class LoginModel
         return true;
     }
 
+    /**
+     * For a valid login attempt, this will reset the AttemptNumber in the database to 0
+     * so that the next time the user logs in the counter of errors will start at 0. 
+     * 
+     * @param type $userID
+     */
+    public static function validLogin($userID){
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "UPDATE codestructionloginattempt SET AttemptNumber = 0 WHERE UserID = '$userID'";
+	$query = $database->prepare($sql);
+        $query->execute();
+    }
+    /**
+     * This will be called in the event of an invalid login attempt. It will increment the 
+     * AttemptNumber everytime a login fails.
+     * 
+     * @param type $userID
+     */
+    public static function invalidLogin($userID){
+        
+        $database = DatabaseFactory::getFactory()->getConnection();
+        
+        $getAttempt = "SELECT AttemptNumber AS attempt FROM codestructionloginattempt WHERE UserID = '$userID'";
+                $query2 = $database->prepare($getAttempt);
+                $query2->execute();
+                $results = $query2->fetchAll();
+                $newAttempt = $results[0]->attempt;
+                $newAttempt += 1;
+        
+        //Lock out goes here if the $newAttempt equals 10
+        if ($newAttempt < 10){
+        $updateAttempt = "UPDATE codestructionloginattempt SET AttemptNumber = :attempt_number WHERE UserID = '$userID'";
+	$query = $database->prepare($updateAttempt);
+        //$query->execute();
+        $query->execute(array(':attempt_number' => $newAttempt,));
+        }
+        else{
+        //put code to invalidate account and send verification email to user   
+        }
+        
+    }
+    
     /**
      * Log out process: delete session
      */

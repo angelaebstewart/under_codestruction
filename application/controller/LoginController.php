@@ -38,6 +38,9 @@ class LoginController extends Controller {
 
         // check login status: if true, then redirect user login/showProfile, if false, then to login form again
         if ($login_successful) {
+            //if the user successfully logs in, reset the count
+            $userID = Session::get('user_id');
+            LoginModel::validLogin($userID);
             Redirect::to('login/loginHome');
         } else {
             Redirect::to('login/index');
