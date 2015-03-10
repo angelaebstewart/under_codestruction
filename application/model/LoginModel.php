@@ -96,15 +96,65 @@ class LoginModel
         if ($newAttempt < 10){
         $updateAttempt = "UPDATE codestructionloginattempt SET AttemptNumber = :attempt_number WHERE UserID = '$userID'";
 	$query = $database->prepare($updateAttempt);
-        //$query->execute();
         $query->execute(array(':attempt_number' => $newAttempt,));
         }
         else{
-        //put code to invalidate account and send verification email to user   
+        
+            $user_activation_hash = sha1(uniqid(mt_rand(), true));
+            //get user email
+            $sql = "SELECT Email as email FROM codestructionuser WHERE UserID = :user_id LIMIT 1";
+            $query = $database->prepare($sql);
+            $query->execute(array(':user_id' => $userID));
+            $results = $query->fetchAll();
+            $user_email = $results[0]->email;
+            
+            if (LoginModel::sendVerificationEmail($userID, $user_email, $user_activation_hash)) {
+			Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_SUCCESSFULLY_CREATED'));
+			//return true;
+            }
+            
+            $updateValid = "UPDATE codestructionuser SET VerificationHash = :VerificationHash, Verified = 0 WHERE UserID = '$userID'";
+            $query = $database->prepare($updateValid);
+            $query->execute(array(':VerificationHash' => $user_activation_hash,)); 
+            
+            LoginModel::validLogin($userID);
         }
         
     }
-    
+    /**
+     * Same function as in RegistrationModel, but moved for PasswordHash issues
+     * 
+     * @param type $user_id
+     * @param type $user_email
+     * @param type $user_activation_hash
+     * @return boolean
+     */
+    public static function sendVerificationEmail($user_id, $user_email, $user_activation_hash)
+	{
+		// create email body
+		$body = Config::get('EMAIL_VERIFICATION_CONTENT','email') . Config::get('URL','gen') . Config::get('EMAIL_VERIFICATION_URL','email')
+		        . '/' . urlencode($user_id) . '/' . urlencode($user_activation_hash);
+                
+                //Session::add('feedback_positive', "Email sent:<br><br>" . $body);
+
+		// create instance of Mail class, try sending and check
+		$mail = new Mail;
+		$mail_sent = $mail->sendMail(
+			$user_email,
+			Config::get('EMAIL_VERIFICATION_FROM_EMAIL','email'),
+			Config::get('EMAIL_VERIFICATION_FROM_NAME','email'),
+			Config::get('EMAIL_VERIFICATION_SUBJECT','email'),
+			$body
+		);
+
+		if ($mail_sent) {
+			//Session::add('feedback_positive', Text::get('FEEDBACK_VERIFICATION_MAIL_SENDING_SUCCESSFUL'));
+			return true;
+		}
+
+		Session::add('feedback_negative', Text::get('FEEDBACK_VERIFICATION_MAIL_SENDING_ERROR') . $mail->getError() );
+		return false;
+	}
     /**
      * Log out process: delete session
      */
