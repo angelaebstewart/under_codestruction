@@ -17,6 +17,7 @@
 
 <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/gameHandler.js"></script>
 <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/chippy.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/alice/alice.js"></script>
 <script>
     var gameID = <?php echo Request::get('id'); ?>;
     var pageID = 0;

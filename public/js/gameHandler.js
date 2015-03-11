@@ -26,23 +26,57 @@ function getNextGamePage() {
         data: data,
         error: function () {alert("error");}
     })
+    
     .done(function( data ) {
-        data = $.parseJSON(data);
+        setTimeout(function() {
+            data = $.parseJSON(data);
 
-        if (data.finished === "1") {
-            $("#gameDiv").html(data.pageData);
-        } else {
-            $("#gameDiv").html(data.pageData);
-            pageID++;
+            if (data.finished === "1") {
+                $("#gameDiv").html(data.pageData);
+                alicejs.fade({
+                    elems: $("#gameDiv"), 
+                    fade: "in",
+                    iteration: 1,
+                    duration: {
+                        "value": "300ms",
+                        "randomness": "0%",
+                        "offset": "0ms",
+                    }
+                });
+            } else {
+                $("#gameDiv").html(data.pageData);
+                pageID++;
 
-            $("#questions").submit(function(e) {
-                e.preventDefault();
+                alicejs.toss({
+                    elems: $(".gameElement"), 
+                    move: "up", 
+                    iteration: 1,
+                    duration: {
+                        "value": "1500ms",
+                        "randomness": "20%",
+                        "offset": "50ms",
+                    }
+                });
 
-                if (validateForm($("#questions")[0].elements)) {
-                    getNextGamePage();
-                    $("#gameDiv").html("Loading...");
-                }
-            });
-        }
+                $("#questions").submit(function(e) {
+                    e.preventDefault();
+
+                    if (validateForm($("#questions")[0].elements)) {
+                        alicejs.fade({
+                            elems: $(".gameElement"), 
+                            fade: "out",
+                            iteration: 1,
+                            duration: {
+                                "value": "300ms",
+                                "randomness": "0%",
+                                "offset": "0ms",
+                            }
+                        });
+
+                        getNextGamePage();
+                    }
+                });
+            }
+        }, 1000);
     });
 }
