@@ -73,6 +73,7 @@ class AccountController extends Controller {
      * POST-request after form submit
      */
     public function requestPasswordReset_action() {
+        //Retrieves the user name or e-mail variable from the session
         PasswordResetModel::requestPasswordReset(Request::post('user_name_or_email'));
         Redirect::to('login/index');
     }
@@ -169,32 +170,4 @@ class AccountController extends Controller {
         AccountModel::editUserEmail(Request::post('user_email'));
         Redirect::to('login/editUserEmail');
     }
-
-    /**
-     * Show the change-account-type page
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     */
-    public function changeAccountType() {
-        Auth::checkAuthentication();
-        $this->View->render('login/changeAccountType');
-    }
-
-    /**
-     * Perform the account-type changing
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action
-     * POST-request
-     */
-    public function changeAccountType_action() {
-        Auth::checkAuthentication();
-
-        if (Request::post('user_account_upgrade')) {
-            AccountTypeModel::changeAccountTypeUpgrade();
-        }
-        if (Request::post('user_account_downgrade')) {
-            AccountTypeModel::changeAccountTypeDowngrade();
-        }
-
-        Redirect::to('login/changeAccountType');
-    }
-
 }
