@@ -33,8 +33,18 @@ class ClassModel {
             throw new InvalidArgumentException("Invalid Parameters");
         }
     }
-    
-        public static function getClassName($classID, $teacherID) {
+
+    /*
+     * Name: getClassName
+     * Description:
+     *  Retrieves the class name from database
+     * @author Walter Conway
+     * @Date 3/4/2015
+     * @param $classID Class id
+     * @param $teacherID Teacher id
+     * @return The class Name or null, if empty set.
+     */
+    public static function getClassName($classID, $teacherID) {
         if (isset($classID) && isset($teacherID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
             $sql = "SELECT ClassName FROM codestructionclass C WHERE C.TeacherID = '$teacherID' AND C.ClassID = '$classID'";
@@ -73,6 +83,9 @@ class ClassModel {
         }
     }
 
+    /*
+     * 
+     */
     public static function getStudentsFromClass($classID) {
         if (isset($classID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
@@ -89,7 +102,16 @@ class ClassModel {
         }
     }
 
-        public static function getAllStudentsInClassProgress($classID) {
+    /*
+     * Name: getAllStudentsInClassProgress
+     * Description:
+     *  Obtains a list of all the students in specified class progress
+     * @author Walter Conway
+     * @Date 2/21/2015
+     * @param $classID
+     * @return list of all the students in class progress
+     */
+    public static function getAllStudentsInClassProgress($classID) {
 
         $returnResult = array();
         $allStudentsInClass = self::getStudentsFromClass($classID);
@@ -105,13 +127,23 @@ class ClassModel {
                 'studentProgress' => self::getStudentProgressInAllModulesInClass($studentID, $classID)
             ));
         }
-        
+
         $allLessons = LessonModel::getAllLessons();
         $returnResult["lessons"] = $allLessons;
         $returnResult["progress"] = $allStudentsInClassProgress;
         return $returnResult;
     }
 
+    /*
+     * Name: getStudentProgressInAllModulesInClass
+     * Description:
+     *  Obtains a list of student's progress in a certain class
+     * @author Walter Conway
+     * @Date 2/21/2015
+     * @param $userID
+     * @param $classID
+     * @return list of the student's progress in class.
+     */
     public static function getStudentProgressInAllModulesInClass($userID, $classID) {
         if (isset($userID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
@@ -144,9 +176,9 @@ class ClassModel {
      * @return array of the the sql query: 
      *   INSERT INTO codestructionenrollment (UserID, ClassID, IsValid) VALUES (:userID, :classID, 1)
      */
+
     public static function enrollStudentInClass($studentID, $classID) {
-        if (isset($studentID) && isset($classID))
-        {
+        if (isset($studentID) && isset($classID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
             $sql = "INSERT INTO codestructionenrollment (UserID, ClassID, IsValid)
                     VALUES (:userID, :classID, 1)";
@@ -155,12 +187,11 @@ class ClassModel {
             $query->execute($arrayVariable);
             $studentList = $query->fetchAll();
             return $studentList;
-
-            } else {
+        } else {
             throw new InvalidArgumentException("Invalid Parameters");
         }
-    }  
-    
+    }
+
     /*
      * Name: removeStudentFromClass
      * Description:
@@ -172,9 +203,9 @@ class ClassModel {
      * @param int $classID The class' classID
      * @return Boolean, true if the student was removed, false otherwise
      */
+
     public static function removeStudentFromClass($studentID, $classID) {
-        if (isset($studentID) && isset($classID))
-        {
+        if (isset($studentID) && isset($classID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
             $sql = "UPDATE codestructionenrollment SET IsValid=0 WHERE UserID = :userID AND ClassID = :classID AND IsValid = 1 LIMIT 1";
             $query = $db->prepare($sql);
@@ -184,14 +215,12 @@ class ClassModel {
                 return True; // Removal succeeded
             }
             return False;
-
-            } else {
+        } else {
             throw new InvalidArgumentException("Invalid Parameters");
         }
     }
-    
-    
-     /*
+
+    /*
      * Name: createClassWithTitleAndTeacher
      * Description:
      *  Creates a class with the given name and associated teacher
@@ -202,10 +231,11 @@ class ClassModel {
      * @param int $classTitle The class' name
      * @return The new class entry
      */
+
     public static function createClassWithTitleAndTeacher($classTitle, $teacherID) {
         if (isset($teacherID) && isset($classTitle) && $classTitle != "") {
             $db = DatabaseFactory::getFactory()->getConnection();
-            
+
             // Obtain the next class ID to be used
             $classID = getNextClassID();
             if (doesClassExistWithName($classTitle)) {
@@ -214,17 +244,16 @@ class ClassModel {
             // Create the new class record$db = DatabaseFactory::getFactory()->getConnection();
             $class_sql = "INSERT INTO codestructionclass (ClassID, TeacherID, ClassName, IsValid) VALUES (:classID, :teacherID, :className, 1)";
             $class_query = $db->prepare($class_sql);
-            $arrayVariable = array(':classID' => $classID,':teacherID' => $teacherID,':className' => $classTitle);
+            $arrayVariable = array(':classID' => $classID, ':teacherID' => $teacherID, ':className' => $classTitle);
             $class_query->execute($arrayVariable);
             $newClassEntry = $class_query->fetchAll();
-            
+
             return $newClassEntry;
-            
         } else {
             throw new InvalidArgumentException("Invalid Parameters");
         }
     }
-   
+
     /*
      * Name: getNextClassID
      * Description:
@@ -233,22 +262,22 @@ class ClassModel {
      * @Date 3/8/2015
      * @return The next classID
      */
+
     public static function getNextClassID() {
         $db = DatabaseFactory::getFactory()->getConnection();
         $id_sql = "SELECT MAX(Class.ClassID) as max_id FROM codestructionclass Class";
         $id_query = $db->prepare($id_sql);
         $id_query->execute();
         $id_result = $id_query->fetchAll();
-            
+
         if ($id_result[0]->max_id == NULL) {
             $classID = 1;
-        }
-        else {
+        } else {
             $classID = $id_result[0]->max_id + 1;
         }
         return $classID;
     }
-    
+
     /*
      * Name: doesClassExistWithName
      * Description:
@@ -259,27 +288,25 @@ class ClassModel {
      * @param String $classTitle The class' name
      * @return Boolean, if the class exists
      */
-    public static function doesClassExistWithName($className)
-    {
+
+    public static function doesClassExistWithName($className) {
         if (isset($className)) {
             $db = DatabaseFactory::getFactory()->getConnection();
             $sql = "SELECT COUNT(*) as result FROM codestructionclass Class WHERE ClassName = :className";
             $query = $db->prepare($sql);
             $query->execute(array(':className' => $className));
             $result = $query->fetchAll();
-           
+
             if ($result[0]->result == 0) {
                 return FALSE;
-            }
-            else {
+            } else {
                 return TRUE;
             }
-        }
-        else {
+        } else {
             throw new InvalidArgumentException("Invalid Parameters");
         }
     }
-    
+
     /*
      * Name: doesClassExistWithID
      * Description:
@@ -290,27 +317,26 @@ class ClassModel {
      * @param int $classID The class' id number
      * @return Boolean, if the class exists
      */
-    public static function doesClassExistWithID($classID)
-    {
+
+    public static function doesClassExistWithID($classID) {
         if (isset($classID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
             $sql = "SELECT COUNT(*) as result FROM codestructionclass Class WHERE ClassID = :classID";
             $query = $db->prepare($sql);
             $query->execute(array(':classID' => $classID));
             $result = $query->fetchAll();
-           
+
             if ($result[0]->result == 0) {
                 return FALSE;
-            }
-            else {
+            } else {
                 return TRUE;
             }
-        }
-        else {
+        } else {
             throw new InvalidArgumentException("Invalid Parameters");
         }
     }
-      /*
+
+    /*
      * Name: markClassInactive
      * Description:
      *  Marks a class as inactive
@@ -320,8 +346,8 @@ class ClassModel {
      * @param int $classID The classID to change
      * @return Boolean, whether a class was marked as inactive
      */
-    public static function markClassInactive($classID)
-    {
+
+    public static function markClassInactive($classID) {
         if (isset($classID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
             $sql = "UPDATE codestructionclass SET IsValid=0 WHERE ClassID = :classID AND IsValid = 1 LIMIT 1";
@@ -332,9 +358,9 @@ class ClassModel {
                 return True; // Update succeeded
             }
             return False;
-        }
-        else {
+        } else {
             throw new InvalidArgumentException("Invalid Parameters");
         }
     }
+
 }
