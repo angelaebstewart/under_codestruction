@@ -38,6 +38,9 @@ class LessonController extends Controller {
         $lesson_id = Request::get('id');
         
         if (LessonModel::canViewLesson($userID, $userRole, $lesson_id)) {
+            if (!LessonModel::hasStartedLesson($userID, $lesson_id)) {
+                LessonModel::recordStartedLesson($userID, $lesson_id);
+            }
             $lessonData = LessonModel::getLessonData($lesson_id);
             $this->View->render('lesson/viewLesson', $lessonData);
         } else {

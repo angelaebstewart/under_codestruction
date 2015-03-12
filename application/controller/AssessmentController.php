@@ -16,30 +16,36 @@ class AssessmentController extends Controller {
         parent::__construct();
     }
 
-    /*
-     * When a student completes an assessment, also should handle the case
-     * of if a teacher completes an assessment.
-     */
-    public function submitAssessment()
-    {
-        if (LessonModel::didPassAssessment(Request::get('id'), Request::post('question1'))) {
-            Session::add('feedback_positive', 'Your passed the assessment!<br>(TO DO: store this in database)');
-            Redirect::to('lesson/index');
-        } else {
-            Session::add('feedback_negative', 'Your failed the assessment...');
-            Redirect::to('lesson/viewLesson/?id=' . Request::get('id'));
-        }
-    }
-
     /**
      * When you click on an assessment link, it goes to the assessment for that lesson.
      */
     public function viewAssessment() {
-        if (GameModel::canViewGame(Request::get('id'))) {
+        $userID = Session::get('user_id');
+        $userRole = Session::get('user_role');
+        if (GameModel::canViewGame($userID, $userRole, Request::get('id'))) {
             $this->View->render('lesson/viewAssessment');
         } else {
             Redirect::to('lesson/index');
         }
     }
 
+    /*
+     * When a student completes an assessment, also should handle the case
+     * of if a teacher completes an assessment.
+     */
+    public function submitAssessment()
+    {
+        $userID = Session::get('user_id');
+        if (AssessmentModel::didPassAssessment(Request::get('id'), Request::post('question1'))) {
+            AssessmentModel::recordPassedAssessment($userID, Request::get('id'));
+            
+            Session::add('feedback_positive', 'You passed the assessment!');
+            Redirect::to('lesson/index');
+        } else {
+            AssessmentModel::recordFailedAssessment($userID, Request::get('id'));
+            
+            Session::add('feedback_negative', 'You failed the assessment. Try again!');
+            Redirect::to('lesson/viewLesson/?id=' . Request::get('id'));
+        }
+    }
 }

@@ -120,6 +120,30 @@ class LessonModel {
         }
     }
     
+    
+    public static function hasStartedLesson($user_id, $lesson_id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "SELECT 1 FROM codestructionmoduleprogress
+            WHERE UserID = :user_id AND ModuleID = :lesson_id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        
+        return ($query->rowCount() >= 1);
+    }
+    
+    public static function recordStartedLesson($user_id, $lesson_id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "INSERT INTO codestructionmoduleprogress (UserID, ModuleID, GameStatus, VideoStatus, AssessmentStatus, CompletionAttemptNumber, isValid)
+                VALUES (:user_id, :lesson_id, 'Not Started', 'Not Started', 'Not Started', 0, 1)";
+        $query = $database->prepare($sql);
+        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        
+        if ($query->rowCount() >= 1) {
+            return 1;
+        } else return -1;
+    }
+    
+    
     /**
      * Determine whether a given lesson ID corresponds to an actual lesson in
      * the system.

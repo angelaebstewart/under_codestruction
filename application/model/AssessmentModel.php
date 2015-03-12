@@ -21,4 +21,27 @@ class AssessmentModel {
         
         return false;
     }
+    
+    public static function recordPassedAssessment($user_id, $lesson_id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "UPDATE codestructionmoduleprogress 
+                SET AssessmentStatus='Completed', CompletionAttemptNumber=CompletionAttemptNumber+1
+                WHERE UserID = :user_id AND ModuleID = :lesson_id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        
+        return $query;
+    }
+    
+    
+    public static function recordFailedAssessment($user_id, $lesson_id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "UPDATE codestructionmoduleprogress 
+                SET AssessmentStatus='In Progress', CompletionAttemptNumber=CompletionAttemptNumber+1
+                WHERE UserID = :user_id AND ModuleID = :lesson_id AND AssessmentStatus <> 'Completed'";
+        $query = $database->prepare($sql);
+        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        
+        return $query;
+    }
 }

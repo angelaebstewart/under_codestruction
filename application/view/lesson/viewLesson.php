@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a href="<?php echo $this->lessonData->AssessmentLink; ?>">
+                    <a href="<?php echo Config::get('URL', 'gen') . $this->lessonData->AssessmentLink; ?>">
                         Assessment
                     </a>
                 </li>
