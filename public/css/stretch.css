@@ -13,7 +13,7 @@
 .nav { border-collapse:collapse; border-left:#f68026 1px solid; float:left; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:13px; height:27px; margin:0 0 3px 0; min-width:950px; padding:0; text-align:center; text-transform:uppercase; width:100%; }
 
 /**************  Content Section **************************/
-#contentArea { background-color: #fff; border:none; border-bottom:#d7d7d7 1px solid; display:block; float:left; margin-bottom:10px; min-width:950px; width:100%; }
+#contentArea { background-color: #fff; border:none; border-bottom:#d7d7d7 1px solid; display:block; float:left; margin-bottom:0px; min-width:950px; width:100%; }
 #contentArea_bottom { display:none; }
 .contentDivision { display:block; float:none; margin:0; min-width:910px; padding:15px 20px; width:auto; }
 
