@@ -8,8 +8,6 @@
                     <form action="#">
                         <button id="changePswdBtn" class="btn btn-lg btn-primary btn-block" type="submit">Change Password</button>
                         <button id="changeEmailBtn" class="btn btn-lg btn-primary btn-block" type="submit">Change Email</button>
-                        <!--<th><button type="button" class="btn btn-xs btn-danger"  data-toggle="modal" data-target="#myModal">Change Password</button></th>
-                        <th><button type="button" class="btn btn-xs btn-danger"  data-toggle="modal" data-target="#myModal">Change Email</button></th>-->
                     </form>
                 </div>
             </div>

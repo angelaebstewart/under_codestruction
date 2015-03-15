@@ -71,7 +71,7 @@ class LoginModel
      */
     public static function validLogin($userID){
         $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "UPDATE codestructionloginattempt SET AttemptNumber = 0 WHERE UserID = '$userID'";
+        $sql = "UPDATE codestructionloginattempt SET AttemptNumber = 0 WHERE UserID = '$userID' LIMIT 1";
 	$query = $database->prepare($sql);
         $query->execute();
     }
@@ -94,9 +94,9 @@ class LoginModel
         
         //Lock out goes here if the $newAttempt equals 10
         if ($newAttempt < 10){
-        $updateAttempt = "UPDATE codestructionloginattempt SET AttemptNumber = :attempt_number WHERE UserID = '$userID'";
-	$query = $database->prepare($updateAttempt);
-        $query->execute(array(':attempt_number' => $newAttempt,));
+            $updateAttempt = "UPDATE codestructionloginattempt SET AttemptNumber = :attempt_number WHERE UserID = '$userID'";
+            $query = $database->prepare($updateAttempt);
+            $query->execute(array(':attempt_number' => $newAttempt,));
         }
         else{
         
@@ -108,8 +108,9 @@ class LoginModel
             $results = $query->fetchAll();
             $user_email = $results[0]->email;
             
-            if (LoginModel::sendVerificationEmail($userID, $user_email, $user_activation_hash)) {
-			Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_SUCCESSFULLY_CREATED'));
+            //if (LoginModel::sendVerificationEmail($userID, $user_email, $user_activation_hash)) {
+            if (PasswordResetModel::sendPasswordResetMail($userID, $user_activation_hash, $user_email)){
+			//Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_SUCCESSFULLY_CREATED'));
 			//return true;
             }
             
