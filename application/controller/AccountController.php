@@ -15,35 +15,37 @@ class AccountController extends Controller {
 
     /**
      * Verify the verification token of that user (to show the user the password editing view or not)
-     * @param string $user_name username
+     * @param string $user_id user id
      * @param string $verification_code password reset verification token
      */
-    public function verifyPasswordReset($user_name, $verification_code) {
+    public function verifyPasswordReset($user_id, $verification_code) {
         // check if this the provided verification code fits the user's verification code
-        if (PasswordResetModel::verifyPasswordReset($user_name, $verification_code)) {
-            // pass URL-provided variable to view to display them
-            $this->View->render('login/changePassword', array(
-                'user_name' => $user_name,
-                'user_password_reset_hash' => $verification_code
-            ));
-        } else {
+        if (PasswordResetModel::verifyPasswordReset($user_id, $verification_code)) {
+            Session::set('user_id', $user_id);
+            Session::set('verification_code', $verification_code);
+            $this->View->render('login/changePassword');
+        } else {            
+            Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_RESET_COMBINATION_DOES_NOT_EXIST'));
             Redirect::to('login/index');
         }
     }
 
-    /**
-     * Set the new password
-     * Please note that this happens while the user is not logged in. The user identifies via the data provided by the
-     * password reset link from the email, automatically filled into the <form> fields. See verifyPasswordReset()
-     * for more. Then (regardless of result) route user to index page (user will get success/error via feedback message)
-     * POST request !
-     * TODO this is an _action
-     */
-    public function setNewPassword() {
-        PasswordResetModel::setNewPassword(
-                Request::post('user_name'), Request::post('user_password_reset_hash'), Request::post('user_password_new'), Request::post('user_password_repeat')
-        );
-        Redirect::to('login/index');
+        public function changePassword_action(){
+        $user_id = Session::get('user_id');
+        $verification_code = Session::get('verification_code');
+        $passwordNew = Request::post('password1');
+        $passwordRetyped = Request::post('password2');
+        if(isset($user_id) && isset($verification_code) && isset($passwordNew) && isset($passwordRetyped)){
+            if(($passwordNew == $passwordRetyped)&& (strlen($passwordNew) >= 6 && strlen($passwordRetyped) >= 6)){
+                PasswordResetModel::setNewPassword($user_id, $verification_code, $passwordNew, $passwordRetyped);
+                $this->View->render('login/index');
+            } else{
+                Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
+                $this->View->render('login/changePassword');
+            }
+        } else{
+        $this->View->render('error/index');
+        }
     }
 
     /**
@@ -74,7 +76,20 @@ class AccountController extends Controller {
      */
     public function requestPasswordReset_action() {
         //Retrieves the user name or e-mail variable from the session
-        PasswordResetModel::requestPasswordReset(Request::post('user_name_or_email'));
+        $userName = Request::post('user_name_or_email');
+        if (empty($userName)) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_EMAIL_FIELD_EMPTY'));
+            $this->View->render('login/requestPasswordReset');
+            return;
+        }
+        $result = AccountModel::getUserIdByUsername($userName);
+        if ($result == -1) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
+            $this->View->render('login/requestPasswordReset');
+            return;
+        }
+        
+        PasswordResetModel::requestPasswordReset($userName);
         Redirect::to('login/index');
     }
 

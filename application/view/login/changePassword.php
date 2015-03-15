@@ -1,27 +1,38 @@
-<div class="container">
-    <h1>LoginController/changePassword</h1>
 
-    <!-- echo out the system feedback (error and success messages) -->
-    <?php $this->renderFeedbackMessages(); ?>
 
-    <div class="box">
-        <h2>Set new password</h2>
-
-        <p>FYI: ... Idenfitication process works via password-reset-token (hidden input field)</p>
-
-        <!-- new password form box -->
-        <form method="post" action="<?php echo Config::get('URL','gen'); ?>account/setNewPassword" name="new_password_form">
-            <input type='hidden' name='user_name' value='<?php echo $this->user_name; ?>' />
-            <input type='hidden' name='user_password_reset_hash' value='<?php echo $this->user_password_reset_hash; ?>' />
-            <label for="reset_input_password_new">New password (min. 6 characters)</label>
-            <input id="reset_input_password_new" class="reset_input" type="password"
-                   name="user_password_new" pattern=".{6,}" required autocomplete="off" />
-            <label for="reset_input_password_repeat">Repeat new password</label>
-            <input id="reset_input_password_repeat" class="reset_input" type="password"
-                   name="user_password_repeat" pattern=".{6,}" required autocomplete="off" />
-            <input type="submit"  name="submit_new_password" value="Submit new password" />
+<div id="contentArea">
+    <div class="contentDivision"> 
+        <!-- request password reset form box -->
+        <form method="post" class="form-request" action="<?php echo Config::get('URL', 'gen');?>account/changePassword_action">
+            <h2 class="form-request-heading">Reset Password</h2>
+            <input type="password" class="form-control" pattern=".{6,}" placeholder="New Password" id="password1" name="password1" required autocomplete="off" onkeyup="check(this)"/>
+            <input type="password" class="form-control" pattern=".{6,}" placeholder="Re-type New Password" id="password2" name="password2" required autocomplete="off" onkeyup="check(this)"/>
+            <span id="passwordMsg" class="label label-danger" margin="5" style="visibility: hidden;"> </span>
+            <input type="submit" class="btn btn-lg btn-primary btn-block" id="changePwdBtn"  value="Change Password" />
         </form>
-
-        <a href="<?php echo Config::get('URL','gen'); ?>login/index">Back to Login Page</a>
+        <!-- echo out the system feedback (error and success messages) -->
+        <?php $this->renderFeedbackMessages(); ?>
     </div>
 </div>
+
+<script>
+    function check(passwordBox) {
+        var passwordBox1 = document.getElementById("password1");
+        var passwordBox2 = document.getElementById("password2");
+        var msgBox = document.getElementById("passwordMsg");
+        if(msgBox.style.visibility != "visibile"){
+        msgBox.style.visibility="visible";
+        }
+        var password1Text = passwordBox1.value;
+        var password2Text = passwordBox2.value;
+        if(password1Text == password2Text){
+            msgBox.setAttribute("class", "label label-success");
+            msgBox.innerHTML = "Passwords Match";
+        } else{
+            msgBox.setAttribute("class", "label label-danger");
+            msgBox.innerHTML = "Passwords Do Not Match";
+        }
+        
+        
+    }
+</script>
