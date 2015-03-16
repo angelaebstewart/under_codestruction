@@ -118,18 +118,23 @@ class ClassController extends Controller {
          }
     }*/
 
-    public function deleteClass($classID) {
-        if (isset($classID)) {
-            $studentList = ClassModel::getStudentsFromClass($classID);
-            foreach ($studentList as $value)
-            {
-                ClassModel::removeStudentFromClass($value->uid, $classID);
-                AccountModel::markUserInactive($value->uid);
-            }
-            ClassModel::markClassInactive($classID);
+    
+
+     public function removeStudent_action() {
+        
+        $userID = Request::post('studentID');
+        if (isset($userID)) {
+            AccountModel::markUserInactive($userID);
         }
     }
-
+    
+    public function removeClass_action() {
+        $classID = Request::post('classID');
+        if (isset($classID)) {
+            ClassModel::removeClassAndRecords($classID);
+        }
+    }
+    
     /*
      * Name: viewClass
      * Description:
