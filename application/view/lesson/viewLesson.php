@@ -11,7 +11,7 @@
             <!-- List group -->
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a href="<?php echo $this->lessonData->VideoLink; ?>" rel="prettyPhoto">
+                    <a href="<?php echo $this->lessonData->VideoLink; ?>" rel="prettyPhoto" id="videoLink">
                         Video
                     </a>
                 </li>
@@ -20,10 +20,16 @@
                         Game
                     </a>
                 </li>
-                <li class="list-group-item">
-                    <a href="<?php echo Config::get('URL', 'gen') . $this->lessonData->AssessmentLink; ?>">
-                        Assessment
-                    </a>
+                <li class="list-group-item" id="assessmentLinkHolder">
+                    <?php
+                    if ($this->lessonData->canViewAssessment) { ?>
+                        <a href="<?php echo Config::get('URL', 'gen') . $this->lessonData->AssessmentLink; ?>">
+                            Assessment
+                        </a> <?php
+                    } else { ?>
+                        Assessment <?php
+                    }
+                    ?>
                 </li>
             </ul>
         </div>
@@ -36,8 +42,17 @@
 <!-- echo out the system feedback (error and success messages) -->
 <?php $this->renderFeedbackMessages(); ?>
 
+<script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/lessonHandler.js"></script>
 <script type="text/javascript" charset="utf-8">
+    var lessonID = <?php echo Request::get('id'); ?>;
+    var viewedVideoURL = "<?php echo Config::get('URL', 'gen'); ?>lesson/viewVideo_action";
+    var assessmentLinkHTML = "<a href='<?php echo Config::get('URL', 'gen') . $this->lessonData->AssessmentLink; ?>'>Assessment</a>";
+    
     $(document).ready(function () {
         $("a[rel^='prettyPhoto']").prettyPhoto();
+    });
+    
+    $("#videoLink").click(function () {
+        viewedVideo();
     });
 </script>

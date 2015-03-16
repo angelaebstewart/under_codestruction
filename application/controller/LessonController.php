@@ -41,10 +41,30 @@ class LessonController extends Controller {
             if (!LessonModel::hasStartedLesson($userID, $lesson_id)) {
                 LessonModel::recordStartedLesson($userID, $lesson_id);
             }
-            $lessonData = LessonModel::getLessonData($lesson_id);
+            $lessonData = LessonModel::getLessonData($userID, $lesson_id);
             $this->View->render('lesson/viewLesson', $lessonData);
         } else {
             Redirect::to('lesson/index');
+        }
+    }
+    
+    
+    public function viewVideo_action() {
+        $lessonID = Request::post('lessonID');
+        $userID = Session::get('user_id');
+        $userRole = Session::get('user_role');
+        
+        if(isset($userID) && isset($userRole)) {
+            if (LessonModel::canViewLesson($userID, $userRole, $lessonID)) {
+                LessonModel::recordViewedVideo($userID, $lessonID);
+                
+                $response_array['canViewAssessment'] = LessonModel::hasViewedVideoAndGame($userID, $lessonID);
+                echo json_encode($response_array);
+            } else {
+                Redirect::to('lesson/index');
+            }
+        } else {
+            // Don't really need to do anything if this fails
         }
     }
 

@@ -4,15 +4,16 @@
  *
  */
 class AssessmentModel {
-    public static function canViewAssessment($lessonID) {
-        //TO DO: also needs to take into consideration whether or not
-        //the student has viewed the video and played the game
-        
-        return LessonModel::canViewLesson($lessonID);
+    public static function canViewAssessment($user_id, $user_role, $lesson_id) {
+        if (LessonModel::canViewLesson($lesson_id)) {
+            return LessonModel::hasViewedVideoAndGame($user_id, $lesson_id);
+        } else {
+            return false;
+        }
     }
     
-    
     public static function didPassAssessment($lessonID, $question1) {
+        // Obviously this needs to be replaced with some real content...
         if ($lessonID == 1) {
             if ($question1 == 'answer3') {
                 return true;

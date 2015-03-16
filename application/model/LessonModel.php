@@ -80,7 +80,7 @@ class LessonModel {
      * VideoLink of the lesson; if the lesson_id does not correspond to a
      * lesson in the system, the lessonData key value will be set to NULL
      */
-    public static function getLessonData($lesson_id) {
+    public static function getLessonData($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "SELECT ModuleName, GameLink, AssessmentLink, VideoLink 
                     FROM codestructionmodule
@@ -89,7 +89,9 @@ class LessonModel {
         $query->execute(array(':lesson_id' => $lesson_id));
         
         if ($query->rowCount() === 1) { // Data successfully pulled
-            return array("lessonData" => $query->fetch());
+            $lessonData = $query->fetch();
+            $lessonData->canViewAssessment = LessonModel::hasViewedVideoAndGame($user_id, $lesson_id);
+            return array("lessonData" => $lessonData);
         } else { // Data not successfully pulled
             return array("lessonData" => NULL);
         }
@@ -131,6 +133,19 @@ class LessonModel {
         return ($query->rowCount() >= 1);
     }
     
+    
+    public static function hasViewedVideoAndGame($user_id, $lesson_id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "SELECT 1 FROM codestructionmoduleprogress
+            WHERE UserID = :user_id AND ModuleID = :lesson_id
+            AND VideoStatus='Completed' AND GameStatus='Completed'";
+        $query = $database->prepare($sql);
+        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        
+        return ($query->rowCount() >= 1);
+    }
+    
+    
     public static function recordStartedLesson($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "INSERT INTO codestructionmoduleprogress (UserID, ModuleID, GameStatus, VideoStatus, AssessmentStatus, CompletionAttemptNumber, isValid)
@@ -141,6 +156,42 @@ class LessonModel {
         if ($query->rowCount() >= 1) {
             return 1;
         } else return -1;
+    }
+    
+    
+    public static function recordViewedVideo($user_id, $lesson_id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "UPDATE codestructionmoduleprogress 
+                SET VideoStatus='Completed'
+                WHERE UserID = :user_id AND ModuleID = :lesson_id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        
+        return $query;
+    }
+    
+    
+    public static function recordViewedGame($user_id, $lesson_id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "UPDATE codestructionmoduleprogress 
+                SET GameStatus='Completed'
+                WHERE UserID = :user_id AND ModuleID = :lesson_id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        
+        return $query;
+    }
+    
+    
+    public static function recordViewedAssessment($user_id, $lesson_id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "UPDATE codestructionmoduleprogress 
+                SET AssessmentStatus='In Progress'
+                WHERE UserID = :user_id AND ModuleID = :lesson_id AND AssessmentStatus<>'Completed'";
+        $query = $database->prepare($sql);
+        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        
+        return $query;
     }
     
     
