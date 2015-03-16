@@ -155,7 +155,23 @@ class AccountModel {
         }
     }
     
-    
+    public static function deleteTeacherAccount($userID) {
+        if (isset($userID)) {
+        $classList = ClassModel::getClassList($userID);
+        
+            foreach ($classList as $class)
+            {
+                ClassModel::removeClassAndRecords($class->ClassID);
+            }
+            $success = AccountModel::markUserInactive($userID);
+        return $success;
+        
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+        
+        
+    }
     
     /*
      * Name: createLoginRecord

@@ -146,6 +146,16 @@ class AccountController extends Controller {
         $this->View->render('login/options');
     }
 
+    public function options_deleteAccountAction() {
+        $user_id = Session::get('user_id');
+        if (Session::get('user_role') == Config::get('ROLE_TEACHER', 'gen') && isset($user_id)) {
+            AccountModel::deleteTeacherAccount($user_id);
+            LoginModel::logout();
+            Redirect::to('login/index');
+        }
+    }
+    
+    
     /**
      * Show edit-my-username page
      * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
