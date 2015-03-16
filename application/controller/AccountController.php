@@ -92,8 +92,8 @@ class AccountController extends Controller {
         PasswordResetModel::requestPasswordReset($userName);
         Redirect::to('login/index');
     }
-
-    /**
+  
+   /**
      * Register page action
      * POST-request after form submit
      */

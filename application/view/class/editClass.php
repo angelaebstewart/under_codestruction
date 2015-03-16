@@ -25,7 +25,7 @@
                                 ?>
                                 <tr>
                                     <td><?php echo $firstName." ".$lastName; ?></td>
-                                    <td><button type="button" class="btn btn-xs btn-danger" onclick="confirmDelete(this)">Delete</button></td>
+                                    <td><button type="button" class="btn btn-xs btn-danger" onclick="confirmDeleteStudent(this,<?php echo $userID ?>)">Delete</button></td>
                                 </tr>
 
                                 <?php
@@ -138,4 +138,35 @@ function addStudent(classID_in) {
         },
         error: function () {alert("error");}
         });
-}</script>
+}
+
+
+function confirmDeleteStudent(param,studentID_in) {
+var result = window.confirm("Are you sure you want to delete this student?");
+    if (result == true) {
+        deleteStudent(studentID_in);
+        var row = param.parentElement.parentElement;
+        row.parentElement.removeChild(row);
+    }
+    
+    
+}
+
+// returns True on success, false if error occurs
+function deleteStudent(studentID_in) {
+    var data = {
+        studentID : studentID_in
+        };
+        $.ajax({
+        type: "POST",
+        url: "<?php echo Config::get('URL', 'gen'); ?>class/removeStudent_action",
+        data: data,
+        success: function () {
+            alert("The student was successfully removed from the class.");
+        },
+        error: function () {
+            alert("There was an error deleting this student.");}
+        });
+}
+
+</script>
