@@ -70,20 +70,27 @@ class ClassController extends Controller {
         $fname = Request::post('fname');
         $lname = Request::post('lname');
         $email = Request::post('email');
-        $password = Request::post('password');
+        //$password = Request::post('password');
         $classID = Request::post('classID');
-        if (isset($fname) && isset($lname) && isset($email) && isset($password) && isset($classID)) {
+        if (isset($fname) && isset($lname) && isset($email) /*&& isset($password)*/ && isset($classID)) {
             // Compute the password hash:
-            $password_hash = RegistrationModel::hashPassword($password);
+            //$password_hash = RegistrationModel::hashPassword($password);
+            $password_hash = 'blank';
             // Generate the activation hash:
             $activation_hash = RegistrationModel::generateActivationHash();
             // Add the student to the database
             $user_id = RegistrationModel::writeNewUserToDatabase($fname, $lname, $email, $password_hash, $activation_hash, 'Student');
             // Send a verification email:
-            RegistrationModel::sendVerificationEmail($user_id, $email, $activation_hash);
+            //RegistrationModel::sendVerificationEmail($user_id, $email, $activation_hash);
+            PasswordResetModel::sendPasswordResetMail($user_id, $activation_hash, $email);
             // Enroll the student
             ClassModel::enrollStudentInClass($user_id, $classID);
-
+            
+            $sql = "INSERT INTO codestructionloginattempt(UserID) 
+                        VALUES (:user_id,)";
+		$query = $database->prepare($sql);
+		$query->execute(array( ':user_id' => $user_id,));
+            
             $response_array['status'] = 'success';
 
             echo json_encode($response_array);
