@@ -170,8 +170,4 @@ class ClassController extends Controller {
         }
     }
 
-    public function viewTest() {
-        $this->View->render('class/test');
-    }
-
 }

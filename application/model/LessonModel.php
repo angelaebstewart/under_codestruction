@@ -6,16 +6,16 @@
 class LessonModel {
 
     /**
-    * Get a list of all lessons in the system, with an indication of which
-    * are currently accessible to the user.
-    *
-    * @param $user_id int The user's UserID
-    * @param $user_role int The user's role (student=1, teacher=2)
-    * 
-    * @return array List of all lessons in the system. All module "name"s
-    * are given, but module "id"s are only given for those accessible to the 
-    * user
-    */
+     * Get a list of all lessons in the system, with an indication of which
+     * are currently accessible to the user.
+     *
+     * @param $user_id int The user's UserID
+     * @param $user_role int The user's role (student=1, teacher=2)
+     * 
+     * @return array List of all lessons in the system. All module "name"s
+     * are given, but module "id"s are only given for those accessible to the 
+     * user
+     */
     public static function getLessonList($user_id, $user_role) {
         if (isset($user_id)) {
 
@@ -42,7 +42,8 @@ class LessonModel {
                 if ($isTeacher || intval($lesson->ModuleID) <= $highestLesson + 1) {
                     array_push($processedLessons["lessonList"], array(
                         "name" => $lesson->ModuleName,
-                        "id" => $lesson->ModuleID
+                        "id" => $lesson->ModuleID,
+                        "ModuleDescription" => $lesson->ModuleDescription,
                     ));
                 } else {
                     array_push($processedLessons["lessonList"], array(
@@ -64,12 +65,27 @@ class LessonModel {
      */
     public static function getAllLessons() {
         $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "SELECT ModuleID, ModuleName FROM codestructionmodule";
+        $sql = "SELECT ModuleID, ModuleName, ModuleDescription FROM codestructionmodule";
         $query = $database->prepare($sql);
         $query->execute();
         return $query->fetchAll();
     }
-    
+
+    /**
+     * Get the Descritpion of the lesson specified.
+     * 
+     * @param type $lesson_id
+     */
+    public static function getLessonDescription($lesson_id) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "SELECT  ModuleDescription
+                    FROM codestructionmodule
+                    WHERE ModuleID = :lesson_id";
+        $query = $database->prepare($sql);
+        $query->execute(array(':lesson_id' => $lesson_id));
+        return $query->fetchAll();
+    }
+
     /**
      * For any given lesson, return its ModuleName, GameLink, AssessmentLink,
      * and VideoLink.
@@ -87,7 +103,7 @@ class LessonModel {
                     WHERE ModuleID = :lesson_id";
         $query = $database->prepare($sql);
         $query->execute(array(':lesson_id' => $lesson_id));
-        
+
         if ($query->rowCount() === 1) { // Data successfully pulled
             $lessonData = $query->fetch();
             $lessonData->canViewAssessment = LessonModel::hasViewedVideoAndGame($user_id, $lesson_id);
@@ -121,19 +137,17 @@ class LessonModel {
             return -1;
         }
     }
-    
-    
+
     public static function hasStartedLesson($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "SELECT 1 FROM codestructionmoduleprogress
             WHERE UserID = :user_id AND ModuleID = :lesson_id";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
-        
+
         return ($query->rowCount() >= 1);
     }
-    
-    
+
     public static function hasViewedVideoAndGame($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "SELECT 1 FROM codestructionmoduleprogress
@@ -141,24 +155,23 @@ class LessonModel {
             AND VideoStatus='Completed' AND GameStatus='Completed'";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
-        
+
         return ($query->rowCount() >= 1);
     }
-    
-    
+
     public static function recordStartedLesson($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "INSERT INTO codestructionmoduleprogress (UserID, ModuleID, GameStatus, VideoStatus, AssessmentStatus, CompletionAttemptNumber, isValid)
                 VALUES (:user_id, :lesson_id, 'Not Started', 'Not Started', 'Not Started', 0, 1)";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
-        
+
         if ($query->rowCount() >= 1) {
             return 1;
-        } else return -1;
+        } else
+            return -1;
     }
-    
-    
+
     public static function recordViewedVideo($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "UPDATE codestructionmoduleprogress 
@@ -166,11 +179,10 @@ class LessonModel {
                 WHERE UserID = :user_id AND ModuleID = :lesson_id";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
-        
+
         return $query;
     }
-    
-    
+
     public static function recordViewedGame($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "UPDATE codestructionmoduleprogress 
@@ -178,11 +190,10 @@ class LessonModel {
                 WHERE UserID = :user_id AND ModuleID = :lesson_id";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
-        
+
         return $query;
     }
-    
-    
+
     public static function recordViewedAssessment($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "UPDATE codestructionmoduleprogress 
@@ -190,11 +201,10 @@ class LessonModel {
                 WHERE UserID = :user_id AND ModuleID = :lesson_id AND AssessmentStatus<>'Completed'";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
-        
+
         return $query;
     }
-    
-    
+
     /**
      * Determine whether a given lesson ID corresponds to an actual lesson in
      * the system.
@@ -206,13 +216,13 @@ class LessonModel {
      */
     public static function isValidLessonID($lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
-        
+
         $sql = "SELECT ModuleID
             FROM codestructionmodule
             WHERE ModuleID = :lesson_id";
         $query = $database->prepare($sql);
         $query->execute(array(':lesson_id' => $lesson_id));
-        
+
         return ($query->rowCount() >= 1);
     }
 
