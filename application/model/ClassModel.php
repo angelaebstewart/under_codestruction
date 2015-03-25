@@ -237,8 +237,8 @@ class ClassModel {
             $db = DatabaseFactory::getFactory()->getConnection();
 
             // Obtain the next class ID to be used
-            $classID = getNextClassID();
-            if (doesClassExistWithName($classTitle)) {
+            $classID = ClassModel::getNextClassID();
+            if (ClassModel::doesValidClassExistWithName($classTitle)) {
                 return false;
             }
             // Create the new class record$db = DatabaseFactory::getFactory()->getConnection();
@@ -289,10 +289,10 @@ class ClassModel {
      * @return Boolean, if the class exists
      */
 
-    public static function doesClassExistWithName($className) {
+    public static function doesValidClassExistWithName($className) {
         if (isset($className)) {
             $db = DatabaseFactory::getFactory()->getConnection();
-            $sql = "SELECT COUNT(*) as result FROM codestructionclass Class WHERE ClassName = :className";
+            $sql = "SELECT COUNT(*) as result FROM codestructionclass Class WHERE ClassName = :className AND IsValid = 1";
             $query = $db->prepare($sql);
             $query->execute(array(':className' => $className));
             $result = $query->fetchAll();
@@ -346,7 +346,6 @@ class ClassModel {
      * @param int $classID The classID to change
      * @return Boolean, whether a class was marked as inactive
      */
-
     public static function markClassInactive($classID) {
         if (isset($classID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
@@ -355,12 +354,40 @@ class ClassModel {
             $arrayVariable = array(':classID' => $classID);
             $query->execute($arrayVariable);
             if ($query->rowCount() == 1) {
-                return True; // Update succeeded
+                return True; // lpdate succeeded
             }
             return False;
         } else {
             throw new InvalidArgumentException("Invalid Parameters");
         }
     }
-
+    
+    
+    
+    
+    /*
+     * Name: removeClassAndRecords
+     * Description:
+     *  Marks a class as inactive, and cleans up all related records.
+     * @author Ethan Mata
+     * @Date 3/15/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @param int $classID The classID to remove
+     * @return Boolean, whether the class and all related information was deleted
+     */
+    public function removeClassAndRecords($classID) {
+        
+        if (isset($classID)) {
+            $studentList = ClassModel::getStudentsFromClass($classID);
+            foreach ($studentList as $value)
+            {
+                ClassModel::removeStudentFromClass($value->uid, $classID);
+                AccountModel::markUserInactive($value->uid);
+            }
+            $class_success = ClassModel::markClassInactive($classID);
+        return $class_success;
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }
 }

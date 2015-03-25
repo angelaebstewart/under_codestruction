@@ -19,8 +19,11 @@ class GameController extends Controller {
     public function viewGame() {
         $userID = Session::get('user_id');
         $userRole = Session::get('user_role');
-        if(isset($userID) && isset($userRole)) {
-            if (GameModel::canViewGame($userID, $userRole, Request::get('id'))) {
+        $lessonID = Request::get('id');
+        
+        if(isset($userID) && isset($userRole) && isset($lessonID)) {
+            if (GameModel::canViewGame($userID, $userRole, $lessonID)) {
+                LessonModel::recordViewedGame($userID, $lessonID);
                 $this->View->render('lesson/viewGame');
             } else {
                 Redirect::to('lesson/index');

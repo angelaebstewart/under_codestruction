@@ -22,8 +22,15 @@ class AssessmentController extends Controller {
     public function viewAssessment() {
         $userID = Session::get('user_id');
         $userRole = Session::get('user_role');
-        if (GameModel::canViewGame($userID, $userRole, Request::get('id'))) {
-            $this->View->render('lesson/viewAssessment');
+        $lessonID = Request::get('id');
+        
+        if (LessonModel::canViewLesson($userID, $userRole, $lessonID)) {
+            if (LessonModel::hasViewedVideoAndGame($userID, $lessonID)) {
+                LessonModel::recordViewedAssessment($userID, $lessonID);
+                $this->View->render('lesson/viewAssessment');
+            } else {
+                Redirect::to('lesson/index');
+            }
         } else {
             Redirect::to('lesson/index');
         }

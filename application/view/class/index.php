@@ -12,7 +12,7 @@
                             <tr>
                                 <th>Class Name</th>
                                 <th><button type="button" class="btn btn-xs btn-danger"  data-toggle="modal" data-target="#myModal">New Class</button></th>
-
+                                <th></th>
 
                             </tr>
                         </thead>
@@ -25,6 +25,7 @@
                                 <tr>
                                     <td><a href="<?php echo Config::get('URL', 'gen'); ?>class/viewClass/?classID=<?php echo $classID ?>"><?php echo $className ?></a></td>
                                     <td><button type="button" class="btn btn-xs btn-danger" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>class/edit?classID=<?php echo $classID; ?>'">Edit</button></td>
+                                    <td><button type="button" class="btn btn-xs btn-danger" onclick="confirmDeleteClass(this, <?php echo $classID ?>)">Delete</button></td>
                                 </tr>
 
                                 <?php
@@ -88,7 +89,39 @@ var $returnBox = $(".the-return");
     });
 
 });
+
+
+
+
+function confirmDeleteClass(param,classID_in) {
+var result = window.confirm("Are you sure you want to delete this class?");
+    if (result == true) {
+        deleteClass(classID_in);
+        var row = param.parentElement.parentElement;
+        row.parentElement.removeChild(row);
+    }
+    
+    
+}
+
+// returns True on success, false if error occurs
+function deleteClass(classID_in) {
+    var data = {
+        classID : classID_in
+        };
+        $.ajax({
+        type: "POST",
+        url: "<?php echo Config::get('URL', 'gen'); ?>class/removeClass_action",
+        data: data,
+        success: function () {
+            alert("The class was sucessfully deleted.");
+        },
+        error: function () {
+            alert("There was an error deleting this class.");}
+        });
+}
 </script>
+
 
 <!-- echo out the system feedback (error and success messages) -->
 <?php $this->renderFeedbackMessages(); ?>
