@@ -96,7 +96,7 @@ class LessonModel {
      * VideoLink of the lesson; if the lesson_id does not correspond to a
      * lesson in the system, the lessonData key value will be set to NULL
      */
-    public static function getLessonData($user_id, $lesson_id) {
+    public static function getLessonData($user_id, $user_role, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "SELECT ModuleName, GameLink, AssessmentLink, VideoLink 
                     FROM codestructionmodule
@@ -106,7 +106,7 @@ class LessonModel {
 
         if ($query->rowCount() === 1) { // Data successfully pulled
             $lessonData = $query->fetch();
-            $lessonData->canViewAssessment = LessonModel::hasViewedVideoAndGame($user_id, $lesson_id);
+            $lessonData->canViewAssessment = AccountModel::isTeacher($user_role) || LessonModel::hasViewedVideoAndGame($user_id, $lesson_id);
             return array("lessonData" => $lessonData);
         } else { // Data not successfully pulled
             return array("lessonData" => NULL);

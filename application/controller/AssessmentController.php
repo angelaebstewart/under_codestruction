@@ -25,7 +25,7 @@ class AssessmentController extends Controller {
         $lessonID = Request::get('id');
         
         if (LessonModel::canViewLesson($userID, $userRole, $lessonID)) {
-            if (LessonModel::hasViewedVideoAndGame($userID, $lessonID)) {
+            if (AssessmentModel::canViewAssessment($userID, $userRole, $lessonID)) {
                 LessonModel::recordViewedAssessment($userID, $lessonID);
                 $this->View->render('lesson/viewAssessment');
             } else {

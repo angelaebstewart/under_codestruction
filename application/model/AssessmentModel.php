@@ -5,8 +5,8 @@
  */
 class AssessmentModel {
     public static function canViewAssessment($user_id, $user_role, $lesson_id) {
-        if (LessonModel::canViewLesson($lesson_id)) {
-            return LessonModel::hasViewedVideoAndGame($user_id, $lesson_id);
+        if (LessonModel::canViewLesson($user_id, $user_role, $lesson_id)) {
+            return AccountModel::isTeacher($user_role) || LessonModel::hasViewedVideoAndGame($user_id, $lesson_id);
         } else {
             return false;
         }
