@@ -237,8 +237,8 @@ class ClassModel {
             $db = DatabaseFactory::getFactory()->getConnection();
 
             // Obtain the next class ID to be used
-            $classID = getNextClassID();
-            if (doesClassExistWithName($classTitle)) {
+            $classID = ClassModel::getNextClassID();
+            if (ClassModel::doesValidClassExistWithName($classTitle)) {
                 return false;
             }
             // Create the new class record$db = DatabaseFactory::getFactory()->getConnection();
@@ -289,10 +289,10 @@ class ClassModel {
      * @return Boolean, if the class exists
      */
 
-    public static function doesClassExistWithName($className) {
+    public static function doesValidClassExistWithName($className) {
         if (isset($className)) {
             $db = DatabaseFactory::getFactory()->getConnection();
-            $sql = "SELECT COUNT(*) as result FROM codestructionclass Class WHERE ClassName = :className";
+            $sql = "SELECT COUNT(*) as result FROM codestructionclass Class WHERE ClassName = :className AND IsValid = 1";
             $query = $db->prepare($sql);
             $query->execute(array(':className' => $className));
             $result = $query->fetchAll();

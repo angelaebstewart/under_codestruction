@@ -2,9 +2,30 @@
     <div class="contentDivision"> 
         <h1>Account Options</h1>
         
-        (Coming soon)
+        <form method="post" class="form-request">
+            <input type="submit" class="btn btn-lg btn-primary btn-block" id="changePwdBtn"  value="Delete Account" onclick="confirmDeleteAccount()"/>
+        </form>
+
 
         <!-- echo out the system feedback (error and success messages) -->
         <?php $this->renderFeedbackMessages(); ?>
     </div>
 </div>
+
+<script>
+function confirmDeleteAccount() {
+    var result = window.confirm("Are you sure you want to delete your account? \n\
+All classes you teach and students in those classes will also be deleted.");
+    if (result == true) {
+        $.ajax({
+        type: "POST",
+        url: "<?php echo Config::get('URL', 'gen'); ?>account/options_deleteAccountAction",
+        success: function () {
+            alert("Your account was successfully deleted.");
+        },
+        error: function () {
+            alert("There was an error deleting this account.");}
+        });
+    }
+}
+</script>
