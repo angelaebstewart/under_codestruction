@@ -1,6 +1,6 @@
 function check(inValue, idIn) {
     if (inValue !== 'right') {
-        alert(inValue);
+        $("#speechBubble").html(inValue);
         document.getElementById(idIn).selectedIndex = 0;
     }
 }
@@ -8,11 +8,66 @@ function check(inValue, idIn) {
 function validateForm(elem) {
     for(var i = 0; i < elem.length; i++) {
         if (elem[i].value==='Please make a selection.') {
-               alert("Answer all blanks before moving on.");
+               $("#speechBubble").html("Answer all blanks before moving on.");
                return false;
         }
     }
     return true;
+}
+
+var numBackgroundImages = 0;
+function addBackgroundImages() {
+    // <image src="<?php echo Config::get('URL','gen'); ?>/images/game/1/1/bg_1.png">
+    
+    var imagesHTML = "";
+    
+    if (gameID == 1) {
+        if (pageID == 1) numBackgroundImages = 6; // I'm sure there's a better way to do this...
+        else if (pageID == 2) numBackgroundImages = 5;
+        else if (pageID == 3) numBackgroundImages = 6;
+        else if (pageID == 4) numBackgroundImages = 7;
+        else numBackgroundImages = 0;
+    }
+    
+    for (var x=1; x<=numBackgroundImages; x++) {
+        imagesHTML += "<image id='backgroundImage" + x + "' src='" + imgFolder + "game/" + gameID + "/" + pageID + "/bg_" + x + ".png'>";
+    }
+    
+    $("#backgroundImages").html(imagesHTML);
+    
+    var x;
+    for (x=1; x<=numBackgroundImages; x++) {
+        alicejs.slide({
+            elems: $("#backgroundImage" + x), 
+            move: (x % 2 == 0) ? "up" : "left",
+            iteration: 1,
+            duration: {
+                "value": (300 + 250 * x) + "ms",
+                "randomness": "0%",
+                "offset": "0ms",
+            }
+        });
+    }
+    
+    return 300 + 250 * x + 200;
+}
+
+function fadeOutBackgroundImages() {
+    var x;
+    for (x=1; x<=numBackgroundImages; x++) {
+        alicejs.slide({
+            elems: $("#backgroundImage" + x), 
+            move: {direction: (x % 2 == 0) ? "down" : "right", start: 0, end: 1500},
+            iteration: 1,
+            duration: {
+                "value": (300 + 250 * x) + "ms",
+                "randomness": "0%",
+                "offset": "0ms",
+            }
+        });
+    }
+    
+    return 300 + 250 * x + 200;
 }
 
 function getNextGamePage() {
@@ -46,17 +101,23 @@ function getNextGamePage() {
             } else {
                 $("#gameDiv").html(data.pageData);
                 pageID++;
+                
+                var fadeDelay = addBackgroundImages();
 
-                alicejs.toss({
-                    elems: $(".gameElement"), 
-                    move: "up", 
-                    iteration: 1,
-                    duration: {
-                        "value": "1500ms",
-                        "randomness": "20%",
-                        "offset": "50ms",
-                    }
-                });
+                $("#questions").fadeTo(0, 0);
+                setTimeout(function() {
+                    alicejs.fade({
+                        elems: $("#questions"), 
+                        fade: "in",
+                        iteration: 1,
+                        duration: {
+                            "value": "300ms",
+                            "randomness": "0%",
+                            "offset": "0ms",
+                        }
+                    });
+                }, fadeDelay);
+                
 
                 $("#questions").submit(function(e) {
                     e.preventDefault();
@@ -72,8 +133,9 @@ function getNextGamePage() {
                                 "offset": "0ms",
                             }
                         });
-
-                        getNextGamePage();
+                        
+                        var fadeDelay = fadeOutBackgroundImages();
+                        setTimeout(getNextGamePage, fadeDelay);
                     }
                 });
             }
