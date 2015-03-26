@@ -2,17 +2,17 @@
     <div class="contentDivision"> 
         <h1>Account Options</h1>
         
-        <form method="post" class="form-request">
+      <!--  <form method="post" class="form-request">
             <input type="submit" class="btn btn-lg btn-primary btn-block" id="changePwdBtn"  value="Delete Account" onclick="confirmDeleteAccount()"/>
-        </form>
+        </form> -->
 
 
     <div class="create-class">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form action="#">
-                        <button id="changePswdBtn" class="btn btn-lg btn-primary btn-block" type="submit">Change Password</button>
-                        <button id="changeEmailBtn" class="btn btn-lg btn-primary btn-block" type="submit">Change Email</button>
+                        <button type="button" class="btn btn-lg btn-primary btn-block" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>account/editPassword'">Change Password</button>
+                        <button type="button" class="btn btn-lg btn-primary btn-block" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>account/editUserEmail'">Change Email</button>
                     </form>
                 </div>
             </div>
@@ -20,6 +20,11 @@
         <!-- echo out the system feedback (error and success messages) -->
         <?php $this->renderFeedbackMessages(); ?>
     </div>
+    
+    <form method="post" class="form-request">
+            <input type="submit" class="btn btn-lg btn-primary btn-block" id="changePwdBtn"  value="Delete Account" onclick="confirmDeleteAccount()"/>
+    </form>
+    
 </div>
 
 <script>

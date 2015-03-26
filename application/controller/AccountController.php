@@ -30,7 +30,7 @@ class AccountController extends Controller {
         }
     }
 
-        public function changePassword_action(){
+    public function changePassword_action(){
         $user_id = Session::get('user_id');
         $verification_code = Session::get('verification_code');
         $passwordNew = Request::post('password1');
@@ -42,6 +42,32 @@ class AccountController extends Controller {
             } else{
                 Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
                 $this->View->render('login/changePassword');
+            }
+        } else{
+        $this->View->render('error/index');
+        }
+    }
+    /**
+     * Show edit-my-user-email page
+     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
+     */
+    public function editPassword() {
+        Auth::checkAuthentication();
+        $this->View->render('login/editPassword');
+    }
+    
+    public function editPassword_action(){
+        $user_id = Session::get('user_id');
+        $verification_code = '';
+        $passwordNew = Request::post('password1');
+        $passwordRetyped = Request::post('password2');
+        if(isset($user_id) /*&& isset($verification_code)*/ && isset($passwordNew) && isset($passwordRetyped)){
+            if(($passwordNew == $passwordRetyped)&& (strlen($passwordNew) >= 6 && strlen($passwordRetyped) >= 6)){
+                ChangePasswordModel::setNewPassword($user_id, $passwordNew, $passwordRetyped);
+                Redirect::to('login/index');
+            } else{
+                Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
+                $this->View->render('login/editPassword');
             }
         } else{
         $this->View->render('error/index');
@@ -92,7 +118,49 @@ class AccountController extends Controller {
         PasswordResetModel::requestPasswordReset($userName);
         Redirect::to('login/index');
     }
-  
+      /**
+     * The request-password-reset action
+     * POST-request after form submit
+     */
+    public function requestEmailReset_action() {
+        //Retrieves the user name or e-mail variable from the session
+        $userName = Request::post('user_name_or_email');
+        $newUserName = Request::post('new_user_name_or_email');
+        if (empty($userName) || empty($newUserName)) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_EMAIL_FIELD_EMPTY'));
+            $this->View->render('login/editUserEmail');
+            return;
+        }
+        $result = AccountModel::getUserIdByUsername($userName);
+        if ($result == -1) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
+            $this->View->render('login/editUserEmail');
+            return;
+        }
+        
+        ChangeEmailModel::requestEmailReset($userName, $newUserName);
+        Redirect::to('login/index');
+    }
+    
+    /**
+     * Verify the verification token of that user (to show the user the password editing view or not)
+     * @param string $user_id user id
+     * @param string $verification_code password reset verification token
+     */
+    public function verifyEmailReset($user_id, $verification_code, $user_email) {
+        // check if this the provided verification code fits the user's verification code
+        if (ChangeEmailModel::verifyEmailReset($user_id, $verification_code)) {
+            Session::set('user_id', $user_id);
+            Session::set('verification_code', $verification_code);
+            Session::set('user_email', $user_email);
+            ChangeEmailModel::saveNewUserEmail($user_id, $user_email, $verification_code);
+            Redirect::to('login/index');
+        } else {            
+            Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_RESET_COMBINATION_DOES_NOT_EXIST'));
+            Redirect::to('login/index');
+        }
+    }
+    
    /**
      * Register page action
      * POST-request after form submit
@@ -191,8 +259,22 @@ class AccountController extends Controller {
      */
     // make this POST
     public function editUserEmail_action() {
-        Auth::checkAuthentication();
+        /*Auth::checkAuthentication();
         AccountModel::editUserEmail(Request::post('user_email'));
-        Redirect::to('login/editUserEmail');
+        Redirect::to('login/editUserEmail');*/
+        $user_id = Session::get('user_id');
+        $passwordNew = Request::post('password1');
+        $passwordRetyped = Request::post('password2');
+        if(isset($user_id) && isset($passwordNew) && isset($passwordRetyped)){
+            if(($passwordNew == $passwordRetyped)&& (strlen($passwordNew) >= 6 && strlen($passwordRetyped) >= 6)){
+                PasswordResetModel::setNewPassword($user_id, $passwordNew, $passwordRetyped);
+                $this->View->render('login/index');
+            } else{
+                Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
+                $this->View->render('login/requestEmailChange');
+            }
+        } else{
+        $this->View->render('error/index');
+        }
     }
 }

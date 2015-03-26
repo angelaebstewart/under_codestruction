@@ -14,5 +14,10 @@ return array(
 	'EMAIL_VERIFICATION_FROM_NAME' => 'Under Codestruction',
 	'EMAIL_VERIFICATION_SUBJECT' => 'Account activation for Under Codestruction',
 	'EMAIL_VERIFICATION_CONTENT' => 'Please click on this link to activate your account: ',
+        'EMAIL_EMAIL_RESET_URL' => 'account/verifyemailreset',
+	'EMAIL_EMAIL_RESET_FROM_EMAIL' => 'no-reply@auburn.edu',
+	'EMAIL_EMAIL_RESET_FROM_NAME' => 'Under Codestruction',
+	'EMAIL_EMAIL_RESET_SUBJECT' => 'Email change for Under Codestruction',
+	'EMAIL_EMAIL_RESET_CONTENT' => 'Please click on this link to update your email: ',
     
     );
