@@ -12,15 +12,11 @@ class AssessmentModel {
         }
     }
     
-    public static function didPassAssessment($lessonID, $question1) {
-        // Obviously this needs to be replaced with some real content...
-        if ($lessonID == 1) {
-            if ($question1 == 'answer3') {
-                return true;
-            }
+    public static function didPassAssessment($lessonID, $answers) {
+        foreach ($answers as $answer) {
+            if ($answer !== "right") return false;
         }
-        
-        return false;
+        return true;
     }
     
     public static function recordPassedAssessment($user_id, $lesson_id) {

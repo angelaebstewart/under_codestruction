@@ -40,10 +40,21 @@ class AssessmentController extends Controller {
      * When a student completes an assessment, also should handle the case
      * of if a teacher completes an assessment.
      */
-    public function submitAssessment()
-    {
+    public function submitAssessment() {
+        
+        // Collect assessment answers into '$answers'
+        $x = 1;
+        while (true) {
+            $value = Request::post("Q" . $x);
+            if ($value === NULL) break;
+            else {
+                $answers["Q" . $x] = $value;
+                $x++;
+            }
+        }
+        
         $userID = Session::get('user_id');
-        if (AssessmentModel::didPassAssessment(Request::get('id'), Request::post('question1'))) {
+        if (AssessmentModel::didPassAssessment(Request::get('id'), $answers)) {
             AssessmentModel::recordPassedAssessment($userID, Request::get('id'));
             
             Session::add('feedback_positive', 'You passed the assessment!');
