@@ -41,7 +41,7 @@ class LessonController extends Controller {
             if (!LessonModel::hasStartedLesson($userID, $lesson_id)) {
                 LessonModel::recordStartedLesson($userID, $lesson_id);
             }
-            $lessonData = LessonModel::getLessonData($userID, $lesson_id);
+            $lessonData = LessonModel::getLessonData($userID, $userRole, $lesson_id);
             $this->View->render('lesson/viewLesson', $lessonData);
         } else {
             Redirect::to('lesson/index');

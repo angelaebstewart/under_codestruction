@@ -8,27 +8,68 @@ and open the template in the editor.
     Author     : Angela Stewart
 */
 
-            .gameContent #canvas
-            {
+            .gameContent {
+                position: relative;
+                height: 600px;
+            }
+            
+            .gameContent #canvas {
                 margin-left: 10px;
                 margin-top: 10px;
-                background: #3D3F49;
+                /*background: #3D3F49;*/
                 border: thin solid #aaaaaa;
             }
-            .gameContent #gameDiv 
-            {
+            .gameContent #gameDiv {
                 position: absolute;
-                left: 50px;
-                top: 100px;
+                left: 40px;
+                top: 80px;
                 color: #eeeeee;
+                background: rgba(94, 88, 88, 0.80);
+                padding: 10px;
+                width: 620px;
+            }
+            
+            .gameContent #backgroundImages {
+                position: relative;
+            }
+            
+            #backgroundImages img {
+                position: absolute;
+                top: 11px;
+                left: 11px;
             }
             
             .gameContent select, 
-            .gameContent button
-            {
+            .gameContent button {
                 color: #000000;
             }
             
             .gameContent .gameElement {
                 display: inline-block;
+            }
+            
+            #speechBubble {
+                position: absolute;
+                left: 270px;
+                top: 225px;
+                width: 160px;
+                height: 110px;
+                font-weight: bold;
+            }
+            
+            .gameContent #chippyHolder {
+                z-index: 1000;
+                position: absolute;
+            }
+            
+            #chippyHolder #chippyImg {
+                position: absolute;
+                left: 490px;
+                top: 240px;
+            }
+            
+            #chippyHolder #speechBubbleImg {
+                position: absolute;
+                left: 250px;
+                top: 200px;
             }

@@ -247,7 +247,7 @@ var alice = (function () {
                             elemId = params.substring((params.indexOf('.')+1), params.indexOf('\')'));
                             each(lookup(elemId), push);
                         }else{
-                            console.warn('jQuery selectors must be either classes or ids.');
+                            //console.warn('jQuery selectors must be either classes or ids.');
                             return;
                         }
                     }else{
@@ -287,7 +287,7 @@ var alice = (function () {
 
                 r = n + n * ((Math.random() * 2 * f) - f);
 
-                //console.log("randomize:", "n=" + n, "factor=" + factor, "r=" + r);
+                ////console.log("randomize:", "n=" + n, "factor=" + factor, "r=" + r);
                 return Math.floor(r);
             },
 
@@ -295,7 +295,7 @@ var alice = (function () {
              * Returns duration in milliseconds
              */
             duration: function (params) {
-                //console.info("duration", params, typeof params);
+                ////console.info("duration", params, typeof params);
                 var dur,
                     parseNum = function (num) {
                         return num;
@@ -339,7 +339,7 @@ var alice = (function () {
                 default:
                     dur = params;
                 }
-                //console.log("duration:", "dur=" + dur);
+                ////console.log("duration:", "dur=" + dur);
                 return dur;
             },
 
@@ -347,7 +347,7 @@ var alice = (function () {
              * Returns x and y coordinates as percentages
              */
             coords: function (params) {
-                //console.info("coords", params);
+                ////console.info("coords", params);
                 var coordsArray = {
                     'top-left':{x: "0%", y: "0%"},
                     'top-center':{x: "50%", y: "0%"},
@@ -474,7 +474,7 @@ var alice = (function () {
                     ret = null;
                 }
 
-                //console.warn(params, ret);
+                ////console.warn(params, ret);
                 return ret;
             },
 
@@ -482,7 +482,7 @@ var alice = (function () {
              * Returns percentage in decimal form
              */
             percentage: function (params) {
-                //console.info("percentage", params);
+                ////console.info("percentage", params);
                 var pct;
 
                 if (typeof params === "string") {
@@ -507,7 +507,7 @@ var alice = (function () {
                     }
                 }
 
-                //console.log("percentage:", pct=" + pct);
+                ////console.log("percentage:", pct=" + pct);
                 return pct;
             },
 
@@ -543,7 +543,7 @@ var alice = (function () {
                 }
 
                 if (this.debug) {
-                    console.log("prefix=" + this.prefix, "prefixJS=" + this.prefixJS);
+                    ////console.log("prefix=" + this.prefix, "prefixJS=" + this.prefixJS);
                 }
 
                 return;
@@ -595,10 +595,10 @@ var alice = (function () {
                             ruleNum = document.styleSheets[0].cssRules.length;
                         }
                         document.styleSheets[0].insertRule(rule, ruleNum);
-                        //console.log(rule);
+                        ////console.log(rule);
                     }
                     catch (ex) {
-                        console.warn(ex.message, rule);
+                        //console.warn(ex.message, rule);
                     }
                 }
                 else {
@@ -621,7 +621,7 @@ var alice = (function () {
                     if (document.styleSheets[0][cssrules][i].name === ruleName) {
                         document.styleSheets[0].deleteRule(i);
                         if (this.debug) {
-                            console.log("Deleted keyframe: " + ruleName);
+                            ////console.log("Deleted keyframe: " + ruleName);
                         }
                         break;
                     }
@@ -633,7 +633,7 @@ var alice = (function () {
              * Clear animation settings
              */
             clearAnimation: function (evt) {
-                //console.info("_clearAnimation", this, evt.srcElement.id, evt.animationName, evt.elapsedTime);
+                ////console.info("_clearAnimation", this, evt.srcElement.id, evt.animationName, evt.elapsedTime);
                 this.style[this.prefixJS + "AnimationName"] = " ";
                 this.style[this.prefixJS + "AnimationDelay"] = " ";
                 this.style[this.prefixJS + "AnimationDuration"] = " ";
@@ -650,18 +650,18 @@ var alice = (function () {
             },
 
             init: function (params) {
-                console.info("Initializing " + this.name + " (" + this.description + ") " + this.version);
+                ////console.info("Initializing " + this.name + " (" + this.description + ") " + this.version);
 
                 this.vendorPrefix();
 
                 if (params && params.elems) {
                     this.elems = this.elements(params.elems);
-                    //console.log(this.elems);
+                    ////console.log(this.elems);
                 }
 
                 // Add optional support for jWorkflow (https://github.com/tinyhippos/jWorkflow)
                 if (params && params.workflow === true) {
-                    console.log("jWorkflow: enabled");
+                    ////console.log("jWorkflow: enabled");
 
                     var id = (params && params.id) ? params.id : '',
 
@@ -674,7 +674,7 @@ var alice = (function () {
                             },
                             log: function (msg) {
                                 workflow.andThen(function () {
-                                    console.log(msg);
+                                    ////console.log(msg);
                                 });
                                 return animation;
                             },
@@ -684,7 +684,7 @@ var alice = (function () {
                             },
                             start: function () {
                                 workflow.start(function () {
-                                    console.info("workflow.start");
+                                    ////console.info("workflow.start");
                                 });
                             }
                         };
@@ -703,7 +703,7 @@ var alice = (function () {
                     return animation;
                 }
                 else {
-                    console.log("jWorkflow: disabled");
+                    ////console.log("jWorkflow: disabled");
                 }
 
                 return core.plugins;
@@ -731,7 +731,7 @@ alice.format = {
             r = alice.randomize(d, alice.percentage(params.randomness));
             dur = Math.abs(r);
         }
-        //console.log(d, r, dur);
+        ////console.log(d, r, dur);
         return dur + "ms";
     },
 
@@ -793,7 +793,7 @@ alice.helper = {
         var val = rotate;
         if (params.randomness) {
             val = alice.randomize(val, alice.percentage(params.randomness));
-            //console.log("rotation:", "rotate=" + rotate, "params.randomness=" + params.randomness, "val=" + val);
+            ////console.log("rotation:", "rotate=" + rotate, "params.randomness=" + params.randomness, "val=" + val);
         }
         return val;
     }
@@ -867,7 +867,7 @@ var alicejs = alice.init();
 alice.plugins.cheshire = function (params) {
     "use strict";
 
-    console.info("cheshire", params);
+    ////console.info("cheshire", params);
 
     var
         // Initialize variables and set defaults
@@ -982,7 +982,7 @@ alice.plugins.cheshire = function (params) {
                     over = posEnd + (sign * Math.floor(posEnd * overshoot));
 
                     if (alice.debug) {
-                        console.log(alice.docHeight(), window.innerHeight, window.pageYOffset, container.clientHeight);
+                        ////console.log(alice.docHeight(), window.innerHeight, window.pageYOffset, container.clientHeight);
                     }
                     break;
                 }
@@ -1051,7 +1051,7 @@ alice.plugins.cheshire = function (params) {
 
             css += "}" + "\n";
 
-            console.log(css);
+            ////console.log(css);
 
             // Insert keyframe rule
             alice.keyframeInsert(css);
@@ -1085,14 +1085,14 @@ alice.plugins.cheshire = function (params) {
             }
 
             if (alice.debug) {
-                console.log(css);
-                console.log(container.style);
-                console.log(elem.id, alice.prefixJS, elem.style, elem.style.cssText, elem.style[alice.prefixJS + "AnimationDuration"], elem.style[alice.prefixJS + "AnimationTimingFunction"]);
+                ////console.log(css);
+                ////console.log(container.style);
+                ////console.log(elem.id, alice.prefixJS, elem.style, elem.style.cssText, elem.style[alice.prefixJS + "AnimationDuration"], elem.style[alice.prefixJS + "AnimationTimingFunction"]);
             }
         }
     }
     else {
-        console.warn("No elements!");
+        //console.warn("No elements!");
     }
 
     return params;
@@ -1122,7 +1122,7 @@ alice.plugins.cheshire = function (params) {
  */
 alice.plugins.bounce = function (params) {
     "use strict";
-    console.info("bounce: ", arguments);
+    ////console.info("bounce: ", arguments);
 
     if(!params){ params = ''; }
 
@@ -1168,7 +1168,7 @@ alice.plugins.bounce = function (params) {
  */
 alice.plugins.dance = function (params) {
     "use strict";
-    console.info("dance: ", arguments);
+    ////console.info("dance: ", arguments);
 
      if(!params){ params = ''; }
 
@@ -1205,7 +1205,7 @@ alice.plugins.dance = function (params) {
  */
 alice.plugins.drain = function (params) {
     "use strict";
-    console.info("drain: ", arguments);
+    //console.info("drain: ", arguments);
 
     if(!params){ params = ''; }
 
@@ -1243,7 +1243,7 @@ alice.plugins.drain = function (params) {
  */
 alice.plugins.fade = function (params) {
     "use strict";
-    console.info("fade: ", arguments);
+    //console.info("fade: ", arguments);
 
     if(!params){ params = ''; }
 
@@ -1280,7 +1280,7 @@ alice.plugins.fade = function (params) {
  */
 alice.plugins.hinge = function (params) {
     "use strict";
-    console.info("hinge: ", arguments);
+    //console.info("hinge: ", arguments);
 
     if(!params){ params = ''; }
 
@@ -1320,7 +1320,7 @@ alice.plugins.hinge = function (params) {
  */
 alice.plugins.pageFlip = function (params) {
     "use strict";
-    console.info("pageFlip: ", arguments);
+    //console.info("pageFlip: ", arguments);
 
     if(!params){ params = ''; }
 
@@ -1374,7 +1374,7 @@ alice.plugins.pageFlip = function (params) {
  */
 alice.plugins.pendulum = function (params) {
     "use strict";
-    console.info("pendulum: ", arguments);
+    //console.info("pendulum: ", arguments);
 
     if(!params){ params = ''; }
 
@@ -1414,7 +1414,7 @@ alice.plugins.pendulum = function (params) {
  */
 alice.plugins.phantomZone = function (params) {
     "use strict";
-    console.info("phantomZone: ", arguments);
+    //console.info("phantomZone: ", arguments);
 
     if(!params){ params = ''; }
 
@@ -1454,7 +1454,7 @@ alice.plugins.phantomZone = function (params) {
  */
 alice.plugins.raceFlag = function (params) {
     "use strict";
-    console.info("raceFlag: ", arguments);
+    //console.info("raceFlag: ", arguments);
 
     if(!params){ params = ''; } 
 
@@ -1493,7 +1493,7 @@ alice.plugins.raceFlag = function (params) {
  */
 alice.plugins.slide = function (params) {
     "use strict";
-    console.info("slide: ", arguments);
+    //console.info("slide: ", arguments);
 
     if(!params){ params = ''; } 
 
@@ -1530,7 +1530,7 @@ alice.plugins.slide = function (params) {
  */
 alice.plugins.spin = function (params) {
     "use strict";
-    console.info("spin: ", arguments);
+    //console.info("spin: ", arguments);
 
     if(!params){ params = ''; } 
 
@@ -1571,7 +1571,7 @@ alice.plugins.spin = function (params) {
  */
 alice.plugins.toss = function (params) {
     "use strict";
-    console.info("toss: ", arguments);
+    //console.info("toss: ", arguments);
 
     if(!params){ params = ''; } 
 
@@ -1611,7 +1611,7 @@ alice.plugins.toss = function (params) {
  */
 alice.plugins.twirl = function (params) {
     "use strict";
-    console.info("twirl: ", arguments);
+    //console.info("twirl: ", arguments);
 
     if(!params){params = '';}
 
@@ -1648,7 +1648,7 @@ alice.plugins.twirl = function (params) {
  */
 alice.plugins.wobble = function (params) {
     "use strict";
-    console.info("wobble: ", arguments);
+    //console.info("wobble: ", arguments);
 
     if(!params){params = '';}
 
@@ -1686,7 +1686,7 @@ alice.plugins.wobble = function (params) {
  */
 alice.plugins.zoom = function (params) {
     "use strict";
-    console.info("zoom: ", arguments);
+    //console.info("zoom: ", arguments);
 
     if(!params){params = '';}
 
@@ -2330,7 +2330,7 @@ alice.plugins.caterpillar = (function () {
                         rpn++;   
                     }
                     else{
-                        console.error("Your pages must be all be the DIV tag element. Please place the contents inside.");  
+                        //console.error("Your pages must be all be the DIV tag element. Please place the contents inside.");  
                         return false;  
                     }
                 }
@@ -2840,7 +2840,7 @@ alice.plugins.caterpillar = (function () {
                     }
                 }catch(err){ 
                     if(params.wrap !== true){   
-                        console.log("This is the end of the book!");
+                        //console.log("This is the end of the book!");
                         return false;  
                     }
                 }
@@ -2887,7 +2887,7 @@ alice.plugins.caterpillar = (function () {
                     page.style.zIndex = '10'; 
                 }catch(err){
                    if(params.wrap !== true){   
-                        console.log("This is the start of the book!");
+                        //console.log("This is the start of the book!");
                         return false; 
                     } 
                 }
@@ -2988,7 +2988,7 @@ alice.plugins.caterpillar = (function () {
 
 alice.plugins.book = function (params) {
     "use strict";
-    console.info("book: ", arguments);
+    //console.info("book: ", arguments);
 
     if(!params){ params = ''; }
 
@@ -3008,13 +3008,13 @@ alice.plugins.book = function (params) {
         paging: "double"
     };
 
-    console.log(opts);
+    ////console.log(opts);
     return alice.plugins.caterpillar.init(opts);
 };
 
 alice.plugins.notebook = function (params) {
     "use strict";
-    console.info("notebook: ", arguments);
+    //console.info("notebook: ", arguments);
 
     if(!params){ params = ''; }
 
@@ -3036,13 +3036,13 @@ alice.plugins.notebook = function (params) {
         piggyBg: params.pageBackground || '#222'
     };
 
-    console.log(opts);
+    ////console.log(opts);
     return alice.plugins.caterpillar.init(opts);
 };
 
 alice.plugins.flipbook = function (params) {
     "use strict";
-    console.info("flipbook: ", arguments);
+    //console.info("flipbook: ", arguments);
 
     if(!params){ params = ''; }
 
@@ -3063,7 +3063,7 @@ alice.plugins.flipbook = function (params) {
         wrap: params.wrap || false,
     };
 
-    console.log(opts);
+    ////console.log(opts);
     return alice.plugins.caterpillar.init(opts);
 };
 

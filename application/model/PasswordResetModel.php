@@ -21,7 +21,7 @@ class PasswordResetModel
 		// check if that username exists
 		$result = AccountModel::getUserIdByUsername($user_name_or_email);
 		if ($result == -1) {
-			Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
+			//Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
 			return false;
 		}
 
@@ -58,7 +58,7 @@ class PasswordResetModel
 	{
 		$database = DatabaseFactory::getFactory()->getConnection();
 
-		$sql = "UPDATE codestructionuser SET VerificationHash = :user_password_reset_hash, PasswordUpdated = 0 WHERE UserID = :user_id LIMIT 1";
+		$sql = "UPDATE codestructionuser SET ResetHash = :user_password_reset_hash, PasswordUpdated = 0 WHERE UserID = :user_id LIMIT 1";
 		$query = $database->prepare($sql);
 		$query->execute(array(':user_password_reset_hash' => $user_password_reset_hash, ':user_id' => $user_id));
 
@@ -118,7 +118,7 @@ class PasswordResetModel
 		$sql = "SELECT UserID
                   FROM codestructionuser
                  WHERE UserID = :user_id
-                       AND VerificationHash = :user_password_reset_hash
+                       AND ResetHash = :user_password_reset_hash
                  LIMIT 1";
 		$query = $database->prepare($sql);
 		$query->execute(array(
@@ -147,11 +147,10 @@ class PasswordResetModel
 
 		$sql = "UPDATE codestructionuser
                    SET PasswordHash = :user_password_hash,
-                       VerificationHash = NULL,
-                       PasswordUpdated = 1,
-                       Verified = 1
+                       ResetHash = NULL,
+                       PasswordUpdated = 1
                  WHERE UserID = :user_id
-                       AND VerificationHash = :user_password_reset_hash
+                       AND ResetHash = :user_password_reset_hash
                  LIMIT 1";
 		$query = $database->prepare($sql);
 		$query->execute(array(
@@ -203,12 +202,12 @@ class PasswordResetModel
 
 		// write user's new password hash into database, reset user_password_reset_hash
 		if (PasswordResetModel::saveNewUserPassword($user_id, $user_password_hash, $user_password_reset_hash)) {
-			Session::add('feedback_positive', Text::get('FEEDBACK_PASSWORD_CHANGE_SUCCESSFUL'));
+			//Session::add('feedback_positive', Text::get('FEEDBACK_PASSWORD_CHANGE_SUCCESSFUL'));
 			return true;
 		}
 
 		// default return
-		Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
+		//Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
 		return false;
 	}
 }
