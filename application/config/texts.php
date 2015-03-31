@@ -48,6 +48,4 @@ return array(
 	"FEEDBACK_PASSWORD_RESET_LINK_VALID" => "Password reset validation link is valid. Please change the password now.",
 	"FEEDBACK_PASSWORD_CHANGE_SUCCESSFUL" => "Password successfully changed.",
 	"FEEDBACK_PASSWORD_CHANGE_FAILED" => "Sorry, your password changing failed.",
-	"FEEDBACK_COOKIE_INVALID" => "Your remember-me-cookie is invalid.",
-	"FEEDBACK_COOKIE_LOGIN_SUCCESSFUL" => "You were successfully logged in via the remember-me-cookie.",
 );

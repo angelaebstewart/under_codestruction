@@ -2,6 +2,13 @@
 <html  lang="en">
     <head>
         <title>Under Codestruction</title>
+       <!-- Forcing HTTPS -->
+       <!-- Uncomment this in production
+	<script>
+	if (window.location.protocol != "https:")
+	    window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
+	</script>
+       -->
         <!-- Bootstrap core CSS -->
         <link href="<?php echo Config::get('URL', 'gen'); ?>css/bootstrap.min.css" rel="stylesheet">
         <!-- Pretty Photo css for the video stuff -->

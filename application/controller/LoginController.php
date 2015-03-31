@@ -65,23 +65,6 @@ class LoginController extends Controller {
     }
 
     /**
-     * Login with cookie
-     */
-    public function loginWithCookie() {
-        // run the loginWithCookie() method in the login-model, put the result in $login_successful (true or false)
-        $login_successful = LoginModel::loginWithCookie(Request::cookie('remember_me'));
-
-        // if login successful, redirect to dashboard/index ...
-        if ($login_successful) {
-            Redirect::to('dashboard/index');
-        } else {
-            // if not, delete cookie (outdated? attack?) and route user to login form to prevent infinite login loops
-            LoginModel::deleteCookie();
-            Redirect::to('login/index');
-        }
-    }
-
-    /**
      * Generate a captcha, write the characters into $_SESSION['captcha'] and returns a real image which will be used
      * like this: <img src="......./login/showCaptcha" />
      * IMPORTANT: As this action is called via <img ...> AFTER the real application has finished executing (!), the
