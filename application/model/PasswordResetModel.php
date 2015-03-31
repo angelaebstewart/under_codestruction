@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class PasswordResetModel
- *
- * Handles all the stuff that is related to the password-reset process
+ * Class PasswordResetModel *
+ * 
+ * Handles all the logic that is related to the password-reset process
  */
 
 class PasswordResetModel
@@ -11,15 +11,15 @@ class PasswordResetModel
 	/**
 	 * Perform the necessary actions to send a password reset mail
 	 *
-	 * @param $user_name_or_email string Username or user's email
+	 * @param $email user's email
 	 *
 	 * @return bool success status
 	 */
-	public static function requestPasswordReset($user_name_or_email)
+	public static function requestPasswordReset($email)
 	{
 
-		// check if that username exists
-		$result = AccountModel::getUserIdByUsername($user_name_or_email);
+		// check if that email exists
+		$result = AccountModel::getUserIdByEmail($email);
 		if ($result == -1) {
 			//Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
 			return false;

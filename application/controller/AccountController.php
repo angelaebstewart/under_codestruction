@@ -108,7 +108,7 @@ class AccountController extends Controller {
             $this->View->render('login/requestPasswordReset');
             return;
         }
-        $result = AccountModel::getUserIdByUsername($userName);
+        $result = AccountModel::getUserIdByEmail($userName);
         if ($result == -1) {
             Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
             $this->View->render('login/requestPasswordReset');
@@ -131,7 +131,7 @@ class AccountController extends Controller {
             $this->View->render('login/editUserEmail');
             return;
         }
-        $result = AccountModel::getUserIdByUsername($userName);
+        $result = AccountModel::getUserIdByEmail($userName);
         if ($result == -1) {
             Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
             $this->View->render('login/editUserEmail');

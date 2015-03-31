@@ -11,15 +11,15 @@ class ChangeEmailModel
 	/**
 	 * Perform the necessary actions to send an email reset mail
 	 *
-	 * @param $user_name_or_email string Username or user's email
+	 * @param $email user's email
 	 *
 	 * @return bool success status
 	 */
-	public static function requestEmailReset($user_name_or_email, $new_user_name)
+	public static function requestEmailReset($email, $new_user_name)
 	{
 
 		// check if that username exists
-		$result = AccountModel::getUserIdByUsername($user_name_or_email);
+		$result = AccountModel::getUserIdByEmail($email);
 		if ($result == -1) {
 			Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
 			return false;

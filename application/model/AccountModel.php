@@ -61,11 +61,11 @@ class AccountModel {
     /**
      * Gets the user's id
      *
-     * @param $user_name
+     * @param $user_email
      *
      * @return mixed
      */
-    public static function getUserIdByUsername($user_name) {
+    public static function getUserIdByEmail($user_email) {
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "SELECT UserID FROM codestructionuser WHERE Email = :user_name LIMIT 1";
@@ -80,10 +80,6 @@ class AccountModel {
         } else {
             return -1;
         }
-    }
-
-    public static function getUserIdByEmail($user_email) {
-        return AccountModel::getUserIdByUsername($user_email);
     }
 
     /**
