@@ -223,27 +223,6 @@ class AccountController extends Controller {
         }
     }
     
-    
-    /**
-     * Show edit-my-username page
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     */
-    public function editUsername() {
-        Redirect::to('login/index');
-        //Auth::checkAuthentication();
-        //$this->View->render('login/editUsername');
-    }
-
-    /**
-     * Edit user name (perform the real action after form has been submitted)
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action
-     */
-    public function editUsername_action() {
-        Auth::checkAuthentication();
-        AccountModel::editUserName(Request::post('user_name'));
-        Redirect::to('login/index');
-    }
-
     /**
      * Show edit-my-user-email page
      * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
