@@ -4,16 +4,6 @@
  *
  */
 class AccountModel {
-    /**
-     * Checks if a username is already taken
-     *
-     * @param $user_name string username
-     *
-     * @return bool
-     */
-    public static function doesUsernameAlreadyExist($user_name) {
-        return AccountModel::doesEmailAlreadyExist($user_name);
-    }
 
     /**
      * Checks if a email is already used
@@ -89,7 +79,7 @@ class AccountModel {
      *
      * @return mixed Returns false if user does not exist, returns object with user's data when user exists
      */
-    public static function getUserDataByUsername($user_name) {
+    public static function getUserDataByEmail($user_email) {
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "SELECT  UserID, FirstName, LastName, Email,
@@ -98,22 +88,13 @@ class AccountModel {
                         CAST(passwordUpdated AS unsigned integer) AS passwordUpdated, 
                         passwordHash
                   FROM codestructionuser
-                 WHERE Email = :user_name
+                 WHERE Email = :user_email
                  LIMIT 1";
         $query = $database->prepare($sql);
-        $query->execute(array(':user_name' => $user_name));
+        $query->execute(array(':user_email' => $user_email));
 
         // return one row (we only have one result or nothing)
         return $query->fetch();
-    }
-
-    /**
-     * @param $user_name_or_email
-     *
-     * @return mixed
-     */
-    public static function getUserDataByUserNameOrEmail($user_name_or_email) {
-        return AccountModel::getUserDataByUsername($user_name_or_email);
     }
 
     public static function isTeacher($role) {
