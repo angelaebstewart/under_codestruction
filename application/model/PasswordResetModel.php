@@ -21,11 +21,8 @@ class PasswordResetModel
 		// check if that email exists
 		$result = AccountModel::getUserIdByEmail($email);
 		if ($result == -1) {
-			//Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
 			return false;
 		}
-
-		// generate integer-timestamp (to see when exactly the user (or an attacker) requested the password reset mail)
 		// generate random hash for email password reset verification (40 char string)
 		$user_password_reset_hash = sha1(uniqid(mt_rand(), true));
 
@@ -35,7 +32,7 @@ class PasswordResetModel
 			return false;
 		}
 
-		// ... and send a mail to the user, containing a link with username and token hash string
+		// ... and send a mail to the user, containing a link with userid and token hash string
 		$mail_sent = PasswordResetModel::sendPasswordResetMail($result, $user_password_reset_hash, $result);
 		if ($mail_sent) {
 			return true;
@@ -48,7 +45,7 @@ class PasswordResetModel
 	/**
 	 * Set password reset token in database
 	 *
-	 * @param string $user_name username
+	 * @param string $user_id user id
 	 * @param string $user_password_reset_hash password reset hash
 	 * @param int $temporary_timestamp timestamp
 	 *
@@ -96,17 +93,15 @@ class PasswordResetModel
 		);
 
 		if ($mail_sent) {
-			//Session::add('feedback_positive', Text::get('FEEDBACK_PASSWORD_RESET_MAIL_SENDING_SUCCESSFUL'));
 			return true;
 		}
 
-		//Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_RESET_MAIL_SENDING_ERROR') . $mail->getError() );
 		return false;
 	}
 
 	/**
 	 * Verifies the password reset request via the verification hash token (that's only valid for one hour)
-	 * @param string $user_name Username
+	 * @param string $user_id User id
 	 * @param string $verification_code Hash token
 	 * @return bool Success status
 	 */
@@ -114,7 +109,7 @@ class PasswordResetModel
 	{
 		$database = DatabaseFactory::getFactory()->getConnection();
 
-		// check if user-provided username + verification code combination exists
+		// check if user-provided userid + verification code combination exists
 		$sql = "SELECT UserID
                   FROM codestructionuser
                  WHERE UserID = :user_id
@@ -135,7 +130,7 @@ class PasswordResetModel
 	/**
 	 * Writes the new password to the database
 	 *
-	 * @param string $user_name username
+	 * @param string $user_id user id
 	 * @param string $user_password_hash
 	 * @param string $user_password_reset_hash
 	 *
@@ -169,9 +164,9 @@ class PasswordResetModel
 	 * Set the new password (for DEFAULT user)
 	 * Please note: At this point the user has already pre-verified via verifyPasswordReset() (within one hour),
 	 * so we don't need to check again for the 60min-limit here. In this method we authenticate
-	 * via username & password-reset-hash from (hidden) form fields.
+	 * via user id & password-reset-hash from (hidden) form fields.
 	 *
-	 * @param string $user_name
+	 * @param string $user_id
 	 * @param string $user_password_reset_hash
 	 * @param string $user_password_new
 	 * @param string $user_password_repeat
@@ -181,19 +176,14 @@ class PasswordResetModel
 	public static function setNewPassword($user_id, $user_password_reset_hash, $user_password_new, $user_password_repeat)
 	{
 		if (empty($user_id)) {
-			//Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_FIELD_EMPTY'));
 			return false;
 		} else if (empty($user_password_reset_hash)) {
-			//Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_RESET_TOKEN_MISSING'));
 			return false;
 		} else if (empty($user_password_new) || empty($user_password_repeat)) {
-			//Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_FIELD_EMPTY'));
 			return false;
 		} else if ($user_password_new !== $user_password_repeat) {
-			//Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_REPEAT_WRONG'));
 			return false;
 		} else if (strlen($user_password_new) < 6) {
-			//Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_TOO_SHORT'));
 			return false;
 		}
 
@@ -202,12 +192,8 @@ class PasswordResetModel
 
 		// write user's new password hash into database, reset user_password_reset_hash
 		if (PasswordResetModel::saveNewUserPassword($user_id, $user_password_hash, $user_password_reset_hash)) {
-			//Session::add('feedback_positive', Text::get('FEEDBACK_PASSWORD_CHANGE_SUCCESSFUL'));
 			return true;
 		}
-
-		// default return
-		//Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
 		return false;
 	}
 }
