@@ -162,7 +162,7 @@ class RegistrationModel {
                 $count =  $query->rowCount();
                 
                 $sql = "INSERT INTO codestructionloginattempt(UserID) 
-                        VALUES (:user_id,)";
+                        VALUES (:user_id)";
 		$query = $database->prepare($sql);
 		$query->execute(array( ':user_id' => $user_id,));
 		
