@@ -238,6 +238,8 @@ class ClassModel {
 
             // Obtain the next class ID to be used
             $classID = ClassModel::getNextClassID();
+            
+            // Prevent duplicate class names
             if (ClassModel::doesValidClassExistWithName($classTitle)) {           
                 Session::add('feedback_negative', Text::get('FEEDBACK_CLASS_CREATE_FAILED_NAME'));     
                 return false;
