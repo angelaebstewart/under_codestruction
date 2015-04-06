@@ -6,7 +6,7 @@
 class AccountModel {
 
     /**
-     * Checks if a email is already used
+     * Checks if a email is already used by a valid account
      *
      * @param $user_email string email
      *
@@ -15,7 +15,7 @@ class AccountModel {
     public static function doesEmailAlreadyExist($user_email) {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $query = $database->prepare("SELECT UserID FROM codestructionuser WHERE Email = :user_email LIMIT 1");
+        $query = $database->prepare("SELECT UserID FROM codestructionuser WHERE Email = :user_email AND IsValid = True LIMIT 1");
         $query->execute(array(':user_email' => $user_email));
         if ($query->rowCount() == 0) {
             return false;

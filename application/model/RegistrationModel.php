@@ -33,6 +33,12 @@ class RegistrationModel {
                      }
                  }
                 
+                 // Check to make sure the email is unique
+                 if (AccountModel::doesEmailAlreadyExist($user_email)) {
+                     return false;
+                 }
+                 
+               
 		// stop registration flow if registrationInputValidation() returns false (= anything breaks the input check rules)
 		$validation_result = RegistrationModel::registrationInputValidation(Request::post('captcha'), $user_firstName, 
                         $user_lastName, $user_email, $user_password_new, $user_password_repeat);

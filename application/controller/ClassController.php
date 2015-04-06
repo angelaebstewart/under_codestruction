@@ -60,7 +60,7 @@ class ClassController extends Controller {
         if (isset($isTeacher) && $isTeacher) {
             $resultText = ClassModel::createClassWithTitleAndTeacher($classTitle, $teacherID);
             $resultJSON = json_encode($resultText);
-            $this->View->renderJSON($resultJSON);
+            $this->View->renderJSON($resultJSON);           
         }
     }
 
@@ -73,6 +73,14 @@ class ClassController extends Controller {
         //$password = Request::post('password');
         $classID = Request::post('classID');
         if (isset($fname) && isset($lname) && isset($email) /*&& isset($password)*/ && isset($classID)) {
+            
+            // Make sure the email is not already in use
+            if (AccountModel::doesEmailAlreadyExist($email)) {
+                Session::add('feedback_negative', Text::get('FEEDBACK_ADD_STUDENT_EMAIL_IN_USE'));
+                return false;
+            }
+            
+            
             // Compute the password hash:
             //$password_hash = RegistrationModel::hashPassword($password);
             $password_hash = 'blank';
@@ -85,7 +93,7 @@ class ClassController extends Controller {
             PasswordResetModel::sendPasswordResetMail($user_id, $activation_hash, $email);
             // Enroll the student
             ClassModel::enrollStudentInClass($user_id, $classID);
-            
+            $database = DatabaseFactory::getFactory()->getConnection();
             $sql = "INSERT INTO codestructionloginattempt(UserID) 
                         VALUES (:user_id,)";
 		$query = $database->prepare($sql);
