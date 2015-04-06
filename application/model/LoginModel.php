@@ -5,7 +5,7 @@
  *
  * The login part of the model: Handles the login / logout stuff
  */
-require ('../vendor/phpass-0.3/PasswordHash.php');
+require_once ('../vendor/phpass-0.3/PasswordHash.php');
 class LoginModel
 {
     /**

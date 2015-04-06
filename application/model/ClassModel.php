@@ -247,7 +247,7 @@ class ClassModel {
             $class_query = $db->prepare($class_sql);
             $arrayVariable = array(':classID' => $classID, ':teacherID' => $teacherID, ':className' => $classTitle);
             $class_query->execute($arrayVariable);
-            $newClassEntry = $class_query->fetchAll();
+            $newClassEntry = $class_query->fetch();
 
             return $newClassEntry;
         } else {
