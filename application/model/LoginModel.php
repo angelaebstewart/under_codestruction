@@ -5,7 +5,7 @@
  *
  * The login part of the model: Handles the login / logout stuff
  */
-require ('../vendor/phpass-0.3/PasswordHash.php');
+require_once ('../vendor/phpass-0.3/PasswordHash.php');
 class LoginModel
 {
     /**
@@ -187,6 +187,38 @@ class LoginModel
         Session::set('user_logged_in', true);
     }
 
+    
+    /*
+     * Name: createLoginRecordForStudent
+     * Description:
+     *  Creates a login attempt record for a new student
+     * @author Ethan Mata
+     * @Date 4/6/2015
+     * @throws InvalidArgumentException when parameters are not used.
+     * @param int $userID The userID to create a record for
+     * @return Boolean, whether the query succeeded
+     */
+    public static function createLoginRecordForStudent($user_id) {
+        if (!isset($user_id)) {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+        
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "INSERT INTO codestructionloginattempt(UserID) 
+                        VALUES (:user_id,)";
+	$query = $database->prepare($sql);
+	$query->execute(array( ':user_id' => $user_id,));
+        $result = $query->fetch();
+
+        if (!empty($result)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
+    
     /**
      * Returns the current state of the user's login
      *

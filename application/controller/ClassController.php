@@ -60,7 +60,7 @@ class ClassController extends Controller {
         if (isset($isTeacher) && $isTeacher) {
             $resultText = ClassModel::createClassWithTitleAndTeacher($classTitle, $teacherID);
             $resultJSON = json_encode($resultText);
-            $this->View->renderJSON($resultJSON);
+            $this->View->renderJSON($resultJSON);           
         }
     }
 
@@ -70,11 +70,16 @@ class ClassController extends Controller {
         $fname = Request::post('fname');
         $lname = Request::post('lname');
         $email = Request::post('email');
-        //$password = Request::post('password');
         $classID = Request::post('classID');
-        if (isset($fname) && isset($lname) && isset($email) /*&& isset($password)*/ && isset($classID)) {
-            // Compute the password hash:
-            //$password_hash = RegistrationModel::hashPassword($password);
+        if (isset($fname) && isset($lname) && isset($email) && isset($classID)) {
+            
+            // Make sure the email is not already in use
+            if (AccountModel::doesEmailAlreadyExist($email)) {
+                Session::add('feedback_negative', Text::get('FEEDBACK_ADD_STUDENT_EMAIL_IN_USE'));
+                return false;
+            }
+            
+            // Set the default password hash for the student
             $password_hash = 'blank';
             // Generate the activation hash:
             $activation_hash = RegistrationModel::generateActivationHash();
@@ -85,11 +90,8 @@ class ClassController extends Controller {
             PasswordResetModel::sendPasswordResetMail($user_id, $activation_hash, $email);
             // Enroll the student
             ClassModel::enrollStudentInClass($user_id, $classID);
-            
-            $sql = "INSERT INTO codestructionloginattempt(UserID) 
-                        VALUES (:user_id,)";
-		$query = $database->prepare($sql);
-		$query->execute(array( ':user_id' => $user_id,));
+            // Create a record in the login attempts table for this student
+            LoginModel::createLoginRecordForStudent($user_id);
             
             $response_array['status'] = 'success';
 
@@ -97,37 +99,7 @@ class ClassController extends Controller {
         }
     }
   
-    
-    /*public function editClassAddStudent_action() {
-        // Create a new student:
-        // Get the parameters from post
-         $fname = Request::post('fname');
-         $lname = Request::post('lname');
-         $email = Request::post('email');
-         $password = Request::post('password');
-         $classID = Request::post('classID');
-         if (isset($fname) && isset($lname) && isset($email) && isset($password) && isset($classID) ) {
-             // Compute the password hash:
-            $password_hash = RegistrationModel::hashPassword($password);
-               // Generate the activation hash:
-            $activation_hash = RegistrationModel::generateActivationHash();
-            // Add the student to the database
-            $user_id = RegistrationModel::writeNewUserToDatabase($fname, $lname, $email, $password_hash, $activation_hash, 'Student');
-            // Send a verification email:
-            RegistrationModel::sendVerificationEmail($user_id, $email, $activation_hash);
-            // Enroll the student
-            ClassModel::enrollStudentInClass($user_id, $classID);
-         
-            $response_array['status'] = 'success';    
-
-            echo json_encode($response_array);
-            
-         }
-    }*/
-
-    
-
-     public function removeStudent_action() {
+    public function removeStudent_action() {
         
         $userID = Request::post('studentID');
         if (isset($userID)) {
