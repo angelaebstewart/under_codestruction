@@ -58,10 +58,10 @@ class AccountModel {
     public static function getUserIdByEmail($user_email) {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT UserID FROM codestructionuser WHERE Email = :user_name LIMIT 1";
+        $sql = "SELECT UserID FROM codestructionuser WHERE Email = :user_email LIMIT 1";
         $query = $database->prepare($sql);
 
-        $query->execute(array(':user_name' => $user_name));
+        $query->execute(array(':user_email' => $user_email));
 
         $result = $query->fetch();
 
