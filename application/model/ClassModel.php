@@ -238,10 +238,11 @@ class ClassModel {
 
             // Obtain the next class ID to be used
             $classID = ClassModel::getNextClassID();
-            if (ClassModel::doesValidClassExistWithName($classTitle)) {
+            if (ClassModel::doesValidClassExistWithName($classTitle)) {           
+                Session::add('feedback_negative', Text::get('FEEDBACK_CLASS_CREATE_FAILED_NAME'));     
                 return false;
             }
-            // Create the new class record$db = DatabaseFactory::getFactory()->getConnection();
+            // Create the new class record
             $class_sql = "INSERT INTO codestructionclass (ClassID, TeacherID, ClassName, IsValid) VALUES (:classID, :teacherID, :className, 1)";
             $class_query = $db->prepare($class_sql);
             $arrayVariable = array(':classID' => $classID, ':teacherID' => $teacherID, ':className' => $classTitle);
