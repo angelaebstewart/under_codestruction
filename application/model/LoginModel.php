@@ -187,6 +187,17 @@ class LoginModel
         Session::set('user_logged_in', true);
     }
 
+    public static function createLoginRecordForStudent($user_id) {
+        
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "INSERT INTO codestructionloginattempt(UserID) 
+                        VALUES (:user_id,)";
+	$query = $database->prepare($sql);
+	$query->execute(array( ':user_id' => $user_id,));
+    }
+    
+    
+    
     /**
      * Returns the current state of the user's login
      *
