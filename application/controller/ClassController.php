@@ -86,8 +86,7 @@ class ClassController extends Controller {
             // Add the student to the database
             $user_id = RegistrationModel::writeNewUserToDatabase($fname, $lname, $email, $password_hash, $activation_hash, 'Student');
             // Send a verification email:
-            //RegistrationModel::sendVerificationEmail($user_id, $email, $activation_hash);
-            PasswordResetModel::sendPasswordResetMail($user_id, $activation_hash, $email);
+            RegistrationModel::sendVerificationEmail($user_id, $email, $activation_hash);
             // Enroll the student
             ClassModel::enrollStudentInClass($user_id, $classID);
             // Create a record in the login attempts table for this student
