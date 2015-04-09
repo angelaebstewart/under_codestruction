@@ -21,7 +21,6 @@ class ClassController extends Controller {
      * @author Walter Conway
      * @Date 2/21/2015
      */
-
     public function index() {
         $teacherID = Session::get('user_id');
         $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
@@ -40,22 +39,29 @@ class ClassController extends Controller {
             Redirect::to("error/index");
         }
     }
-
+    /**
+     * Name: createClass_action
+     * Description:
+     * When edit button is clicked loads up the information to be edited.
+     * @author Victoria Richardson
+     * @Date ?
+     */
     public function edit() {
         $classID = Request::get('classID');
         $studentList = ClassModel::getStudentsFromClass($classID);
         $this->View->render('class/editClass', $studentList);
     }
 
-    public function createClass() {
-
-        $this->View->render('class/createClass', null);
-    }
-
+    /**
+     * Name: createClass_action
+     * Description:
+     * When create class button is clicked this is called
+     * @author ?
+     * @Date ?
+     */
     public function createClass_action() {
         $classTitle = Request::post('classTitle');
         $teacherID = Session::get('user_id');
-
         $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
         if (isset($isTeacher) && $isTeacher) {
             $resultText = ClassModel::createClassWithTitleAndTeacher($classTitle, $teacherID);
@@ -64,6 +70,14 @@ class ClassController extends Controller {
         }
     }
 
+    /**
+     * Name: editClassAddStudent_action
+     * Description:
+     * When add student button is clicked this is called
+     * @author ?
+     * @Date ?
+     * @return boolean
+     */
     public function editClassAddStudent_action() {
         // Create a new student:
         // Get the parameters from post
@@ -98,14 +112,27 @@ class ClassController extends Controller {
         }
     }
   
+    /**
+     * Name: removeStudent_action
+     * Description:
+     * When remove student button is clicked this is called
+     * @author ?
+     * @Date ?
+     */
     public function removeStudent_action() {
-        
         $userID = Request::post('studentID');
         if (isset($userID)) {
             AccountModel::markUserInactive($userID);
         }
     }
     
+    /**
+     * Name: removeClass_action
+     * Description:
+     * When remove class button is clicked this is called
+     * @author ?
+     * @Date ?
+     */
     public function removeClass_action() {
         $classID = Request::post('classID');
         if (isset($classID)) {
@@ -121,7 +148,6 @@ class ClassController extends Controller {
      * @author Walter Conway
      * @Date 2/21/2015
      */
-
     public function viewClass() {
         if (LoginModel::isUserLoggedIn()) {
             $teacherID = Session::get('user_id');
@@ -147,5 +173,4 @@ class ClassController extends Controller {
             Redirect::to("error/index");
         }
     }
-
 }
