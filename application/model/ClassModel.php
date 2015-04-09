@@ -83,9 +83,16 @@ class ClassModel {
         }
     }
 
-    /*
-     * 
-     */
+ /**
+ * Name: getStudentsFromClass
+ * Description:
+ * Obtains a list of student's first name and last name and user ids from the specified class from a class
+ * @author Walter Conway
+ * @Date 2/21/2015
+ * @param type $classID class id
+ * @return type
+ * @throws InvalidArgumentException
+ */
     public static function getStudentsFromClass($classID) {
         if (isset($classID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
