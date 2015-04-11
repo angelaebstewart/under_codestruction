@@ -18,8 +18,8 @@
                 <option value="wrong4">x = x + 1</option>    
             </select>   
             
-            <br>if (x < 5)<br>FAIL
-            <br>else {<br>
+            <br>if (x < 5)<br>&nbsp;&nbsp;&nbsp;&nbsp;FAIL
+            <br>else<br>
             &nbsp;&nbsp;&nbsp;&nbsp; <select name="Q2" id="Q2">
                 <option value="Please make a selection."></option>
                 <option value="wrong1">y = y - 4</option>
@@ -28,8 +28,8 @@
                 <option value="right">y = y - 10</option>
                 <option value="wrong4">y = y / 5</option>    
             </select> 
-            <br>&nbsp;&nbsp;&nbsp;&nbsp;if (y &le; -5) {
-            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while (x &ge; 1) {
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;if (y &le; -5)
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while (x &ge; 1)
             <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <select name="Q3" id="Q3">
                 <option value="Please make a selection."></option>
                 <option value="right">x = x - 1</option>
@@ -45,20 +45,13 @@
                 <option value="wrong2">y &ge; -9</option> 
                 <option value="wrong3">y &ge; 0</option>
                 <option value="wrong4">y &le; -11</option> 
-            </select> ) {
-            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while ( <select name="Q5" id="Q5">
-                <option value="Please make a selection."></option>
-                <option value="wrong1">y = y</option>
-                <option value="wrong1">y &LT; -50</option>
-                <option value="wrong1">y &LT; -15</option>
-                <option value="wrong1">y &LT; -10</option>
-                <option value="right">y &LT; 15</option>
             </select> )
-            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y = y + 1
-            <br> &nbsp;&nbsp;&nbsp;&nbsp;}
+
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WIN
+            <br> &nbsp;&nbsp;&nbsp;&nbsp;
             <br> &nbsp;&nbsp;&nbsp;&nbsp;else
             <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FAIL
-            <br>}
+            <br>
             <br>else
             <br>&nbsp;&nbsp;&nbsp;&nbsp;FAIL<br>
            
