@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Description of AccountModel
  *
@@ -11,6 +12,13 @@ class AccountModel {
      * @param $user_email string email
      *
      * @return bool
+     * 
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public static function doesEmailAlreadyExist($user_email) {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -27,6 +35,12 @@ class AccountModel {
      * Gets a user's profile data, according to the given $user_id
      * @param int $user_id The user's id
      * @return mixed The selected user's profile
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public static function getPublicProfileOfUser($user_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -54,6 +68,13 @@ class AccountModel {
      * @param $user_email
      *
      * @return mixed
+     * 
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public static function getUserIdByEmail($user_email) {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -78,6 +99,13 @@ class AccountModel {
      * @param $user_name string User's name
      *
      * @return mixed Returns false if user does not exist, returns object with user's data when user exists
+     * 
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public static function getUserDataByEmail($user_email) {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -97,10 +125,30 @@ class AccountModel {
         return $query->fetch();
     }
 
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     * @param type $role
+     * @return type
+     */
     public static function isTeacher($role) {
         return ($role == Config::get('ROLE_TEACHER', 'gen'));
     }
 
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     * @param type $role
+     * @return type
+     */
     public static function isStudent($role) {
         return ($role == Config::get('ROLE_STUDENT', 'gen'));
     }
@@ -115,6 +163,7 @@ class AccountModel {
      * @param int $userID The userID to change
      * @return Boolean, whether a user was marked as inactive
      */
+
     public static function markUserInactive($userID) {
         if (isset($userID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
@@ -126,30 +175,36 @@ class AccountModel {
                 return True; // Update succeeded
             }
             return False;
-        }
-        else {
-            throw new InvalidArgumentException("Invalid Parameters");
-        }
-    }
-    
-    public static function deleteTeacherAccount($userID) {
-        if (isset($userID)) {
-        $classList = ClassModel::getClassList($userID);
-        
-            foreach ($classList as $class)
-            {
-                ClassModel::removeClassAndRecords($class->ClassID);
-            }
-            $success = AccountModel::markUserInactive($userID);
-        return $success;
-        
         } else {
             throw new InvalidArgumentException("Invalid Parameters");
         }
-        
-        
     }
-    
+
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     * @param type $userID
+     * @return type
+     * @throws InvalidArgumentException
+     */
+    public static function deleteTeacherAccount($userID) {
+        if (isset($userID)) {
+            $classList = ClassModel::getClassList($userID);
+
+            foreach ($classList as $class) {
+                ClassModel::removeClassAndRecords($class->ClassID);
+            }
+            $success = AccountModel::markUserInactive($userID);
+            return $success;
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
+    }
+
     /*
      * Name: createLoginRecord
      * Description:
@@ -160,6 +215,7 @@ class AccountModel {
      * @param int $userID The userID to create the record for
      * @return Boolean, whether a row was successfully created
      */
+
     public static function createLoginRecord($userID) {
         if (isset($userID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
@@ -168,14 +224,12 @@ class AccountModel {
             $arrayVariable = array(':userID' => $userID);
             $query->execute($arrayVariable);
             if ($query->rowCount() == 1) {
-                return True; 
+                return True;
             }
             return False;
-        }
-        else {
+        } else {
             throw new InvalidArgumentException("Invalid Parameters");
         }
     }
-    
-    
+
 }

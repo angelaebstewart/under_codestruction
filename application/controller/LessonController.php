@@ -16,6 +16,12 @@ class LessonController extends Controller {
      * Called when you move to /lesson/index. Shows a list of lessons, with
      * links to lesson pages for the lessons that are currenlty available to
      * the user.
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public function index() {
         $userID = Session::get('user_id');
@@ -31,6 +37,12 @@ class LessonController extends Controller {
     /**
      * Displays a lesson page. Has links to the video, game, and 
      * assessment for the given lesson.
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public function viewLesson() {
         $userID = Session::get('user_id');
@@ -48,7 +60,14 @@ class LessonController extends Controller {
         }
     }
     
-    
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     */
     public function viewVideo_action() {
         $lessonID = Request::post('lessonID');
         $userID = Session::get('user_id');

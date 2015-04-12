@@ -12,6 +12,17 @@ class AssessmentModel {
         }
     }
     
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     * @param type $lessonID
+     * @param type $answers
+     * @return boolean
+     */
     public static function didPassAssessment($lessonID, $answers) {
         foreach ($answers as $answer) {
             if ($answer !== "right") return false;
@@ -19,6 +30,17 @@ class AssessmentModel {
         return true;
     }
     
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     * @param type $user_id
+     * @param type $lesson_id
+     * @return type
+     */
     public static function recordPassedAssessment($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "UPDATE codestructionmoduleprogress 
@@ -30,7 +52,17 @@ class AssessmentModel {
         return $query;
     }
     
-    
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     * @param type $user_id
+     * @param type $lesson_id
+     * @return type
+     */
     public static function recordFailedAssessment($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "UPDATE codestructionmoduleprogress 
@@ -38,7 +70,6 @@ class AssessmentModel {
                 WHERE UserID = :user_id AND ModuleID = :lesson_id AND AssessmentStatus <> 'Completed'";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
-        
         return $query;
     }
 }
