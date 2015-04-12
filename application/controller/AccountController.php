@@ -172,7 +172,7 @@ class AccountController extends Controller {
         if ($registration_successful) {
             Redirect::to('login/index');
         } else {
-            Redirect::to('login/register');
+            Redirect::to('account/register');
         }
     }
 
