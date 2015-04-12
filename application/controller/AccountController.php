@@ -156,7 +156,7 @@ class AccountController extends Controller {
      */
     public function requestPasswordReset_action() {
         //Retrieves the user name or e-mail variable from the session
-        $userName = Request::post('user_name_or_email');
+        $userName = Request::post('email');
         if (empty($userName)) {
             Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_EMAIL_FIELD_EMPTY'));
             $this->View->render('login/requestPasswordReset');
@@ -184,8 +184,8 @@ class AccountController extends Controller {
      */
     public function requestEmailReset_action() {
         //Retrieves the user name or e-mail variable from the session
-        $userName = Request::post('user_name_or_email');
-        $newUserName = Request::post('new_user_name_or_email');
+        $userName = Request::post('email');
+        $newUserName = Request::post('new_email');
         if (empty($userName) || empty($newUserName)) {
             Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_EMAIL_FIELD_EMPTY'));
             $this->View->render('login/editUserEmail');
