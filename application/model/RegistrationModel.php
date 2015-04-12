@@ -280,11 +280,9 @@ class RegistrationModel {
         $query->execute(array(':user_id' => $user_id, ':user_activation_hash' => $user_activation_hash));
 
         if ($query->rowCount() == 1) {
-            Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_SUCCESSFUL'));
+            
             return true;
         }
-
-        Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_FAILED'));
         return false;
     }
 

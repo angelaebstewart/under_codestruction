@@ -75,6 +75,7 @@ class AccountModel {
      * ?
      * @author ?
      * @Date ?
+     * NOTE: If the return statement changes then change requestPasswordReset_action method
      */
     public static function getUserIdByEmail($user_email) {
         $database = DatabaseFactory::getFactory()->getConnection();
