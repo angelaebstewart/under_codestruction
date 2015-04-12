@@ -10,27 +10,20 @@ require_once ('../vendor/phpass-0.3/PasswordHash.php');
 class RegistrationModel {
 
     /**
+     * Name: registerNewUser
+     * Description:
      * Handles the entire registration process for DEFAULT users and 
      * creates a new user in the database if everything is fine
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
-     * @return boolean Gives back the success status of the registration
+     * @author FRAMEWORK (last-modified: Walter Conway)
+     * @Date 4/12/2015
+     * @param type $user_firstName
+     * @param type $user_lastName
+     * @param type $user_email
+     * @param type $user_password_new
+     * @param type $user_type
+     * @return boolean
      */
-    public static function registerNewUser($user_type,$user_firstName,$user_lastName,$user_email,$user_password_new,$user_password_repeat) {
-        // Check the email type for teacher accounts
-        if ($user_type == 'Teacher') {
-            $result = strpos($user_email, ".edu");
-            if ($result == FALSE) {
-                return false;
-            }
-        }
-
-
-
+    public static function registerNewUser($user_firstName, $user_lastName, $user_email, $user_password_new, $user_type ) {
         //$user_password_hash = $pwdHasher->HashPassword($user_password_new);
         $user_password_hash = RegistrationModel::hashPassword($user_password_new);
 
@@ -49,14 +42,6 @@ class RegistrationModel {
             Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_CREATION_FAILED'));
         }
 
-        // get user_id of the user that has been created, to keep things clean we DON'T use lastInsertId() here
-        /* $user_id = AccountModel::getUserIdByEmail($user_email);
-
-          if (!$user_id) {
-          Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
-          return false;
-          } */
-
         // send verification email
         if (RegistrationModel::sendVerificationEmail($user_id, $user_email, $user_activation_hash)) {
             Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_SUCCESSFULLY_CREATED'));
@@ -70,20 +55,18 @@ class RegistrationModel {
     }
 
     /**
-     * Validates the registration input
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: registrationInputValidation
      * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * Validates the registration input
+     * @author FRAMEWORK (modified: Walter Conway)
+     * @Date 4/12/2015
      * @param $captcha
      * @param $user_name
      * @param $user_password_new
      * @param $user_password_repeat
      * @param $user_email
-     *
      * @return bool
+     * NOTE: Not sure about keeping all this session stuff here in the model, but right now it is fine.
      */
     public static function registrationInputValidation($captcha, $user_firstName, $user_lastName, $user_email, $user_password_new, $user_password_repeat) {
         // perform all necessary checks
@@ -104,13 +87,11 @@ class RegistrationModel {
             Session::add('feedback_negative', Text::get('FEEDBACK_EMAIL_TOO_LONG'));
         } else if (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
             Session::add('feedback_negative', Text::get('FEEDBACK_EMAIL_DOES_NOT_FIT_PATTERN'));
+        } else if (strpos($user_email, ".edu") === FALSE) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_EMAIL_DOES_NOT_FIT_PATTERN'));
         } else {
-            // if no validation failed, return true
-            // hmmm... maybe this could be written in a better way
             return true;
         }
-
-        // otherwise, return false
         return false;
     }
 
@@ -267,7 +248,7 @@ class RegistrationModel {
         $query->execute(array(':user_id' => $user_id, ':user_activation_hash' => $user_activation_hash));
 
         if ($query->rowCount() == 1) {
-            
+
             return true;
         }
         return false;

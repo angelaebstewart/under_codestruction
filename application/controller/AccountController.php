@@ -177,8 +177,8 @@ class AccountController extends Controller {
      * Name: requestEmailReset_action
      * Description:
      * When the Email reset button is clicked.
-     * @author FRAMEWORK (modified: Walter Conway)
-     * @Date 4/11/2015
+     * @author FRAMEWORK (modified: Walter Conway & Victoria Richardson)
+     * @Date 4/12/2015
      * @return type
      */
     public function requestEmailReset_action() {
@@ -201,8 +201,8 @@ class AccountController extends Controller {
             $this->View->render('login/editUserEmail');
             return;
         }
-        
-        if(!ChangeEmailModel::requestEmailReset($userName, $newUserName))
+
+        if (!ChangeEmailModel::requestEmailReset($email, $newEmail))
             Redirect::to('account/options');
         else
             Redirect::to('login/index');
@@ -224,7 +224,7 @@ class AccountController extends Controller {
                 Session::set('user_id', $user_id);
                 Session::set('verification_code', $verification_code);
                 Session::set('user_email', $user_email);
-                if(!ChangeEmailModel::saveNewUserEmail($user_id, $user_email, $verification_code)){
+                if (!ChangeEmailModel::saveNewUserEmail($user_id, $user_email, $verification_code)) {
                     Session::add('feedback_negative', Text::get('FEEDBACK_NEW_USER_EMAIL_FAILED'));
                 }
                 Redirect::to('login/index');
@@ -243,42 +243,39 @@ class AccountController extends Controller {
      * When a user is registered as a teacher.
      * @author FRAMEWORK (modified: Walter Conway)
      * @Date 4/12/2015
+     * NOTE: Consider taking user type "Teacher"
      */
     public function register_action() {
-        
+
         $user_firstName = strip_tags(Request::post('user_firstName'));
         $user_lastName = strip_tags(Request::post('user_lastName'));
         $user_email = strip_tags(Request::post('user_email'));
         $user_password_new = Request::post('user_password_new');
         $user_password_repeat = Request::post('user_password_repeat');
-        
-        if(isset($user_firstName) && isset($user_lastName) && isset($user_email) && isset($user_password_new) && isset($user_password_repeat)){
-        // stop registration flow if registrationInputValidation() returns false (= anything breaks the input check rules)
-        $validation_result = RegistrationModel::registrationInputValidation(Request::post('captcha'), $user_firstName, $user_lastName, $user_email, $user_password_new, $user_password_repeat);
-        if (!$validation_result) {
-            return false;
-        }
-            
-            //RegistrationModel::registerNewUser('Teacher', $user_firstName, $user_lastName, $user_email, $user_password_new, $user_password_repeat);
-        }
-        
-        $registration_successful = RegistrationModel::registerNewUser('Teacher');
+        $captcha = Request::post('captcha');
 
-        if ($registration_successful) {
-            Redirect::to('login/index');
-        } else {
-            Redirect::to('account/register');
+        if (isset($user_firstName) && isset($user_lastName) &&
+                isset($user_email) && isset($user_password_new) &&
+                isset($user_password_repeat) && isset($captcha)) {
+            $validation_result = RegistrationModel::registrationInputValidation($captcha, $user_firstName, $user_lastName, $user_email, $user_password_new, $user_password_repeat);
+            if ($validation_result) {
+                $registration_successful = RegistrationModel::registerNewUser($user_firstName, $user_lastName, $user_email, $user_password_new, "Teacher");
+                if ($registration_successful) {
+                    Redirect::to('login/index');
+                } else {
+                    Redirect::to('account/register');
+                }
+            } else {
+                Redirect::to('account/register');
+            }
         }
     }
 
     /**
-     * Register page
-     * Show the register form, but redirect to main-page if user is already logged-in
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: register
      * Description:
-     * ?
-     * @author ?
+     * Show the register form, but redirect to main-page if user is already logged-in
+     * @author FRAMEWORK
      * @Date ?
      */
     public function register() {
