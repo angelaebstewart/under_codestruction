@@ -1,16 +1,10 @@
 <div id="contentArea">
     <div class="contentDivision gameContent"> 
-
-        <h4><br>Game for Lesson <?php echo Request::get('id'); ?></h4>
         
-        <div id="backgroundImages"></div>
-        
-        <div id="gameDiv">
-            Loading...
-        </div>
-        
-        <div id="chippyHolder">
-            
+        <div id="gameOuter">
+            <div id="gameDiv">Loading...</div>
+            <div id="backgroundImages"></div>
+            <div id="chippyHolder"></div>
         </div>
         
     </div>
