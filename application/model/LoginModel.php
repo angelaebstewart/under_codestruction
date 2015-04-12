@@ -114,7 +114,7 @@ class LoginModel
 			//return true;
             }
             
-            $updateValid = "UPDATE codestructionuser SET VerificationHash = :VerificationHash, Verified = 0 WHERE UserID = '$userID'";
+            $updateValid = "UPDATE codestructionuser SET ResetHash = :VerificationHash, Verified = 0 WHERE UserID = '$userID'";
             $query = $database->prepare($updateValid);
             $query->execute(array(':VerificationHash' => $user_activation_hash,)); 
             

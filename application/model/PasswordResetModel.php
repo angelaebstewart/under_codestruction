@@ -143,7 +143,8 @@ class PasswordResetModel
 		$sql = "UPDATE codestructionuser
                    SET PasswordHash = :user_password_hash,
                        ResetHash = NULL,
-                       PasswordUpdated = 1
+                       PasswordUpdated = 1,
+                       Verified = 1
                  WHERE UserID = :user_id
                        AND ResetHash = :user_password_reset_hash
                  LIMIT 1";
