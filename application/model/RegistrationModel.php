@@ -20,16 +20,7 @@ class RegistrationModel {
      * @Date ?
      * @return boolean Gives back the success status of the registration
      */
-    public static function registerNewUser($user_type) {
-
-        //$pwdHasher = new PasswordHash(Config::get("HASH_COST_LOG2",'gen'), Config::get("HASH_PORTALBE",'gen'));
-        // clean the input
-        $user_firstName = strip_tags(Request::post('user_firstName'));
-        $user_lastName = strip_tags(Request::post('user_lastName'));
-        $user_email = strip_tags(Request::post('user_email'));
-        $user_password_new = Request::post('user_password_new');
-        $user_password_repeat = Request::post('user_password_repeat');
-
+    public static function registerNewUser($user_type,$user_firstName,$user_lastName,$user_email,$user_password_new,$user_password_repeat) {
         // Check the email type for teacher accounts
         if ($user_type == 'Teacher') {
             $result = strpos($user_email, ".edu");
@@ -38,11 +29,7 @@ class RegistrationModel {
             }
         }
 
-        // stop registration flow if registrationInputValidation() returns false (= anything breaks the input check rules)
-        $validation_result = RegistrationModel::registrationInputValidation(Request::post('captcha'), $user_firstName, $user_lastName, $user_email, $user_password_new, $user_password_repeat);
-        if (!$validation_result) {
-            return false;
-        }
+
 
         //$user_password_hash = $pwdHasher->HashPassword($user_password_new);
         $user_password_hash = RegistrationModel::hashPassword($user_password_new);
