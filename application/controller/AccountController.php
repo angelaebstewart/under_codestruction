@@ -108,47 +108,55 @@ class AccountController extends Controller {
      * Name: verify
      * Description:
      * Verify user after activation mail link opened
-     * @author ?
-     * @Date 4/9/2015
+     * @author Walter Conway
+     * @Date 4/11/2015
      * @param int $user_id user's id
      * @param string $user_activation_verification_code user's verification token
      */
     public function verify($user_id, $user_activation_verification_code) {
         if (isset($user_id) && isset($user_activation_verification_code)) {
-            RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
-            AccountModel::createLoginRecord($user_id);
-            $this->View->render('login/changePassword');
+            if (RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code)) {
+                Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_SUCCESSFUL'));
+                try {
+                    AccountModel::createLoginRecord($user_id);
+                } catch (InvalidArgumentException $e) {
+                    Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_FAILED'));
+                    Redirect::to('login/index');
+                    return;
+                }
+            } else {
+                Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_FAILED'));
+                Redirect::to('login/index');
+                return;
+            }
+            $this->View->render('login/index');
         } else {
+            Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_FAILED'));
             Redirect::to('login/index');
         }
     }
 
     /**
-     * Show the request-password-reset page
-     * SEARCH-KEYWORD: NOT COMMENTED
      * Name: requestPasswordReset
      * Description:
-     * Renders or directs the browser to the reques
-     * @author ?
-     * @Date ?
+     * Show the request-password-reset page
+     * @author FRAMEWORK
+     * @Date 4/11/2015
      */
     public function requestPasswordReset() {
         $this->View->render('login/requestPasswordReset');
     }
 
     /**
-     * The request-password-reset action
-     * POST-request after form submit
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: requestPasswordReset_action
      * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * Processes the password reset Action from.
+     * @author FRAMEWORK (modified: Walter Conway)
+     * @Date 4/11/2015
      */
     public function requestPasswordReset_action() {
         //Retrieves the user name or e-mail variable from the session
-        $userName = Request::post('user_name_or_email');
+        $userName = Request::post('email');
         if (empty($userName)) {
             Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_EMAIL_FIELD_EMPTY'));
             $this->View->render('login/requestPasswordReset');
@@ -160,32 +168,35 @@ class AccountController extends Controller {
             $this->View->render('login/requestPasswordReset');
             return;
         }
-
         PasswordResetModel::requestPasswordReset($userName);
         Redirect::to('login/index');
     }
 
     /**
-     * The request-password-reset action
-     * POST-request after form submit
      * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: requestEmailReset_action
      * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * When the Email reset button is clicked.
+     * @author FRAMEWORK (modified: Walter Conway)
+     * @Date 4/11/2015
+     * @return type
      */
     public function requestEmailReset_action() {
         //Retrieves the user name or e-mail variable from the session
-        $userName = Request::post('user_name_or_email');
-        $newUserName = Request::post('new_user_name_or_email');
-        if (empty($userName) || empty($newUserName)) {
+        $email = Request::post('email');
+        $newEmail = Request::post('new_email');
+        if (empty($email) || empty($newEmail)) {
             Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_EMAIL_FIELD_EMPTY'));
             $this->View->render('login/editUserEmail');
             return;
         }
-        $result = AccountModel::getUserIdByEmail($userName);
-        if ($result == -1) {
+        if (strcmp($email, $newEmail) != 0) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_EMAIL_DOES_NOT_MATCH'));
+            $this->View->render('login/editUserEmail');
+            return;
+        }
+        $result = AccountModel::doesEmailAlreadyExist($email);
+        if (!$result) {
             Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
             $this->View->render('login/editUserEmail');
             return;
@@ -198,42 +209,59 @@ class AccountController extends Controller {
     }
 
     /**
+     * Name: verifyEmailReset
+     * Description:
      * Verify the verification token of that user (to show the user the password editing view or not)
+     * @author FRAMEWORK (modified Walter Conway)
+     * @Date 4/11/2015
      * @param string $user_id user id
      * @param string $verification_code password reset verification token
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
      */
     public function verifyEmailReset($user_id, $verification_code, $user_email) {
-        // check if this the provided verification code fits the user's verification code
-        if (ChangeEmailModel::verifyEmailReset($user_id, $verification_code)) {
-            Session::set('user_id', $user_id);
-            Session::set('verification_code', $verification_code);
-            Session::set('user_email', $user_email);
-            ChangeEmailModel::saveNewUserEmail($user_id, $user_email, $verification_code);
-            Redirect::to('login/index');
+        if (isset($user_id) && isset($verification_code) && isset($user_email)) {
+            // check if this the provided verification code fits the user's verification code
+            if (ChangeEmailModel::verifyEmailReset($user_id, $verification_code)) {
+                Session::set('user_id', $user_id);
+                Session::set('verification_code', $verification_code);
+                Session::set('user_email', $user_email);
+                if(!ChangeEmailModel::saveNewUserEmail($user_id, $user_email, $verification_code)){
+                    Session::add('feedback_negative', Text::get('FEEDBACK_NEW_USER_EMAIL_FAILED'));
+                }
+                Redirect::to('login/index');
+            } else {
+                Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_RESET_COMBINATION_DOES_NOT_EXIST'));
+                Redirect::to('login/index');
+            }
         } else {
-            Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_RESET_COMBINATION_DOES_NOT_EXIST'));
             Redirect::to('login/index');
         }
     }
 
     /**
-     * Register page action
-     * POST-request after form submit
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: register_action
      * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * When a user is registered as a teacher.
+     * @author FRAMEWORK (modified: Walter Conway)
+     * @Date 4/12/2015
      */
     public function register_action() {
-
+        
+        $user_firstName = strip_tags(Request::post('user_firstName'));
+        $user_lastName = strip_tags(Request::post('user_lastName'));
+        $user_email = strip_tags(Request::post('user_email'));
+        $user_password_new = Request::post('user_password_new');
+        $user_password_repeat = Request::post('user_password_repeat');
+        
+        if(isset($user_firstName) && isset($user_lastName) && isset($user_email) && isset($user_password_new) && isset($user_password_repeat)){
+        // stop registration flow if registrationInputValidation() returns false (= anything breaks the input check rules)
+        $validation_result = RegistrationModel::registrationInputValidation(Request::post('captcha'), $user_firstName, $user_lastName, $user_email, $user_password_new, $user_password_repeat);
+        if (!$validation_result) {
+            return false;
+        }
+            
+            //RegistrationModel::registerNewUser('Teacher', $user_firstName, $user_lastName, $user_email, $user_password_new, $user_password_repeat);
+        }
+        
         $registration_successful = RegistrationModel::registerNewUser('Teacher');
 
         if ($registration_successful) {
@@ -360,4 +388,5 @@ class AccountController extends Controller {
             $this->View->render('error/index');
         }
     }
+
 }
