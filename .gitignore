@@ -3,3 +3,5 @@ nbproject/private/
 application/config/config.development.php
 public/sandbox.php
 application/config/db.config.php
+/public/images/game/
+/public/images/
