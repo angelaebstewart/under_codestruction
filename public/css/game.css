@@ -24,7 +24,7 @@ and open the template in the editor.
                 left: 40px;
                 top: 80px;
                 color: #eeeeee;
-                background: #7d7878;
+                background: rgba(125, 120, 120, 0.9);
                 padding: 10px;
                 width: 620px;
             }
