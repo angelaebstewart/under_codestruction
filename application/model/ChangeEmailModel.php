@@ -7,27 +7,36 @@
  */
 class ChangeEmailModel {
 
-    /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
-     * Perform the necessary actions to send an email reset mail
-     *
-     * @param $email user's email
-     *
-     * @return bool success status
-     */
-    public static function requestEmailReset($email, $new_user_name) {
-
-        // check if that username exists
-        $result = AccountModel::getUserIdByEmail($email);
-        if ($result == -1) {
-            Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
-            return false;
-        }
+class ChangeEmailModel
+{
+	/**
+	 * Perform the necessary actions to send an email reset mail
+	 *
+	 * @param $email user's email
+	 *
+	 * @return bool success status
+	 */
+	public static function requestEmailReset($email, $new_user_name)
+	{
+                //Check if email is current user
+                $currentUser = Session::get('user_email');
+                if ($currentUser != $email)
+                {
+                    Session::add('feedback_negative', Text::get('FEEDBACK_WRONG_EMAIL'));
+                    return false;
+                }       
+                        
+		// check if that username exists
+		$result = AccountModel::getUserIdByEmail($email);
+		if ($result == -1) {
+			Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
+			return false;
+		}
+                
+                if (AccountModel::doesEmailAlreadyExist($new_user_name)) {
+			Session::add('feedback_negative', Text::get('FEEDBACK_USER_EMAIL_ALREADY_TAKEN'));
+			return false;
+		}
 
         // generate integer-timestamp (to see when exactly the user (or an attacker) requested the password reset mail)
         // generate random hash for email password reset verification (40 char string)

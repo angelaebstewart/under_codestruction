@@ -20,23 +20,22 @@ and open the template in the editor.
                 border: thin solid #aaaaaa;
             }
             .gameContent #gameDiv {
-                position: absolute;
-                left: 40px;
-                top: 80px;
+                display: inline-block;
                 color: #eeeeee;
-                background: #7d7878;
+                background: rgba(125, 120, 120, 0.9);
                 padding: 10px;
-                width: 620px;
+                width: 640px;
             }
             
             .gameContent #backgroundImages {
                 position: relative;
+                display: inline-block;
+                width: 640px;
+                height: 400px;
             }
             
             #backgroundImages img {
                 position: absolute;
-                top: 11px;
-                left: 11px;
             }
             
             .gameContent select, 
@@ -50,7 +49,7 @@ and open the template in the editor.
             
             #speechBubble {
                 position: absolute;
-                left: 270px;
+                left: 240px;
                 top: 225px;
                 width: 160px;
                 height: 110px;
@@ -59,17 +58,18 @@ and open the template in the editor.
             
             .gameContent #chippyHolder {
                 z-index: 1000;
-                position: absolute;
+                position: relative;
+                top: -410px;
             }
             
             #chippyHolder #chippyImg {
                 position: absolute;
-                left: 490px;
-                top: 240px;
+                left: 390px;
+                top: 110px;
             }
             
             #chippyHolder #speechBubbleImg {
                 position: absolute;
-                left: 250px;
+                left: 220px;
                 top: 200px;
             }

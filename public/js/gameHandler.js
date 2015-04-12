@@ -1,18 +1,35 @@
+var fadeTimeoutHandler;
+
 function check(inValue, idIn) {
     if (inValue !== 'right') {
-        $("#speechBubble").html(inValue);
+        setChippyText(inValue);
         document.getElementById(idIn).selectedIndex = 0;
+    } else {
+        setChippyText("Correct!");
     }
 }
 
 function validateForm(elem) {
     for(var i = 0; i < elem.length; i++) {
         if (elem[i].value==='Please make a selection.') {
-               $("#speechBubble").html("Answer all blanks before moving on.");
+               setChippyText("Answer all blanks before moving on.");
                return false;
         }
     }
+    setChippyText("Good job! Let's move on.");
+    
     return true;
+}
+
+function setChippyText(input) {
+    $("#speechBubble").fadeTo(0, 1);
+    
+    $("#speechBubble").html(input);
+    
+    clearTimeout(fadeTimeoutHandler);
+    fadeTimeoutHandler = setTimeout(function() {
+        $("#speechBubble").fadeTo(1000, 0);
+    }, 4000);
 }
 
 var numBackgroundImages = 0;
