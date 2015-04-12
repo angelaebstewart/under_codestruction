@@ -17,6 +17,12 @@ class ErrorController extends Controller
 
     /**
      * This method controls what happens / what the user sees when a page does not exist (404)
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public function index()
     {

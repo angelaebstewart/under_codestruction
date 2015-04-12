@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * This is an associated array list, for general website configurations.
+ */
 return array(
     /**
      * Configuration for: Base URL
@@ -18,8 +21,8 @@ return array(
     /**
      * Configuration for: Default controller and action
      */
-    'DEFAULT_CONTROLLER' => 'login',
-    'DEFAULT_ACTION' => 'index',
+    'DEFAULT_CONTROLLER' => 'index',
+    'DEFAULT_ACTION' => 'about',
     /*
      * Configuration for phpass
      * HASH_COST_LOG2 - Base-2 logarithm of the iteration count used for password stretching

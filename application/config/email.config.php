@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * This is an associated array list, for email configurations for password reset, verification, email reset. 
+ */
 return array(
     	/**
 	 * Configuration for: Email content data

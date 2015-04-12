@@ -17,7 +17,12 @@ class AssessmentController extends Controller {
     }
 
     /**
+     * 
+     * Name: viewAssessment
+     * Description:
      * When you click on an assessment link, it goes to the assessment for that lesson.
+     * @author Ryan Lewis
+     * @Date 3/11/2015
      */
     public function viewAssessment() {
         $userID = Session::get('user_id');
@@ -36,9 +41,13 @@ class AssessmentController extends Controller {
         }
     }
 
-    /*
+    /**
+     * Name: createClass_action
+     * Description:
      * When a student completes an assessment, also should handle the case
      * of if a teacher completes an assessment.
+     * @author Ryan Lewis
+     * @Date ?
      */
     public function submitAssessment() {
         
