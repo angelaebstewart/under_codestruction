@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Description of GameModel
- *
+ * Called when the user views a lesson's game.
  */
 class GameModel {
     

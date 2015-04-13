@@ -8,12 +8,9 @@ class LessonModel {
     /**
      * Get a list of all lessons in the system, with an indication of which
      * are currently accessible to the user.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * 
+     * @author Ryan Lewis
+     * 
      * @param $user_id int The user's UserID
      * @param $user_role int The user's role (student=1, teacher=2)
      * 
@@ -65,12 +62,9 @@ class LessonModel {
 
     /**
      * Get a list of all lessons in the system.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * 
+     * @author Ryan Lewis
+     * 
      * @return array List of all ModuleIDs and ModuleNames in the system
      */
     public static function getAllLessons() {
@@ -83,13 +77,10 @@ class LessonModel {
 
     /**
      * Get the Descritpion of the lesson specified.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
-     * @param type $lesson_id
+     * 
+     * @author Ryan Lewis
+     * 
+     * @param $lesson_id int The ModuleID for the lesson in question
      * 
      * @return List of module description strings associated with this lesson id
      * (should just be one)
@@ -107,6 +98,8 @@ class LessonModel {
     /**
      * For any given lesson, return its ModuleName, GameLink, AssessmentLink,
      * and VideoLink.
+     * 
+     * @author Ryan Lewis
      * 
      * @param $user_id int The user's UserID
      * @param $user_role int The user's role (student=1, teacher=2)
@@ -136,12 +129,9 @@ class LessonModel {
     /**
      * For any given user, get the ModuleID of the highest lesson he or she
      * has completed.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * 
+     * @author Ryan Lewis
+     * 
      * @param $user_id int The user's UserID
      * 
      * @return int ModuleID of the highest lesson the user has completed; -1
@@ -166,6 +156,8 @@ class LessonModel {
     /**
      * Get whether or not a user has started a particular lesson
      * 
+     * @author Ryan Lewis
+     * 
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
      * 
@@ -184,6 +176,8 @@ class LessonModel {
     /**
      * Get whether or not a user has viewed both the video and the game for
      * a particular lesson.
+     * 
+     * @author Ryan Lewis
      * 
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
@@ -204,6 +198,8 @@ class LessonModel {
     
     /**
      * Record in the database that a user has started a particular lesson.
+     * 
+     * @author Ryan Lewis
      * 
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
@@ -228,6 +224,8 @@ class LessonModel {
     /**
      * Record in the database that a user has viewed a particular lesson's video.
      * 
+     * @author Ryan Lewis
+     * 
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
      * 
@@ -251,6 +249,8 @@ class LessonModel {
 
     /**
      * Record in the database that a user has viewed a particular lesson's game.
+     * 
+     * @author Ryan Lewis
      * 
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
@@ -277,6 +277,8 @@ class LessonModel {
      * Record in the database that a user has viewed a particular lesson's
      * assessment.
      * 
+     * @author Ryan Lewis
+     * 
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
      * 
@@ -301,12 +303,9 @@ class LessonModel {
     /**
      * Determine whether a given lesson ID corresponds to an actual lesson in
      * the system.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * 
+     * @author Ryan Lewis
+     * 
      * @param $lesson_id int ModuleID of a lesson in the system
      * 
      * @return bool True if the given ID does correspond to a lesson in the
@@ -327,12 +326,9 @@ class LessonModel {
     /**
      * For a given user, user role, and lesson, determine whether or not the
      * user has access to that lesson.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * 
+     * @author Ryan Lewis
+     * 
      * @param $user_id int The user's UserID
      * @param $user_role int The user's role (student=1, teacher=2)
      * 

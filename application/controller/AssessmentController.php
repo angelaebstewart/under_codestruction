@@ -1,11 +1,8 @@
 <?php
 
 /**
- * Description of AssessmentController
- * The AssessmentController Should Direct a teacher or student to the
- * specified assessment
- * Any action regarding an assessment should be routed to here.
- *
+ * Called when a user views or submits an assessment. Any action regarding an 
+ * assessment should be routed to here.
  */
 class AssessmentController extends Controller {
 
@@ -17,7 +14,6 @@ class AssessmentController extends Controller {
     }
 
     /**
-     * 
      * Name: viewAssessment
      * Description:
      * When you click on an assessment link, it goes to the assessment for that lesson.
@@ -29,25 +25,29 @@ class AssessmentController extends Controller {
         $userRole = Session::get('user_role');
         $lessonID = Request::get('id');
         
-        if (LessonModel::canViewLesson($userID, $userRole, $lessonID)) {
-            if (AssessmentModel::canViewAssessment($userID, $userRole, $lessonID)) {
-                LessonModel::recordViewedAssessment($userID, $lessonID);
-                $this->View->render('lesson/viewAssessment');
+        if (isset($userID) && isset($userRole) && isset($lessonID)) {
+            if (LessonModel::canViewLesson($userID, $userRole, $lessonID)) {
+                if (AssessmentModel::canViewAssessment($userID, $userRole, $lessonID)) {
+                    LessonModel::recordViewedAssessment($userID, $lessonID);
+                    $this->View->render('lesson/viewAssessment');
+                } else {
+                    Redirect::to('lesson/index');
+                }
             } else {
                 Redirect::to('lesson/index');
             }
         } else {
-            Redirect::to('lesson/index');
+            Redirect::to("error/index");
         }
     }
 
     /**
-     * Name: createClass_action
+     * Name: submitAssessment
      * Description:
-     * When a student completes an assessment, also should handle the case
-     * of if a teacher completes an assessment.
+     * Called when a user submits an assessment. If the user passed, it directs
+     * them to the lesson select page with a message of success. If the user failed,
+     * it directs them
      * @author Ryan Lewis
-     * @Date ?
      */
     public function submitAssessment() {
         
@@ -63,16 +63,21 @@ class AssessmentController extends Controller {
         }
         
         $userID = Session::get('user_id');
-        if (AssessmentModel::didPassAssessment(Request::get('id'), $answers)) {
-            AssessmentModel::recordPassedAssessment($userID, Request::get('id'));
-            
-            Session::add('feedback_positive', 'You passed the assessment!');
-            Redirect::to('lesson/index');
+        
+        if (isset($userID)) {
+            if (AssessmentModel::didPassAssessment(Request::get('id'), $answers)) {
+                AssessmentModel::recordPassedAssessment($userID, Request::get('id'));
+
+                Session::add('feedback_positive', 'You passed the assessment!');
+                Redirect::to('lesson/index');
+            } else {
+                AssessmentModel::recordFailedAssessment($userID, Request::get('id'));
+
+                Session::add('feedback_negative', 'You failed the assessment. Try again!');
+                Redirect::to('lesson/viewLesson/?id=' . Request::get('id'));
+            }
         } else {
-            AssessmentModel::recordFailedAssessment($userID, Request::get('id'));
-            
-            Session::add('feedback_negative', 'You failed the assessment. Try again!');
-            Redirect::to('lesson/viewLesson/?id=' . Request::get('id'));
+            Redirect::to('error/index');
         }
     }
 }

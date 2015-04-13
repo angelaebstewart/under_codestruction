@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Description of GameController
- *
+ * Called when a user views a game page.
  */
 class GameController extends Controller {
 
@@ -14,13 +13,11 @@ class GameController extends Controller {
     }
 
     /**
-     * When you click on a game link, it goes to the game for that lesson.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: viewGame
      * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * Called when a user clicks the game link on a lesson page. Renders the
+     * page that the game data will later be loaded onto.
+     * @author Ryan Lewis
      */
     public function viewGame() {
         $userID = Session::get('user_id');
@@ -35,17 +32,16 @@ class GameController extends Controller {
                 Redirect::to('lesson/index');
             }
         } else {
-            $this->View->render('error/index');
+            Redirect::to('error/index');
         }
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: getGamePage_action
      * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * Called when a user submits a game page. Loads the next game page, or
+     * a message that tells them they have completed the game.
+     * @author Ryan Lewis
      */
     public function getGamePage_action() {
         $gameID = Request::post('gameID');
@@ -70,7 +66,7 @@ class GameController extends Controller {
                 Redirect::to('lesson/index');
             }
         } else {
-            $this->View->render('error/index');
+            Redirect::to('error/index');
         }
     }
 

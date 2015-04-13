@@ -1,13 +1,13 @@
 <?php
 /**
- * Description of AssessmentModel
- *
+ * Called when a user views a lesson's assessment.
  */
 class AssessmentModel {
     
     /**
      * For a given user, user role, and lesson, determine whether or not the
      * user has access to that lesson's assessment.
+     * 
      *
      * @param $user_id int The user's UserID
      * @param $user_role int The user's role (student=1, teacher=2)
