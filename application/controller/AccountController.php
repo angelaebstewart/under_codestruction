@@ -190,11 +190,6 @@ class AccountController extends Controller {
             $this->View->render('login/editUserEmail');
             return;
         }
-        if (strcmp($email, $newEmail) != 0) {
-            Session::add('feedback_negative', Text::get('FEEDBACK_EMAIL_DOES_NOT_MATCH'));
-            $this->View->render('login/editUserEmail');
-            return;
-        }
         $result = AccountModel::doesEmailAlreadyExist($email);
         if (!$result) {
             Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
