@@ -75,6 +75,9 @@ class LessonModel {
      * Get the Descritpion of the lesson specified.
      * 
      * @param type $lesson_id
+     * 
+     * @return List of module description strings associated with this lesson id
+     * (should just be one)
      */
     public static function getLessonDescription($lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -90,7 +93,9 @@ class LessonModel {
      * For any given lesson, return its ModuleName, GameLink, AssessmentLink,
      * and VideoLink.
      * 
-     * @param $lesson_id int The ModuleID of the desired lesson
+     * @param $user_id int The user's UserID
+     * @param $user_role int The user's role (student=1, teacher=2)
+     * @param $lesson_id int The ModuleID for the lesson in question
      * 
      * @return array containing the ModuleName, GameLink, AssessmentLink, and
      * VideoLink of the lesson; if the lesson_id does not correspond to a
@@ -138,6 +143,14 @@ class LessonModel {
         }
     }
 
+    /**
+     * Get whether or not a user has started a particular lesson
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @return bool True if the user has started the lesson, false otherwise
+     */
     public static function hasStartedLesson($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "SELECT 1 FROM codestructionmoduleprogress
@@ -148,6 +161,16 @@ class LessonModel {
         return ($query->rowCount() >= 1);
     }
 
+    /**
+     * Get whether or not a user has viewed both the video and the game for
+     * a particular lesson.
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @return bool True if the user has viewed both the video and the game
+     * for the lesson, false otherwise
+     */
     public static function hasViewedVideoAndGame($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "SELECT 1 FROM codestructionmoduleprogress
@@ -158,7 +181,16 @@ class LessonModel {
 
         return ($query->rowCount() >= 1);
     }
-
+    
+    /**
+     * Record in the database that a user has started a particular lesson.
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @return int "1" if the user had not already started the lesson and the
+     * data was successfully stored, "-1" otherwise
+     */
     public static function recordStartedLesson($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "INSERT INTO codestructionmoduleprogress (UserID, ModuleID, GameStatus, VideoStatus, AssessmentStatus, CompletionAttemptNumber, isValid)
@@ -168,10 +200,20 @@ class LessonModel {
 
         if ($query->rowCount() >= 1) {
             return 1;
-        } else
+        } else {
             return -1;
+        }
     }
 
+    /**
+     * Record in the database that a user has viewed a particular lesson's video.
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @return int "1" if the user had not already viewed the video and the 
+     * data was successfully stored, "-1" otherwise
+     */
     public static function recordViewedVideo($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "UPDATE codestructionmoduleprogress 
@@ -180,9 +222,22 @@ class LessonModel {
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
 
-        return $query;
+        if ($query->rowCount() >= 1) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 
+    /**
+     * Record in the database that a user has viewed a particular lesson's game.
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @return int "1" if the user had not already viewed the game and the 
+     * data was successfully stored, "-1" otherwise
+     */
     public static function recordViewedGame($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "UPDATE codestructionmoduleprogress 
@@ -191,9 +246,23 @@ class LessonModel {
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
 
-        return $query;
+        if ($query->rowCount() >= 1) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 
+    /**
+     * Record in the database that a user has viewed a particular lesson's
+     * assessment.
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @return int "1" if the user had not already viewed the assessment and the 
+     * data was successfully stored, "-1" otherwise
+     */
     public static function recordViewedAssessment($user_id, $lesson_id) {
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "UPDATE codestructionmoduleprogress 
@@ -202,7 +271,11 @@ class LessonModel {
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
 
-        return $query;
+        if ($query->rowCount() >= 1) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 
     /**
