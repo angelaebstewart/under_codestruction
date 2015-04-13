@@ -44,20 +44,18 @@ class ChangePasswordModel {
     }
 
     /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: setNewPassword
+     * Description:
      * Set the new password (for DEFAULT user)
      * Please note: At this point the user has already pre-verified via verifyPasswordReset() (within one hour),
      * so we don't need to check again for the 60min-limit here. In this method we authenticate
      * via username & password-reset-hash from (hidden) form fields.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
      * @author ?
      * @Date ?
      * @param string $user_name
      * @param string $user_password_new
      * @param string $user_password_repeat
-     *
      * @return bool success state of the password reset
      */
     public static function setNewPassword($user_id, $user_password_new, $user_password_repeat) {
