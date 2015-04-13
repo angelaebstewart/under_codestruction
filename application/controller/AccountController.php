@@ -287,38 +287,10 @@ class AccountController extends Controller {
     }
 
     /**
-     * Show user's PRIVATE profile
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: options
      * Description:
-     * ?
-     * @author ?
-     * @Date ?
-     */
-    public function profile() {
-        Auth::checkAuthentication();
-
-        if (Session::get('user_role') == Config::get('ROLE_TEACHER', 'gen')) {
-            $roleName = 'Teacher';
-        } else {
-            $roleName = 'Student';
-        }
-
-        $this->View->render('login/profile', array(
-            'user_firstName' => Session::get('user_firstName'),
-            'user_lastName' => Session::get('user_lastName'),
-            'user_email' => Session::get('user_email'),
-            'user_roleName' => $roleName
-        ));
-    }
-
-    /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * Shows the optiosn to the teacher or student
+     * @author FRAMEWORK
      * @Date ?
      */
     public function options() {
@@ -327,14 +299,14 @@ class AccountController extends Controller {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: options_deleteAccountAction
      * Description:
-     * ?
-     * @author ?
+     * When the delete account button is clicked this method is called.
+     * @author Ethan Mata (modified: Walter Conway, added checkAuthentication)
      * @Date ?
      */
     public function options_deleteAccountAction() {
+        Auth::checkAuthentication();
         $user_id = Session::get('user_id');
         if (Session::get('user_role') == Config::get('ROLE_TEACHER', 'gen') && isset($user_id)) {
             AccountModel::deleteTeacherAccount($user_id);
@@ -344,13 +316,11 @@ class AccountController extends Controller {
     }
 
     /**
+     * Name: editUserEmail
+     * Description:
      * Show edit-my-user-email page
      * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      */
     public function editUserEmail() {
@@ -363,20 +333,22 @@ class AccountController extends Controller {
      * Description:
      * Edit user email (perform the real action after form has been submitted)
      * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     * @author Victoria Richardson
+     * @author Victoria Richardson (modified: Walter Conway, setNewPassword if it fails)
      * @Date 4/9/2015
      */
     public function editUserEmail_action() {
-        /* Auth::checkAuthentication();
-          AccountModel::editUserEmail(Request::post('user_email'));
-          Redirect::to('login/editUserEmail'); */
+        Auth::checkAuthentication();
         $user_id = Session::get('user_id');
         $passwordNew = Request::post('password1');
         $passwordRetyped = Request::post('password2');
         if (isset($user_id) && isset($passwordNew) && isset($passwordRetyped)) {
             if (($passwordNew == $passwordRetyped) && (strlen($passwordNew) >= 6 && strlen($passwordRetyped) >= 6)) {
-                PasswordResetModel::setNewPassword($user_id, $passwordNew, $passwordRetyped);
-                $this->View->render('login/index');
+                if(PasswordResetModel::setNewPassword($user_id, $passwordNew, $passwordRetyped)){
+                    $this->View->render('login/index');
+                }else{
+                    Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
+                    $this->View->render('login/requestEmailChange');
+                }
             } else {
                 Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
                 $this->View->render('login/requestEmailChange');

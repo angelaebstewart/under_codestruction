@@ -17,10 +17,11 @@ class AssessmentController extends Controller {
      * Name: viewAssessment
      * Description:
      * When you click on an assessment link, it goes to the assessment for that lesson.
-     * @author Ryan Lewis
+     * @author Ryan Lewis (modified: Walter, added checkAuthentication)
      * @Date 3/11/2015
      */
     public function viewAssessment() {
+        Auth::checkAuthentication();
         $userID = Session::get('user_id');
         $userRole = Session::get('user_role');
         $lessonID = Request::get('id');
@@ -47,10 +48,11 @@ class AssessmentController extends Controller {
      * Called when a user submits an assessment. If the user passed, it directs
      * them to the lesson select page with a message of success. If the user failed,
      * it directs them
-     * @author Ryan Lewis
+     * @author Ryan Lewis (modified: Walter, added checkAuthentication)
+     * @Date ? (modified Date: 4/13/2015)
      */
     public function submitAssessment() {
-        
+        Auth::checkAuthentication();
         // Collect assessment answers into '$answers'
         $x = 1;
         while (true) {
