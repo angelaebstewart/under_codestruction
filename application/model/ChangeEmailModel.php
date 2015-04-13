@@ -108,11 +108,9 @@ class ChangeEmailModel {
         );
 
         if ($mail_sent) {
-            //Session::add('feedback_positive', Text::get('FEEDBACK_PASSWORD_RESET_MAIL_SENDING_SUCCESSFUL'));
             return true;
         }
 
-        //Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_RESET_MAIL_SENDING_ERROR') . $mail->getError() );
         return false;
     }
 

@@ -123,10 +123,9 @@ class LoginModel {
             $results = $query->fetchAll();
             $user_email = $results[0]->email;
 
-            //if (LoginModel::sendVerificationEmail($userID, $user_email, $user_activation_hash)) {
-            if (PasswordResetModel::sendPasswordResetMail($userID, $user_activation_hash, $user_email)) {
-                //Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_SUCCESSFULLY_CREATED'));
-                //return true;
+            
+            if (!PasswordResetModel::sendPasswordResetMail($userID, $user_activation_hash, $user_email)) {
+                return false;
             }
             
             $updateValid = "UPDATE codestructionuser SET ResetHash = :VerificationHash, Verified = 0 WHERE UserID = '$userID'";
@@ -155,7 +154,6 @@ class LoginModel {
         $body = Config::get('EMAIL_VERIFICATION_CONTENT', 'email') . Config::get('URL', 'gen') . Config::get('EMAIL_VERIFICATION_URL', 'email')
                 . '/' . urlencode($user_id) . '/' . urlencode($user_activation_hash);
 
-        //Session::add('feedback_positive', "Email sent:<br><br>" . $body);
         // create instance of Mail class, try sending and check
         $mail = new Mail;
         $mail_sent = $mail->sendMail(
@@ -163,7 +161,6 @@ class LoginModel {
         );
 
         if ($mail_sent) {
-            //Session::add('feedback_positive', Text::get('FEEDBACK_VERIFICATION_MAIL_SENDING_SUCCESSFUL'));
             return true;
         }
 

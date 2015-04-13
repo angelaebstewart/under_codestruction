@@ -62,16 +62,12 @@ class ChangePasswordModel {
      */
     public static function setNewPassword($user_id, $user_password_new, $user_password_repeat) {
         if (empty($user_id)) {
-            //Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_FIELD_EMPTY'));
             return false;
         } else if (empty($user_password_new) || empty($user_password_repeat)) {
-            //Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_FIELD_EMPTY'));
             return false;
         } else if ($user_password_new !== $user_password_repeat) {
-            //Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_REPEAT_WRONG'));
             return false;
         } else if (strlen($user_password_new) < 6) {
-            //Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_TOO_SHORT'));
             return false;
         }
 
