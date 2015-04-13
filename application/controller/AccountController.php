@@ -287,33 +287,6 @@ class AccountController extends Controller {
     }
 
     /**
-     * Show user's PRIVATE profile
-     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
-     */
-    public function profile() {
-        Auth::checkAuthentication();
-
-        if (Session::get('user_role') == Config::get('ROLE_TEACHER', 'gen')) {
-            $roleName = 'Teacher';
-        } else {
-            $roleName = 'Student';
-        }
-
-        $this->View->render('login/profile', array(
-            'user_firstName' => Session::get('user_firstName'),
-            'user_lastName' => Session::get('user_lastName'),
-            'user_email' => Session::get('user_email'),
-            'user_roleName' => $roleName
-        ));
-    }
-
-    /**
      * SEARCH-KEYWORD: NOT COMMENTED
      * Name: ?
      * Description:
