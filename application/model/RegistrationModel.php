@@ -115,8 +115,6 @@ class RegistrationModel {
         $database = DatabaseFactory::getFactory()->getConnection();
 
         // write new users data into database
-        //$sql = "INSERT INTO codestructionuser (FirstName, LastName, Email, Role, verified, passwordUpdated, passwordHash, activationHash)
-        //  VALUES (:user_firstName, :user_lastName, :user_email, 1, 0, 0, :user_password_hash, :user_activation_hash)";
         $sql2 = "SELECT MAX(User.UserID) AS new_id FROM codestructionuser User";
         $query2 = $database->prepare($sql2);
         $query2->execute();

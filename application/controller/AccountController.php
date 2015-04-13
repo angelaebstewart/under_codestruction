@@ -340,9 +340,6 @@ class AccountController extends Controller {
      * @Date 4/9/2015
      */
     public function editUserEmail_action() {
-        /* Auth::checkAuthentication();
-          AccountModel::editUserEmail(Request::post('user_email'));
-          Redirect::to('login/editUserEmail'); */
         $user_id = Session::get('user_id');
         $passwordNew = Request::post('password1');
         $passwordRetyped = Request::post('password2');
