@@ -5,10 +5,16 @@
  */
 
 class Config {
+
     private static $configArrayRepository = array();
     private static $configArray;
 
     /**
+     * Name: get
+     * Description:
+     * Fetches the requested configuration from the specified configuration file.
+     * @author Walter Conway
+     * @Date 2/11/2015
      * @param  string $key The key of the value in the configuration.
      * @param string $configType The type of configuration that you want
      * @return mixed The value of the key of the configuration specified, if it is available.
@@ -37,4 +43,5 @@ class Config {
             }
         }
     }
+
 }

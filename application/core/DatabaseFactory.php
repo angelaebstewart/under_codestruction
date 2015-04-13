@@ -19,28 +19,45 @@
  *
  * Thanks! Big up, mate!
  */
-class DatabaseFactory
-{
-	private static $factory;
-	private $database;
+class DatabaseFactory {
 
-	public static function getFactory()
-	{
-		if (!self::$factory) {
-			self::$factory = new DatabaseFactory();
-		}
-		return self::$factory;
-	}
+    private static $factory;
+    private $database;
 
-	public function getConnection() {
-		if (!$this->database) {
-			$options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
-			$this->database = new PDO(
-				Config::get('DB_TYPE','db') . ':host=' . Config::get('DB_HOST','db') . ';dbname=' .
-				Config::get('DB_NAME','db') . ';port=' . Config::get('DB_PORT','db') . ';charset=' . Config::get('DB_CHARSET','db'),
-				Config::get('DB_USER','db'), Config::get('DB_PASS','db'), $options
-			);
-		}
-		return $this->database;
-	}
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     * @return type
+     */
+    public static function getFactory() {
+        if (!self::$factory) {
+            self::$factory = new DatabaseFactory();
+        }
+        return self::$factory;
+    }
+
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     * @return type
+     */
+    public function getConnection() {
+        if (!$this->database) {
+            $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
+            $this->database = new PDO(
+                    Config::get('DB_TYPE', 'db') . ':host=' . Config::get('DB_HOST', 'db') . ';dbname=' .
+                    Config::get('DB_NAME', 'db') . ';port=' . Config::get('DB_PORT', 'db') . ';charset=' . Config::get('DB_CHARSET', 'db'), Config::get('DB_USER', 'db'), Config::get('DB_PASS', 'db'), $options
+            );
+        }
+        return $this->database;
+    }
+
 }

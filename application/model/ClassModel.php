@@ -8,7 +8,7 @@ class ClassModel {
     /*
      * Name: isClassTaughtByTeacher
      * Description:
-     *  Checks to see if the class that was specified is taught by the teacher
+     * Checks to see if the class that was specified is taught by the teacher
      * that was specified.
      * @author Walter Conway
      * @Date 2/21/2015
@@ -37,7 +37,7 @@ class ClassModel {
     /*
      * Name: getClassName
      * Description:
-     *  Retrieves the class name from database
+     * Retrieves the class name from database
      * @author Walter Conway
      * @Date 3/4/2015
      * @param $classID Class id
@@ -60,7 +60,7 @@ class ClassModel {
     /*
      * Name: getClassList
      * Description:
-     *  Obtains a list of classes that the teacher specified teaches.
+     * Obtains a list of classes that the teacher specified teaches.
      * @author Walter Conway
      * @Date 2/21/2015
      * @throws InvalidArgumentException when parameters are not used.
@@ -112,7 +112,7 @@ class ClassModel {
     /*
      * Name: getAllStudentsInClassProgress
      * Description:
-     *  Obtains a list of all the students in specified class progress
+     * Obtains a list of all the students in specified class progress
      * @author Walter Conway
      * @Date 2/21/2015
      * @param $classID
@@ -144,7 +144,7 @@ class ClassModel {
     /*
      * Name: getStudentProgressInAllModulesInClass
      * Description:
-     *  Obtains a list of student's progress in a certain class
+     * Obtains a list of student's progress in a certain class
      * @author Walter Conway
      * @Date 2/21/2015
      * @param $userID
@@ -174,7 +174,7 @@ class ClassModel {
     /*
      * Name: enrollStudentInClass
      * Description:
-     *  Enrolls a given user in a given class
+     * Enrolls a given user in a given class
      * @author Ethan Mata
      * @Date 2/27/2015
      * @throws InvalidArgumentException when parameters are not used.
@@ -202,7 +202,7 @@ class ClassModel {
     /*
      * Name: removeStudentFromClass
      * Description:
-     *  Removes a given user from a given class if they are enrolled
+     * Removes a given user from a given class if they are enrolled
      * @author Ethan Mata
      * @Date 2/27/2015
      * @throws InvalidArgumentException when parameters are not used.
@@ -230,7 +230,7 @@ class ClassModel {
     /*
      * Name: createClassWithTitleAndTeacher
      * Description:
-     *  Creates a class with the given name and associated teacher
+     * Creates a class with the given name and associated teacher
      * @author Ethan Mata
      * @Date 2/23/2015
      * @throws InvalidArgumentException when parameters are not used.
@@ -267,7 +267,7 @@ class ClassModel {
     /*
      * Name: getNextClassID
      * Description:
-     *  Returns the next available ClassID
+     * Returns the next available ClassID
      * @author Ethan Mata
      * @Date 3/8/2015
      * @return The next classID
@@ -291,7 +291,7 @@ class ClassModel {
     /*
      * Name: doesClassExistWithName
      * Description:
-     *  Returns true if a class exists with that name, false otherwise
+     * Returns true if a class exists with that name, false otherwise
      * @author Ethan Mata
      * @Date 3/8/2015
      * @throws InvalidArgumentException when parameters are not used.
@@ -320,7 +320,7 @@ class ClassModel {
     /*
      * Name: doesClassExistWithID
      * Description:
-     *  Returns true if a class exists with that name, false otherwise
+     * Returns true if a class exists with that name, false otherwise
      * @author Ethan Mata
      * @Date 3/9/2015
      * @throws InvalidArgumentException when parameters are not used.
@@ -349,7 +349,7 @@ class ClassModel {
     /*
      * Name: markClassInactive
      * Description:
-     *  Marks a class as inactive
+     * Marks a class as inactive
      * @author Ethan Mata
      * @Date 3/8/2015
      * @throws InvalidArgumentException when parameters are not used.
@@ -378,7 +378,7 @@ class ClassModel {
     /*
      * Name: removeClassAndRecords
      * Description:
-     *  Marks a class as inactive, and cleans up all related records.
+     * Marks a class as inactive, and cleans up all related records.
      * @author Ethan Mata
      * @Date 3/15/2015
      * @throws InvalidArgumentException when parameters are not used.

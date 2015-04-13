@@ -10,6 +10,13 @@ class Session
 {
     /**
      * starts the session
+     * To the homepage
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public static function init()
     {
@@ -21,7 +28,13 @@ class Session
 
     /**
      * sets a specific value to a specific key of the session
-     *
+     * To the homepage
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      * @param mixed $key key
      * @param mixed $value value
      */
@@ -32,7 +45,13 @@ class Session
 
     /**
      * gets/returns the value of a specific key of the session
-     *
+     * To the homepage
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      * @param mixed $key Usually a string, right ?
      * @return mixed the key's value or nothing
      */
@@ -46,7 +65,13 @@ class Session
     /**
      * adds a value as a new array element to the key.
      * useful for collecting error messages etc
-     *
+     * To the homepage
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      * @param mixed $key
      * @param mixed $value
      */
@@ -57,6 +82,13 @@ class Session
 
     /**
      * deletes the session (= logs the user out)
+     * To the homepage
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public static function destroy()
     {
@@ -65,7 +97,13 @@ class Session
 
     /**
      * Checks if the user is logged in or not
-     *
+     * To the homepage
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      * @return bool user's login status
      */
     public static function userIsLoggedIn()

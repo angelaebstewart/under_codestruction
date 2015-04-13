@@ -17,6 +17,12 @@ class LoginController extends Controller {
 
     /**
      * Index, default action (shows the login form), when you do login/index
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public function index() {
         // if user is logged in redirect to main-page, if not show the view
@@ -29,6 +35,12 @@ class LoginController extends Controller {
 
     /**
      * The login action, when you do login/login
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public function login() {
         // perform the login method, put result (true or false) into $login_successful
@@ -47,6 +59,14 @@ class LoginController extends Controller {
         }
     }
 
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     */
     public function loginHome() {
         if (AccountModel::isTeacher(Session::get('user_role'))) {
             Redirect::to('class/index');
@@ -58,6 +78,12 @@ class LoginController extends Controller {
     /**
      * The logout action
      * Perform logout, redirect user to main-page
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public function logout() {
         LoginModel::logout();
@@ -71,6 +97,13 @@ class LoginController extends Controller {
      * SESSION["captcha"] has no content when the application is loaded. The SESSION["captcha"] gets filled at the
      * moment the end-user requests the <img .. >
      * Maybe refactor this sometime.
+     * 
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public function showCaptcha() {
         CaptchaModel::generateAndShowCaptcha();
