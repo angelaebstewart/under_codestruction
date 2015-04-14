@@ -7,21 +7,17 @@
 class LoginController extends Controller {
 
     /**
-     * Construct this object by extending the basic Controller class. The parent::__construct thing is necessary to
-     * put checkAuthentication in here to make an entire controller only usable for logged-in users (for sure not
-     * needed in the LoginController).
+     * Construct this object by extending the basic Controller class.
      */
     public function __construct() {
         parent::__construct();
     }
 
     /**
-     * Index, default action (shows the login form), when you do login/index
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: index
      * Description:
-     * ?
-     * @author ?
+     * Index, default action (shows the login form), when you do login/index
+     * @author FRAMEWORK
      * @Date ?
      */
     public function index() {
