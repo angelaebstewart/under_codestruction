@@ -84,20 +84,17 @@ class AccountController extends Controller {
      * @Date 4/9/2015
      */
     public function editPassword_action() {
-        if (LoginModel::isUserLoggedIn()) {
-            $user_id = Session::get('user_id');
-            $passwordNew = Request::post('password1');
-            $passwordRetyped = Request::post('password2');
-            if (isset($user_id) && isset($passwordNew) && isset($passwordRetyped)) {
-                if (($passwordNew == $passwordRetyped) && (strlen($passwordNew) >= 6 && strlen($passwordRetyped) >= 6)) {
-                    ChangePasswordModel::setNewPassword($user_id, $passwordNew, $passwordRetyped);
-                    Redirect::to('login/index');
-                } else {
-                    Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
-                    $this->View->render('login/editPassword');
-                }
+        Auth::checkAuthentication();
+        $user_id = Session::get('user_id');
+        $passwordNew = Request::post('password1');
+        $passwordRetyped = Request::post('password2');
+        if (isset($user_id) && isset($passwordNew) && isset($passwordRetyped)) {
+            if (($passwordNew == $passwordRetyped) && (strlen($passwordNew) >= 6 && strlen($passwordRetyped) >= 6)) {
+                ChangePasswordModel::setNewPassword($user_id, $passwordNew, $passwordRetyped);
+                Redirect::to('login/index');
             } else {
-                $this->View->render('error/index');
+                Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
+                $this->View->render('login/editPassword');
             }
         } else {
             $this->View->render('error/index');
@@ -274,7 +271,7 @@ class AccountController extends Controller {
      * @Date ?
      */
     public function register() {
-        if (LoginModel::isUserLoggedIn()) {
+        if (Session::userIsLoggedIn()) {
             Redirect::home();
         } else {
             $this->View->render('login/register');

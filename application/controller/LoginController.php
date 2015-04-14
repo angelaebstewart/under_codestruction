@@ -17,12 +17,12 @@ class LoginController extends Controller {
      * Name: index
      * Description:
      * Index, default action (shows the login form), when you do login/index
-     * @author FRAMEWORK
+     * @author FRAMEWORK (modified by: Ryan Lewis & Walter Conway) 
      * @Date ?
      */
     public function index() {
         // if user is logged in redirect to main-page, if not show the view
-        if (LoginModel::isUserLoggedIn()) {
+        if (Session::userIsLoggedIn()) {
             Redirect::to('login/loginHome');
         } else {
             $this->View->render('login/index');
@@ -30,11 +30,9 @@ class LoginController extends Controller {
     }
 
     /**
-     * The login action, when you do login/login
-     * SEARCH-KEYWORD: NOT COMMENTED
      * Name: ?
      * Description:
-     * ?
+     * The login action, when you do login/login
      * @author ?
      * @Date ?
      */
