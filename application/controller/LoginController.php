@@ -7,16 +7,18 @@
 class LoginController extends Controller {
 
     /**
-     * Construct this object by extending the basic Controller class. The parent::__construct thing is necessary to
-     * put checkAuthentication in here to make an entire controller only usable for logged-in users (for sure not
-     * needed in the LoginController).
+     * Construct this object by extending the basic Controller class.
      */
     public function __construct() {
         parent::__construct();
     }
 
     /**
+     * Name: index
+     * Description:
      * Index, default action (shows the login form), when you do login/index
+     * @author FRAMEWORK
+     * @Date ?
      */
     public function index() {
         // if user is logged in redirect to main-page, if not show the view
@@ -29,6 +31,12 @@ class LoginController extends Controller {
 
     /**
      * The login action, when you do login/login
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public function login() {
         // perform the login method, put result (true or false) into $login_successful
@@ -47,6 +55,14 @@ class LoginController extends Controller {
         }
     }
 
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     */
     public function loginHome() {
         if (AccountModel::isTeacher(Session::get('user_role'))) {
             Redirect::to('class/index');
@@ -58,6 +74,12 @@ class LoginController extends Controller {
     /**
      * The logout action
      * Perform logout, redirect user to main-page
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public function logout() {
         LoginModel::logout();
@@ -71,6 +93,13 @@ class LoginController extends Controller {
      * SESSION["captcha"] has no content when the application is loaded. The SESSION["captcha"] gets filled at the
      * moment the end-user requests the <img .. >
      * Maybe refactor this sometime.
+     * 
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
     public function showCaptcha() {
         CaptchaModel::generateAndShowCaptcha();

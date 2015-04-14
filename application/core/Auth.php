@@ -7,10 +7,17 @@
  * entire controller only visible for logged-in users) or inside a controller-method to make only this part of the
  * application available for logged-in users.
  */
-class Auth
-{
-    public static function checkAuthentication()
-    {
+class Auth {
+
+    /**
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     */
+    public static function checkAuthentication() {
         // initialize the session (if not initialized yet)
         Session::init();
 
@@ -18,11 +25,12 @@ class Auth
         if (!Session::userIsLoggedIn()) {
             // ... then treat user as "not logged in", destroy session, redirect to login page
             Session::destroy();
-            header('location: ' . Config::get('URL','gen') . 'login');
+            Redirect::to("login/index");
             // to prevent fetching views via cURL (which "ignores" the header-redirect above) we leave the application
             // the hard way, via exit(). @see https://github.com/panique/php-login/issues/453
             // this is not optimal and will be fixed in future releases
             exit();
         }
     }
+
 }

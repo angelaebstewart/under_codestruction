@@ -16,7 +16,11 @@ class ErrorController extends Controller
     }
 
     /**
+     * Name: index
+     * Description:
      * This method controls what happens / what the user sees when a page does not exist (404)
+     * @author FRAMEWORK
+     * @Date ?
      */
     public function index()
     {

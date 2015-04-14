@@ -4,8 +4,8 @@
  * Class Application
  * The heart of the application
  */
-class Application
-{
+class Application {
+
     /** @var mixed Instance of the controller */
     private $controller;
 
@@ -20,31 +20,36 @@ class Application
 
     /**
      * Start the application, analyze URL elements, call according controller/method or relocate to fallback location
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
-    public function __construct()
-    {
+    public function __construct() {
         // create array with URL parts in $url
         $this->splitUrl();
 
         // check for controller: no controller given ? then make controller = default controller (from config)
         if (!$this->controller_name) {
-            $this->controller_name = Config::get('DEFAULT_CONTROLLER','gen');
+            $this->controller_name = Config::get('DEFAULT_CONTROLLER', 'gen');
         }
 
         // check for action: no action given ? then make action = default action (from config)
-        if (!$this->action_name OR (strlen($this->action_name) == 0)) {
-            $this->action_name = Config::get('DEFAULT_ACTION','gen');
+        if (!$this->action_name OR ( strlen($this->action_name) == 0)) {
+            $this->action_name = Config::get('DEFAULT_ACTION', 'gen');
         }
 
         // rename controller name to real controller class/file name ("index" to "IndexController")
         $this->controller_name = ucwords($this->controller_name) . 'Controller';
 
         // does such a controller exist ?
-        if (file_exists(Config::get('PATH_CONTROLLER','gen') . $this->controller_name . '.php')) {
+        if (file_exists(Config::get('PATH_CONTROLLER', 'gen') . $this->controller_name . '.php')) {
 
             // load this file and create this controller
             // example: if controller would be "car", then this line would translate into: $this->car = new car();
-            require Config::get('PATH_CONTROLLER','gen') . $this->controller_name . '.php';
+            require Config::get('PATH_CONTROLLER', 'gen') . $this->controller_name . '.php';
             $this->controller = new $this->controller_name();
 
             // check for method: does such a method exist in the controller ?
@@ -57,18 +62,23 @@ class Application
                     $this->controller->{$this->action_name}();
                 }
             } else {
-                header('location: ' . Config::get('URL','gen') . 'error');
+                header('location: ' . Config::get('URL', 'gen') . 'error');
             }
         } else {
-            header('location: ' . Config::get('URL','gen') . 'error');
+            header('location: ' . Config::get('URL', 'gen') . 'error');
         }
     }
 
     /**
      * Get and split the URL
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
      */
-    private function splitUrl()
-    {
+    private function splitUrl() {
         if (Request::get('url')) {
 
             // split URL
@@ -87,4 +97,5 @@ class Application
             $this->parameters = array_values($url);
         }
     }
+
 }

@@ -5,159 +5,166 @@
  *
  * Handles all the stuff that is related to the email change process
  */
+class ChangeEmailModel {
 
-class ChangeEmailModel
-{
-	/**
-	 * Perform the necessary actions to send an email reset mail
-	 *
-	 * @param $email user's email
-	 *
-	 * @return bool success status
-	 */
-	public static function requestEmailReset($email, $new_user_name)
-	{
-                //Check if email is current user
-                $currentUser = Session::get('user_email');
-                if ($currentUser != $email)
-                {
-                    Session::add('feedback_negative', Text::get('FEEDBACK_WRONG_EMAIL'));
-                    return false;
-                }       
-                        
-		// check if that username exists
-		$result = AccountModel::getUserIdByEmail($email);
-		if ($result == -1) {
-			Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
-			return false;
-		}
-                
-                if (AccountModel::doesEmailAlreadyExist($new_user_name)) {
-			Session::add('feedback_negative', Text::get('FEEDBACK_USER_EMAIL_ALREADY_TAKEN'));
-			return false;
-		}
+    /**
+     * Name: requestEmailReset
+     * Description:
+     * Perform the necessary actions to send an email reset mail
+     * @author Victoria Richardson
+     * @Date 4/12/2015
+     * @param $email user's email
+     * @return bool success status
+     */
+    public static function requestEmailReset($email, $new_user_name) {
+        //Check if email is current user
+        $currentUser = Session::get('user_email');
+        if ($currentUser != $email) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_WRONG_EMAIL'));
+            return false;
+        }
 
-		// generate integer-timestamp (to see when exactly the user (or an attacker) requested the password reset mail)
-		// generate random hash for email password reset verification (40 char string)
-		$user_password_reset_hash = sha1(uniqid(mt_rand(), true));
+        // check if that username exists
+        $result = AccountModel::getUserIdByEmail($email);
+        if ($result == -1) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
+            return false;
+        }
 
-                
-		$token_set = ChangeEmailModel::setEmailResetDatabaseToken($result, $user_password_reset_hash);
-		if (!$token_set) {
-			return false;
-		}
+        if (AccountModel::doesEmailAlreadyExist($new_user_name)) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_USER_EMAIL_ALREADY_TAKEN'));
+            return false;
+        }
 
-		// ... and send a mail to the user, containing a link with username and token hash string
-		$mail_sent = ChangeEmailModel::sendEmailResetMail($result, $user_password_reset_hash, $new_user_name);
-		if ($mail_sent) {
-			return true;
-		}
+        // generate integer-timestamp (to see when exactly the user (or an attacker) requested the password reset mail)
+        // generate random hash for email password reset verification (40 char string)
+        $user_password_reset_hash = sha1(uniqid(mt_rand(), true));
 
-		// default return
-		return false;
-	}
 
-	/**
-	 * Set password reset token in database
-	 *
-	 * @param string $user_name username
-	 * @param string $user_password_reset_hash password reset hash
-	 * @param int $temporary_timestamp timestamp
-	 *
-	 * @return bool success status
-	 */
-	public static function setEmailResetDatabaseToken($user_id, $user_password_reset_hash)
-	{
-		$database = DatabaseFactory::getFactory()->getConnection();
+        $token_set = ChangeEmailModel::setEmailResetDatabaseToken($result, $user_password_reset_hash);
+        if (!$token_set) {
+            return false;
+        }
 
-		$sql = "UPDATE codestructionuser SET VerificationHash = :user_password_reset_hash, PasswordUpdated = 0 WHERE UserID = :user_id LIMIT 1";
-		$query = $database->prepare($sql);
-		$query->execute(array(':user_password_reset_hash' => $user_password_reset_hash, ':user_id' => $user_id));
+        // ... and send a mail to the user, containing a link with username and token hash string
+        $mail_sent = ChangeEmailModel::sendEmailResetMail($result, $user_password_reset_hash, $new_user_name);
+        if ($mail_sent) {
+            return true;
+        }
 
-		// check if exactly one row was successfully changed
-		if ($query->rowCount() == 1) {
-			return true;
-		}
-		return false;
-	}
+        // default return
+        return false;
+    }
 
-	/**
-	 * Send the email reset mail
-	 *
-	 * @param string $user_id userid
-	 * @param string $user_password_reset_hash password reset hash
-	 * @param string $user_email user email
-	 *
-	 * @return bool success status
-	 */
-	public static function sendEmailResetMail($user_id, $user_password_reset_hash, $user_email)
-	{
-		// create email body
-		$body = Config::get('EMAIL_EMAIL_RESET_CONTENT','email') . ' ' . Config::get('URL','gen') .
-		        Config::get('EMAIL_EMAIL_RESET_URL','email') . '/' . urlencode($user_id) . '/' .
-		        urlencode($user_password_reset_hash). '/' . urlencode($user_email) ;
+    /**
+     * Name: setEmailResetDatabaseToken
+     * Description:
+     * Set password reset token in database
+     * @author Victoria Richardson
+     * @Date 3/25/2015
+     * @param string $user_name username
+     * @param string $user_password_reset_hash password reset hash
+     * @param int $temporary_timestamp timestamp
+     * @return bool success status
+     */
+    public static function setEmailResetDatabaseToken($user_id, $user_password_reset_hash) {
+        $database = DatabaseFactory::getFactory()->getConnection();
 
-		// create instance of Mail class, try sending and check
-		$mail = new Mail;
-		$mail_sent = $mail->sendMail(
-			$user_email,
-			Config::get('EMAIL_EMAIL_RESET_FROM_EMAIL','email'),
-			Config::get('EMAIL_EMAIL_RESET_FROM_NAME','email'),
-			Config::get('EMAIL_EMAIL_RESET_SUBJECT','email'),
-			$body
-		);
+        $sql = "UPDATE codestructionuser SET VerificationHash = :user_password_reset_hash, PasswordUpdated = 0 WHERE UserID = :user_id LIMIT 1";
+        $query = $database->prepare($sql);
+        $query->execute(array(':user_password_reset_hash' => $user_password_reset_hash, ':user_id' => $user_id));
 
-		if ($mail_sent) {
-			//Session::add('feedback_positive', Text::get('FEEDBACK_PASSWORD_RESET_MAIL_SENDING_SUCCESSFUL'));
-			return true;
-		}
+        // check if exactly one row was successfully changed
+        if ($query->rowCount() == 1) {
+            return true;
+        }
+        return false;
+    }
 
-		//Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_RESET_MAIL_SENDING_ERROR') . $mail->getError() );
-		return false;
-	}
+    /**
+     * Send the email reset mail
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     * @param string $user_id userid
+     * @param string $user_password_reset_hash password reset hash
+     * @param string $user_email user email
+     *
+     * @return bool success status
+     */
+    public static function sendEmailResetMail($user_id, $user_password_reset_hash, $user_email) {
+        // create email body
+        $body = Config::get('EMAIL_EMAIL_RESET_CONTENT', 'email') . ' ' . Config::get('URL', 'gen') .
+                Config::get('EMAIL_EMAIL_RESET_URL', 'email') . '/' . urlencode($user_id) . '/' .
+                urlencode($user_password_reset_hash) . '/' . urlencode($user_email);
 
-	/**
-	 * Verifies the password reset request via the verification hash token (that's only valid for one hour)
-	 * @param string $user_name Username
-	 * @param string $verification_code Hash token
-	 * @return bool Success status
-	 */
-	public static function verifyEmailReset($user_id, $verification_code)
-	{
-		$database = DatabaseFactory::getFactory()->getConnection();
+        // create instance of Mail class, try sending and check
+        $mail = new Mail;
+        $mail_sent = $mail->sendMail(
+                $user_email, Config::get('EMAIL_EMAIL_RESET_FROM_EMAIL', 'email'), Config::get('EMAIL_EMAIL_RESET_FROM_NAME', 'email'), Config::get('EMAIL_EMAIL_RESET_SUBJECT', 'email'), $body
+        );
 
-		// check if user-provided username + verification code combination exists
-		$sql = "SELECT UserID
+        if ($mail_sent) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Verifies the password reset request via the verification hash token (that's only valid for one hour)
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     * @param string $user_name Username
+     * @param string $verification_code Hash token
+     * @return bool Success status
+     */
+    public static function verifyEmailReset($user_id, $verification_code) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        // check if user-provided username + verification code combination exists
+        $sql = "SELECT UserID
                   FROM codestructionuser
                  WHERE UserID = :user_id
                        AND VerificationHash = :user_password_reset_hash
                  LIMIT 1";
-		$query = $database->prepare($sql);
-		$query->execute(array(
-			':user_password_reset_hash' => $verification_code, ':user_id' => $user_id
-		));
+        $query = $database->prepare($sql);
+        $query->execute(array(
+            ':user_password_reset_hash' => $verification_code, ':user_id' => $user_id
+        ));
 
-		// if this user with exactly this verification hash code does NOT exist
-		if ($query->rowCount() != 1) {
-			return false;
-		}
-                return true;
-	}
+        // if this user with exactly this verification hash code does NOT exist
+        if ($query->rowCount() != 1) {
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 * Writes the new password to the database
-	 *
-	 * @param string $user_name username
-	 * @param string $user_password_hash
-	 * @param string $user_password_reset_hash
-	 *
-	 * @return bool
-	 */
-	public static function saveNewUserEmail($user_id, $user_email, $user_password_reset_hash)
-	{
-		$database = DatabaseFactory::getFactory()->getConnection();
+    /**
+     * Writes the new password to the database
+     * SEARCH-KEYWORD: NOT COMMENTED
+     * Name: ?
+     * Description:
+     * ?
+     * @author ?
+     * @Date ?
+     * @param string $user_name username
+     * @param string $user_password_hash
+     * @param string $user_password_reset_hash
+     *
+     * @return bool
+     */
+    public static function saveNewUserEmail($user_id, $user_email, $user_password_reset_hash) {
+        $database = DatabaseFactory::getFactory()->getConnection();
 
-		$sql = "UPDATE codestructionuser
+        $sql = "UPDATE codestructionuser
                    SET Email = :user_email,
                        VerificationHash = NULL,
                        PasswordUpdated = 1,
@@ -165,17 +172,17 @@ class ChangeEmailModel
                  WHERE UserID = :user_id
                        AND VerificationHash = :user_password_reset_hash
                  LIMIT 1";
-		$query = $database->prepare($sql);
-		$query->execute(array(
-			':user_email' => $user_email, ':user_id' => $user_id,
-			':user_password_reset_hash' => $user_password_reset_hash
-		));
+        $query = $database->prepare($sql);
+        $query->execute(array(
+            ':user_email' => $user_email, ':user_id' => $user_id,
+            ':user_password_reset_hash' => $user_password_reset_hash
+        ));
 
-		// if successful
-		if ($query->rowCount() == 1) {
-			return true;
-		}
-		return false;
-	}
+        // if successful
+        if ($query->rowCount() == 1) {
+            return true;
+        }
+        return false;
+    }
 
 }

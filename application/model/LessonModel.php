@@ -8,17 +8,20 @@ class LessonModel {
     /**
      * Get a list of all lessons in the system, with an indication of which
      * are currently accessible to the user.
-     *
+     * 
+     * @author Ryan Lewis
+     * 
      * @param $user_id int The user's UserID
      * @param $user_role int The user's role (student=1, teacher=2)
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
      * 
      * @return array List of all lessons in the system. All module "name"s
      * are given, but module "id"s are only given for those accessible to the 
      * user
      */
     public static function getLessonList($user_id, $user_role) {
-        if (isset($user_id)) {
-
+        if (isset($user_id) && isset($user_role)) {
             // Get all the lessons in the system
             $lessonData = LessonModel::getAllLessons();
 
@@ -61,6 +64,8 @@ class LessonModel {
     /**
      * Get a list of all lessons in the system.
      * 
+     * @author Ryan Lewis
+     * 
      * @return array List of all ModuleIDs and ModuleNames in the system
      */
     public static function getAllLessons() {
@@ -74,42 +79,63 @@ class LessonModel {
     /**
      * Get the Descritpion of the lesson specified.
      * 
-     * @param type $lesson_id
+     * @author Ryan Lewis
+     * 
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
+     * 
+     * @return List of module description strings associated with this lesson id
+     * (should just be one)
      */
     public static function getLessonDescription($lesson_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "SELECT  ModuleDescription
-                    FROM codestructionmodule
-                    WHERE ModuleID = :lesson_id";
-        $query = $database->prepare($sql);
-        $query->execute(array(':lesson_id' => $lesson_id));
-        return $query->fetchAll();
+        if (isset($lesson_id)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT  ModuleDescription
+                        FROM codestructionmodule
+                        WHERE ModuleID = :lesson_id";
+            $query = $database->prepare($sql);
+            $query->execute(array(':lesson_id' => $lesson_id));
+            return $query->fetchAll();
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
 
     /**
      * For any given lesson, return its ModuleName, GameLink, AssessmentLink,
      * and VideoLink.
      * 
-     * @param $lesson_id int The ModuleID of the desired lesson
+     * @author Ryan Lewis
+     * 
+     * @param $user_id int The user's UserID
+     * @param $user_role int The user's role (student=1, teacher=2)
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
      * 
      * @return array containing the ModuleName, GameLink, AssessmentLink, and
      * VideoLink of the lesson; if the lesson_id does not correspond to a
      * lesson in the system, the lessonData key value will be set to NULL
      */
     public static function getLessonData($user_id, $user_role, $lesson_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "SELECT ModuleName, GameLink, AssessmentLink, VideoLink 
-                    FROM codestructionmodule
-                    WHERE ModuleID = :lesson_id";
-        $query = $database->prepare($sql);
-        $query->execute(array(':lesson_id' => $lesson_id));
+        if (isset($user_id) && isset($user_role) && isset($lesson_id)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT ModuleName, GameLink, AssessmentLink, VideoLink 
+                        FROM codestructionmodule
+                        WHERE ModuleID = :lesson_id";
+            $query = $database->prepare($sql);
+            $query->execute(array(':lesson_id' => $lesson_id));
 
-        if ($query->rowCount() === 1) { // Data successfully pulled
-            $lessonData = $query->fetch();
-            $lessonData->canViewAssessment = AccountModel::isTeacher($user_role) || LessonModel::hasViewedVideoAndGame($user_id, $lesson_id);
-            return array("lessonData" => $lessonData);
-        } else { // Data not successfully pulled
-            return array("lessonData" => NULL);
+            if ($query->rowCount() === 1) { // Data successfully pulled
+                $lessonData = $query->fetch();
+                $lessonData->canViewAssessment = AccountModel::isTeacher($user_role) || LessonModel::hasViewedVideoAndGame($user_id, $lesson_id);
+                return array("lessonData" => $lessonData);
+            } else { // Data not successfully pulled
+                return array("lessonData" => NULL);
+            }
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
         }
     }
 
@@ -117,144 +143,284 @@ class LessonModel {
      * For any given user, get the ModuleID of the highest lesson he or she
      * has completed.
      * 
+     * @author Ryan Lewis
+     * 
      * @param $user_id int The user's UserID
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
      * 
      * @return int ModuleID of the highest lesson the user has completed; -1
      * if no lessons have been completed, or if the given user ID is invalid
      */
     public static function getHighestCompletedLesson($user_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "SELECT MAX(ModuleID) AS ModuleID
-            FROM codestructionmoduleprogress
-            WHERE UserID = :user_id AND AssessmentStatus='Completed'";
-        $query = $database->prepare($sql);
-        $query->execute(array(':user_id' => $user_id));
-        $result = $query->fetch();
-        $highestLesson = $result->ModuleID;
-        if ($highestLesson != null) {
-            return $highestLesson;
+        if (isset($user_id)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT MAX(ModuleID) AS ModuleID
+                FROM codestructionmoduleprogress
+                WHERE UserID = :user_id AND AssessmentStatus='Completed'";
+            $query = $database->prepare($sql);
+            $query->execute(array(':user_id' => $user_id));
+            $result = $query->fetch();
+            $highestLesson = $result->ModuleID;
+            if ($highestLesson != null) {
+                return $highestLesson;
+            } else {
+                return -1;
+            }
         } else {
-            return -1;
+            throw new InvalidArgumentException("Invalid Parameters");
         }
     }
 
+    /**
+     * Get whether or not a user has started a particular lesson
+     * 
+     * @author Ryan Lewis
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
+     * 
+     * @return bool True if the user has started the lesson, false otherwise
+     */
     public static function hasStartedLesson($user_id, $lesson_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "SELECT 1 FROM codestructionmoduleprogress
-            WHERE UserID = :user_id AND ModuleID = :lesson_id";
-        $query = $database->prepare($sql);
-        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        if (isset($user_id) && isset($lesson_id)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT 1 FROM codestructionmoduleprogress
+                WHERE UserID = :user_id AND ModuleID = :lesson_id";
+            $query = $database->prepare($sql);
+            $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
 
-        return ($query->rowCount() >= 1);
+            return ($query->rowCount() >= 1);
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
 
+    /**
+     * Get whether or not a user has viewed both the video and the game for
+     * a particular lesson.
+     * 
+     * @author Ryan Lewis
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
+     * 
+     * @return bool True if the user has viewed both the video and the game
+     * for the lesson, false otherwise
+     */
     public static function hasViewedVideoAndGame($user_id, $lesson_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "SELECT 1 FROM codestructionmoduleprogress
-            WHERE UserID = :user_id AND ModuleID = :lesson_id
-            AND VideoStatus='Completed' AND GameStatus='Completed'";
-        $query = $database->prepare($sql);
-        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        if (isset($user_id) && isset($lesson_id)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT 1 FROM codestructionmoduleprogress
+                WHERE UserID = :user_id AND ModuleID = :lesson_id
+                AND VideoStatus='Completed' AND GameStatus='Completed'";
+            $query = $database->prepare($sql);
+            $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
 
-        return ($query->rowCount() >= 1);
+            return ($query->rowCount() >= 1);
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
-
+    
+    /**
+     * Record in the database that a user has started a particular lesson.
+     * 
+     * @author Ryan Lewis
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
+     * 
+     * @return int "1" if the user had not already started the lesson and the
+     * data was successfully stored, "-1" otherwise
+     */
     public static function recordStartedLesson($user_id, $lesson_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "INSERT INTO codestructionmoduleprogress (UserID, ModuleID, GameStatus, VideoStatus, AssessmentStatus, CompletionAttemptNumber, isValid)
-                VALUES (:user_id, :lesson_id, 'Not Started', 'Not Started', 'Not Started', 0, 1)";
-        $query = $database->prepare($sql);
-        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        if (isset($user_id) && isset($lesson_id)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "INSERT INTO codestructionmoduleprogress (UserID, ModuleID, GameStatus, VideoStatus, AssessmentStatus, CompletionAttemptNumber, isValid)
+                    VALUES (:user_id, :lesson_id, 'Not Started', 'Not Started', 'Not Started', 0, 1)";
+            $query = $database->prepare($sql);
+            $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
 
-        if ($query->rowCount() >= 1) {
-            return 1;
-        } else
-            return -1;
+            if ($query->rowCount() >= 1) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
 
+    /**
+     * Record in the database that a user has viewed a particular lesson's video.
+     * 
+     * @author Ryan Lewis
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
+     * 
+     * @return int "1" if the user had not already viewed the video and the 
+     * data was successfully stored, "-1" otherwise
+     */
     public static function recordViewedVideo($user_id, $lesson_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "UPDATE codestructionmoduleprogress 
-                SET VideoStatus='Completed'
-                WHERE UserID = :user_id AND ModuleID = :lesson_id";
-        $query = $database->prepare($sql);
-        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        if (isset($user_id) && isset($lesson_id)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "UPDATE codestructionmoduleprogress 
+                    SET VideoStatus='Completed'
+                    WHERE UserID = :user_id AND ModuleID = :lesson_id";
+            $query = $database->prepare($sql);
+            $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
 
-        return $query;
+            if ($query->rowCount() >= 1) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
 
+    /**
+     * Record in the database that a user has viewed a particular lesson's game.
+     * 
+     * @author Ryan Lewis
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
+     * 
+     * @return int "1" if the user had not already viewed the game and the 
+     * data was successfully stored, "-1" otherwise
+     */
     public static function recordViewedGame($user_id, $lesson_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "UPDATE codestructionmoduleprogress 
-                SET GameStatus='Completed'
-                WHERE UserID = :user_id AND ModuleID = :lesson_id";
-        $query = $database->prepare($sql);
-        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        if (isset($user_id) && isset($lesson_id)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "UPDATE codestructionmoduleprogress 
+                    SET GameStatus='Completed'
+                    WHERE UserID = :user_id AND ModuleID = :lesson_id";
+            $query = $database->prepare($sql);
+            $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
 
-        return $query;
+            if ($query->rowCount() >= 1) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
 
+    /**
+     * Record in the database that a user has viewed a particular lesson's
+     * assessment.
+     * 
+     * @author Ryan Lewis
+     * 
+     * @param $user_id int The user's UserID
+     * @param $lesson_id int The ModuleID for the lesson in question
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
+     * 
+     * @return int "1" if the user had not already viewed the assessment and the 
+     * data was successfully stored, "-1" otherwise
+     */
     public static function recordViewedAssessment($user_id, $lesson_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "UPDATE codestructionmoduleprogress 
-                SET AssessmentStatus='In Progress'
-                WHERE UserID = :user_id AND ModuleID = :lesson_id AND AssessmentStatus<>'Completed'";
-        $query = $database->prepare($sql);
-        $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
+        if (isset($user_id) && isset($lesson_id)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "UPDATE codestructionmoduleprogress 
+                    SET AssessmentStatus='In Progress'
+                    WHERE UserID = :user_id AND ModuleID = :lesson_id AND AssessmentStatus<>'Completed'";
+            $query = $database->prepare($sql);
+            $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
 
-        return $query;
+            if ($query->rowCount() >= 1) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
 
     /**
      * Determine whether a given lesson ID corresponds to an actual lesson in
      * the system.
-     *
+     * 
+     * @author Ryan Lewis
+     * 
      * @param $lesson_id int ModuleID of a lesson in the system
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
      * 
      * @return bool True if the given ID does correspond to a lesson in the
      * system, false otherwise
      */
     public static function isValidLessonID($lesson_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
+        if (isset($lesson_id)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT ModuleID
-            FROM codestructionmodule
-            WHERE ModuleID = :lesson_id";
-        $query = $database->prepare($sql);
-        $query->execute(array(':lesson_id' => $lesson_id));
+            $sql = "SELECT ModuleID
+                FROM codestructionmodule
+                WHERE ModuleID = :lesson_id";
+            $query = $database->prepare($sql);
+            $query->execute(array(':lesson_id' => $lesson_id));
 
-        return ($query->rowCount() >= 1);
+            return ($query->rowCount() >= 1);
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
 
     /**
      * For a given user, user role, and lesson, determine whether or not the
      * user has access to that lesson.
-     *
+     * 
+     * @author Ryan Lewis
+     * 
      * @param $user_id int The user's UserID
      * @param $user_role int The user's role (student=1, teacher=2)
+     * 
+     * @throws InvalidArgumentException when parameters are not used.
      * 
      * @return bool True if the user does have access to the given lesson;
      * false otherwise, or if the $user_id or $lesson_id are invalid
      */
     public static function canViewLesson($user_id, $user_role, $lesson_id) {
-        if (LessonModel::isValidLessonID($lesson_id)) {
-            if (AccountModel::isTeacher($user_role)) {
-                return true;
-            } else {
-                $highestCompleted = LessonModel::getHighestCompletedLesson($user_id);
-
-                if ($highestCompleted === -1) { // No lessons have been started
-                    $highestCompleted = 0;
-                }
-
-                if ($lesson_id <= $highestCompleted + 1) {
+        if (isset($user_id) && isset($user_role) && isset($lesson_id)) {
+            if (LessonModel::isValidLessonID($lesson_id)) {
+                if (AccountModel::isTeacher($user_role)) {
                     return true;
                 } else {
-                    return false;
+                    $highestCompleted = LessonModel::getHighestCompletedLesson($user_id);
+
+                    if ($highestCompleted === -1) { // No lessons have been started
+                        $highestCompleted = 0;
+                    }
+
+                    if ($lesson_id <= $highestCompleted + 1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
+            } else {
+                return false;
             }
         } else {
-            return false;
+            throw new InvalidArgumentException("Invalid Parameters");
         }
     }
 
