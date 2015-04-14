@@ -19,12 +19,10 @@ class Application {
     private $action_name;
 
     /**
-     * Start the application, analyze URL elements, call according controller/method or relocate to fallback location
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: 
      * Description:
-     * ?
-     * @author ?
+     * Start the application, analyze URL elements, call according controller/method or relocate to fallback location
+     * @author FRAMEWORK (modified by: Walter Conway, removed header replaced with redirect which uses header)
      * @Date ?
      */
     public function __construct() {
@@ -62,20 +60,18 @@ class Application {
                     $this->controller->{$this->action_name}();
                 }
             } else {
-                header('location: ' . Config::get('URL', 'gen') . 'error');
+                Redirect::to('error/index');
             }
         } else {
-            header('location: ' . Config::get('URL', 'gen') . 'error');
+            Redirect::to('error/index');
         }
     }
 
     /**
-     * Get and split the URL
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: splitUrl
      * Description:
-     * ?
-     * @author ?
+     * Get and split the URL
+     * @author FRAMEWORK
      * @Date ?
      */
     private function splitUrl() {
