@@ -20,6 +20,7 @@ class GameController extends Controller {
      * @author Ryan Lewis
      */
     public function viewGame() {
+        Auth::checkAuthentication();
         $userID = Session::get('user_id');
         $userRole = Session::get('user_role');
         $lessonID = Request::get('id');
@@ -44,12 +45,13 @@ class GameController extends Controller {
      * @author Ryan Lewis
      */
     public function getGamePage_action() {
+        Auth::checkAuthentication();
         $gameID = Request::post('gameID');
         $nextPage = Request::post('nextPage');
         $userID = Session::get('user_id');
         $userRole = Session::get('user_role');
 
-        if (isset($userID) && isset($userRole)) {
+        if (isset($userID) && isset($userRole) && isset($gameID) && isset($nextPage)) {
             if (GameModel::canViewGame($userID, $userRole, $gameID)) {
                 $pageFile = "../application/view/lesson/" . $gameID . "/page" . $nextPage . ".php";
 
