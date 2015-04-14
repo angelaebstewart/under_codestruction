@@ -9,13 +9,11 @@
 class Session
 {
     /**
+     * Name: init
+     * Description:
      * starts the session
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      */
     public static function init()
@@ -27,13 +25,11 @@ class Session
     }
 
     /**
+     * Name: set
+     * Description:
      * sets a specific value to a specific key of the session
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param mixed $key key
      * @param mixed $value value
@@ -44,13 +40,11 @@ class Session
     }
 
     /**
+     * Name: get
+     * Description:
      * gets/returns the value of a specific key of the session
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param mixed $key Usually a string, right ?
      * @return mixed the key's value or nothing
@@ -63,14 +57,12 @@ class Session
     }
 
     /**
+     * Name: add
+     * Description:
      * adds a value as a new array element to the key.
      * useful for collecting error messages etc
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param mixed $key
      * @param mixed $value
@@ -81,13 +73,11 @@ class Session
     }
 
     /**
+     * Name: destroy
+     * Description:
      * deletes the session (= logs the user out)
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      */
     public static function destroy()
@@ -96,13 +86,11 @@ class Session
     }
 
     /**
+     * Name: userIsLoggedIn
+     * Description:
      * Checks if the user is logged in or not
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @return bool user's login status
      */

@@ -25,11 +25,11 @@ class DatabaseFactory {
     private $database;
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: getFactory
      * Description:
-     * ?
-     * @author ?
+     * This is a singleton design pattern on top of a factory design pattern
+     * returns a database factory if it doesn't yet exist already.
+     * @author FRAMEWORK
      * @Date ?
      * @return type
      */
@@ -41,11 +41,10 @@ class DatabaseFactory {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: getConnection
      * Description:
-     * ?
-     * @author ?
+     * Establishes a connection to the database using the configuration files.
+     * @author FRAMEWORK
      * @Date ?
      * @return type
      */

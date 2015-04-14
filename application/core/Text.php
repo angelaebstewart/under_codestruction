@@ -5,12 +5,10 @@ class Text
     private static $texts;
 
     /**
-     * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: get
      * Description:
-     * ?
-     * @author ?
+     * returns the associated value in the associated array in the configuration file of texts.php
+     * @author FRAMEWORK
      * @Date ?
      * @param type $key
      * @return type

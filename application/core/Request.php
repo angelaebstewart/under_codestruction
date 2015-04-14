@@ -10,15 +10,13 @@
 class Request {
 
     /**
+     * Name: post
+     * Description:
      * Gets/returns the value of a specific key of the POST super-global.
      * When using just Request::post('x') it will return the raw and untouched $_POST['x'], when using it like
      * Request::post('x', true) then it will return a trimmed and stripped $_POST['x'] !
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param mixed $key key
      * @param bool $clean marker for optional cleaning of the var
@@ -33,13 +31,11 @@ class Request {
     }
 
     /**
+     * Name: get
+     * Description:
      * gets/returns the value of a specific key of the GET super-global
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param mixed $key key
      * @return mixed the key's value or nothing
@@ -51,13 +47,11 @@ class Request {
     }
 
     /**
+     * Name: cookie
+     * Description:
      * gets/returns the value of a specific key of the COOKIE super-global
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param mixed $key key
      * @return mixed the key's value or nothing

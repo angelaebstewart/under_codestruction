@@ -6,13 +6,11 @@ class Mail {
     private $error;
 
     /**
+     * Name: sendMail
+     * Description:
      * Sends an e-mail using PHP's native method.
      * returns true if the mail sent successfully false otherwise.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK (modified by: Walter Conway to use only the native mailer, done before init github deposit)
      * @Date ?
      */
     public function sendMail($user_email, $from_email, $from_name, $subject, $body) {
@@ -30,11 +28,10 @@ class Mail {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: setError
      * Description:
-     * ?
-     * @author ?
+     * sets an error 
+     * @author FRAMEWORK
      * @Date ?
      * @param string $errorMessage
      */
@@ -43,12 +40,11 @@ class Mail {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: getError
      * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * get the error that was previously set
+     * @author FRAMEWORK
+     * @Date 
      * @return type
      */
     public function getError() {

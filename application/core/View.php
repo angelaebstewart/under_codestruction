@@ -7,15 +7,13 @@
 class View {
 
     /**
+     * Name: render
+     * Description:
      * simply includes (=shows) the view. this is done from the controller. In the controller, you usually say
      * $this->view->render('help/index'); to show (in this example) the view index.php in the folder help.
      * Usually the Class and the method are the same like the view, but sometimes you need to show different views.
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param string $filename Path of the to-be-rendered view, usually folder/file(.php)
      * @param array $data Data to be used in the view
@@ -33,13 +31,11 @@ class View {
     }
 
     /**
+     * Name: renderWithoutHeaderAndFooter
+     * Description:
      * Same like render(), but does not include header and footer
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param string $filename Path of the to-be-rendered view, usually folder/file(.php)
      * @param mixed $data Data to be used in the view
@@ -55,13 +51,11 @@ class View {
     }
 
     /**
+     * Name: renderJSON
+     * Description:
      * Renders pure JSON to the browser, useful for API construction
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param $data
      */
@@ -70,13 +64,11 @@ class View {
     }
 
     /**
+     * Name: renderFeedbackMessages
+     * Description:
      * renders the feedback messages into the view
      * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      */
     public function renderFeedbackMessages() {
@@ -90,85 +82,66 @@ class View {
     }
 
     /**
+     * Name: checkForActiveController
+     * Description:
      * Checks if the passed string is the currently active controller.
      * Useful for handling the navigation's active/non-active link.
-     * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param string $filename
      * @param string $navigation_controller
-     *
      * @return bool Shows if the controller is used or not
      */
     public static function checkForActiveController($filename, $navigation_controller) {
         $split_filename = explode("/", $filename);
         $active_controller = $split_filename[0];
-
         if ($active_controller == $navigation_controller) {
             return true;
         }
-
         return false;
     }
 
     /**
+     * Name: checkForActiveAction
+     * Description:
      * Checks if the passed string is the currently active controller-action (=method).
      * Useful for handling the navigation's active/non-active link.
-     * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param string $filename
      * @param string $navigation_action
-     *
      * @return bool Shows if the action/method is used or not
      */
     public static function checkForActiveAction($filename, $navigation_action) {
         $split_filename = explode("/", $filename);
         $active_action = $split_filename[1];
-
         if ($active_action == $navigation_action) {
             return true;
         }
-
         return false;
     }
 
     /**
+     * Name: checkForActiveControllerAndAction
+     * Description:
      * Checks if the passed string is the currently active controller and controller-action.
      * Useful for handling the navigation's active/non-active link.
-     * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param string $filename
      * @param string $navigation_controller_and_action
-     *
      * @return bool
      */
     public static function checkForActiveControllerAndAction($filename, $navigation_controller_and_action) {
         $split_filename = explode("/", $filename);
         $active_controller = $split_filename[0];
         $active_action = $split_filename[1];
-
         $split_filename = explode("/", $navigation_controller_and_action);
         $navigation_controller = $split_filename[0];
         $navigation_action = $split_filename[1];
-
         if ($active_controller == $navigation_controller AND $active_action == $navigation_action) {
             return true;
         }
-
         return false;
     }
 
