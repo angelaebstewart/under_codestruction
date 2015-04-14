@@ -8,12 +8,10 @@
 class Redirect {
 
     /**
-     * To the homepage
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: home
      * Description:
-     * ?
-     * @author ?
+     * To the homepage
+     * @author FRAMEWORK
      * @Date ?
      */
     public static function home() {
@@ -21,14 +19,12 @@ class Redirect {
     }
 
     /**
-     * To the defined page
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: to
      * Description:
-     * ?
-     * @author ?
+     * To the defined page
+     * @author FRAMEWORK
      * @Date ?
-     * @param $path
+     * @param $path the path of the page that chosen to be direct to.
      */
     public static function to($path) {
         header("location: " . Config::get('URL', 'gen') . $path);

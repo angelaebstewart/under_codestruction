@@ -237,19 +237,4 @@ class LoginModel {
             return false;
         }
     }
-
-    /**
-     * Returns the current state of the user's login
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
-     * @return bool user's login status
-     */
-    public static function isUserLoggedIn() {
-        return Session::userIsLoggedIn();
-    }
-
 }
