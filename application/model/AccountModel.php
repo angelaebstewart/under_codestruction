@@ -121,14 +121,13 @@ class AccountModel {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: isTeacher
      * Description:
-     * ?
-     * @author ?
+     * returns specific integer to represent the user as a 
+     * @author Ryan
      * @Date ?
      * @param type $role
-     * @return type
+     * @return true if the specific role is a teacher
      */
     public static function isTeacher($role) {
         return ($role == Config::get('ROLE_TEACHER', 'gen'));

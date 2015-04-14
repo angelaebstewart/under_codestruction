@@ -68,7 +68,7 @@ class ClassController extends Controller {
      * Name: createClass_action
      * Description:
      * When create class button is clicked this is called
-     * @author ?
+     * @author ?(modified by: Walter Conway, isset() and checkAuth)
      * @Date ?
      */
     public function createClass_action() {
@@ -76,10 +76,12 @@ class ClassController extends Controller {
         $classTitle = Request::post('classTitle');
         $teacherID = Session::get('user_id');
         $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
-        if (isset($isTeacher) && $isTeacher) {
-            $resultText = ClassModel::createClassWithTitleAndTeacher($classTitle, $teacherID);
-            $resultJSON = json_encode($resultText);
-            $this->View->renderJSON($resultJSON);
+        if (isset($classTitle) && isset($teacherID) && isset($isTeacher)) {
+            if ($isTeacher) {
+                $resultText = ClassModel::createClassWithTitleAndTeacher($classTitle, $teacherID);
+                $resultJSON = json_encode($resultText);
+                $this->View->renderJSON($resultJSON);
+            }
         }
     }
 
@@ -87,8 +89,8 @@ class ClassController extends Controller {
      * Name: editClassAddStudent_action
      * Description:
      * When add student button is clicked this is called
-     * @author ?
-     * @Date ?
+     * @author Ethan Mata
+     * @Date 2/27/2015
      * @return boolean
      */
     public function editClassAddStudent_action() {
@@ -130,8 +132,8 @@ class ClassController extends Controller {
      * Name: removeStudent_action
      * Description:
      * When remove student button is clicked this is called
-     * @author ?
-     * @Date ?
+     * @author Ethan Mata
+     * @Date 3/16/2015
      */
     public function removeStudent_action() {
         Auth::checkAuthentication();
@@ -145,8 +147,8 @@ class ClassController extends Controller {
      * Name: removeClass_action
      * Description:
      * When remove class button is clicked this is called
-     * @author ?
-     * @Date ?
+     * @author Ethan Mata
+     * @Date 3/16/2015
      */
     public function removeClass_action() {
         Auth::checkAuthentication();
