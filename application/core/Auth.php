@@ -10,12 +10,13 @@
 class Auth {
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: checkAuthentication
      * Description:
-     * ?
-     * @author ?
-     * @Date ?
+     * Checks if the user is logged in and if the user is not then it deletes the user session
+     * data and then directs them to the login page, without returning to original statment that called it.
+     * This is where exit() comes in.
+     * @author FRAMEWORK (modified by:Walter Conway, used redirect instead of header.)
+     * @Date 4/14/2015
      */
     public static function checkAuthentication() {
         // initialize the session (if not initialized yet)
