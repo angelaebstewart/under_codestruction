@@ -96,6 +96,20 @@ class AccountModel {
         // return one row (we only have one result or nothing)
         return $query->fetch();
     }
+    
+    public static function getUserRoleByID($user_ID) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "SELECT CAST(Type AS unsigned integer) AS Type FROM codestructionuser
+                 WHERE UserID = :userID
+                 LIMIT 1";
+        $query = $database->prepare($sql);
+        $query->execute(array(':userID' => $user_ID));
+        //var_dump($query->fetch());
+        $result = $query->fetch();
+       $string = $result->Type;
+        return $string;
+    }
 
     public static function isTeacher($role) {
         return ($role == Config::get('ROLE_TEACHER', 'gen'));

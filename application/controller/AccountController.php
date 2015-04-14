@@ -81,9 +81,24 @@ class AccountController extends Controller {
      */
     public function verify($user_id, $user_activation_verification_code) {
         if (isset($user_id) && isset($user_activation_verification_code)) {
+            //RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
+            //AccountModel::createLoginRecord($user_id);
+            Session::set('user_id', $user_id);
+            Session::set('verification_code', $user_activation_verification_code);
+            $role = AccountModel::getUserRoleByID($user_id);
+           // $type = (integer)$role;
+            if ($role == "1"){
             RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
             AccountModel::createLoginRecord($user_id);
-            $this->View->render('login/changePassword');
+                $this->View->render('login/editPassword');
+            }
+            else if ($role == "2"){
+                RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
+                AccountModel::createLoginRecord($user_id);
+                $this->View->render('login/index');
+            }
+            else
+                Redirect::to('error/index');
         } else {
             Redirect::to('login/index');
         }
