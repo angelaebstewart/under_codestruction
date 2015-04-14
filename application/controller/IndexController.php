@@ -13,13 +13,11 @@ class IndexController extends Controller {
     }
 
     /**
+     * Name: index
+     * Description:
      * Handles what happens when user moves to URL/index/index - or - as this is the default controller, also
      * when user moves to /index or enter your application at base level
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      */
     public function index() {
@@ -27,11 +25,10 @@ class IndexController extends Controller {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: about
      * Description:
-     * ?
-     * @author ?
+     * Shows the About page
+     * @author Walter Conway
      * @Date ?
      */
     public function about() {
@@ -40,11 +37,10 @@ class IndexController extends Controller {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: faq
      * Description:
-     * ?
-     * @author ?
+     * Shows the FAQ page
+     * @author Ryan Lewis
      * @Date ?
      */
     public function faq() {
