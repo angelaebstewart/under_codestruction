@@ -84,7 +84,7 @@ class AccountController extends Controller {
      * @Date 4/9/2015
      */
     public function editPassword_action() {
-        Auth::checkAuthentication();
+        //Auth::checkAuthentication();
         $user_id = Session::get('user_id');
         $passwordNew = Request::post('password1');
         $passwordRetyped = Request::post('password2');
@@ -99,6 +99,7 @@ class AccountController extends Controller {
         /*} else {
             $this->View->render('error/index');
         }*/
+    }
     }
 
     /**
