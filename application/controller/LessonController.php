@@ -21,6 +21,7 @@ class LessonController extends Controller {
      * @author Ryan Lewis
      */
     public function index() {
+        Auth::checkAuthentication();
         $userID = Session::get('user_id');
         $userRole = Session::get('user_role');
         
@@ -40,6 +41,7 @@ class LessonController extends Controller {
      * @author Ryan Lewis
      */
     public function viewLesson() {
+        Auth::checkAuthentication();
         $userID = Session::get('user_id');
         $userRole = Session::get('user_role');
         $lesson_id = Request::get('id');
@@ -69,6 +71,7 @@ class LessonController extends Controller {
      * @author Ryan Lewis
      */
     public function viewVideo_action() {
+        Auth::checkAuthentication();
         $userID = Session::get('user_id');
         $userRole = Session::get('user_role');
         $lessonID = Request::post('lessonID');
