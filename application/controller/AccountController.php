@@ -84,7 +84,7 @@ class AccountController extends Controller {
      * @Date 4/9/2015
      */
     public function editPassword_action() {
-        if (LoginModel::isUserLoggedIn()) {
+        //if (LoginModel::isUserLoggedIn()) {
             $user_id = Session::get('user_id');
             $passwordNew = Request::post('password1');
             $passwordRetyped = Request::post('password2');
@@ -99,9 +99,9 @@ class AccountController extends Controller {
             } else {
                 $this->View->render('error/index');
             }
-        } else {
+        /*} else {
             $this->View->render('error/index');
-        }
+        }*/
     }
 
     /**
@@ -115,25 +115,37 @@ class AccountController extends Controller {
      */
     public function verify($user_id, $user_activation_verification_code) {
         if (isset($user_id) && isset($user_activation_verification_code)) {
+            
+            if (RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code)){
+                Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_SUCCESSFUL'));
+                try {
+                    AccountModel::createLoginRecord($user_id);
+                } catch (InvalidArgumentException $e) {
+                    Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_FAILED'));
+                    Redirect::to('login/index');
+                    return;
+                }
+                Session::set('user_id', $user_id);
+                Session::set('verification_code', $user_activation_verification_code);
+                $role = AccountModel::getUserRoleByID($user_id);
+           
+                if ($role == "1"){
             //RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
             //AccountModel::createLoginRecord($user_id);
-            Session::set('user_id', $user_id);
-            Session::set('verification_code', $user_activation_verification_code);
-            $role = AccountModel::getUserRoleByID($user_id);
-           // $type = (integer)$role;
-            if ($role == "1"){
-            RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
-            AccountModel::createLoginRecord($user_id);
-                $this->View->render('login/editPassword');
-            }
-            else if ($role == "2"){
-                RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
-                AccountModel::createLoginRecord($user_id);
-                $this->View->render('login/index');
-            }
-            else
-                Redirect::to('error/index');
-        } else {
+                    $this->View->render('login/editPassword');
+                }
+                else if ($role == "2"){
+                //RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
+                //AccountModel::createLoginRecord($user_id);
+                    $this->View->render('login/index');
+                }
+                else{
+                    Redirect::to('error/index');
+                }
+                }
+            
+        } 
+        else {
             Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_FAILED'));
             Redirect::to('login/index');
         }

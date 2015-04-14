@@ -128,9 +128,8 @@ class AccountModel {
                  LIMIT 1";
         $query = $database->prepare($sql);
         $query->execute(array(':userID' => $user_ID));
-        //var_dump($query->fetch());
         $result = $query->fetch();
-       $string = $result->Type;
+        $string = $result->Type;
         return $string;
     }
 
