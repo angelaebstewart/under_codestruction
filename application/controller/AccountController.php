@@ -99,7 +99,7 @@ class AccountController extends Controller {
         /*} else {
             $this->View->render('error/index');
         }*/
-    }
+        }
     }
 
     /**
