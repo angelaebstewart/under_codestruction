@@ -67,7 +67,67 @@
     <a href="<?php echo Config::get('URL','gen'); ?>lesson/viewLesson/?id=<?php echo Request::get('id'); ?>"><- Back to lesson page</a>
 </div>
 </div>
+<script>
+function runCheck() {
+    var elem = document.getElementById('questions').elements;
+    for(var i = 0; i < elem.length; i++) {
+        if (elem[i].id==='Q1') {
+            //move right along blue arror
+            if(elem[i].value === 'right') {
+                alert("Question 1 is correct");
+                //move left along blue line
+            }
+            
+            else {
+                alert("Question 1 is incorrect");
+                //move right along red line
+                return; //added to prevent the rest of the checks
+            }
+        }
+
+        else if (elem[i].id==='Q2') {
+            if(elem[i].value === 'right') {
+                alert("Question 2 is correct");
+                //move right along blue line
+            }
+            
+            else {
+                alert("Question 2 is incorrect");
+                //move left along red line
+                return;
+            }
+        }
         
+        else if (elem[i].id==='Q3') {
+            if(elem[i].value === 'right') {
+                alert("Question 3 is correct");
+                //move around the while in a square 5 times then move slight left along blue line
+            }
+            
+            else {
+                alert("Question 3 is incorrect");
+                //move around the while in a square 10 times then the alert will display, assessment will terminate
+                alert("Looks like you created an infinite loop!");
+                return;
+            }
+        }
+        
+        else if (elem[i].id==='Q4') {
+            if(elem[i].value === 'right') {
+                alert("Question 4 is correct");
+                //move right along the blue line outside the div
+            }
+            
+            else {
+                alert("Question 4 is incorrect");
+                //move left on the red line outside the div
+                return;
+            }
+        }        
+    }
+}    
+</script>
+
 <script>
     function validateForm() {
         var elem = document.getElementById('questions').elements;
@@ -84,6 +144,10 @@
         if ( !validateForm() ) {
             event.preventDefault();
             return;
+        }
+        
+        else {
+            runCheck();
         }
     });
 </script>
