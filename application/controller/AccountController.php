@@ -28,7 +28,7 @@ class AccountController extends Controller {
             if (PasswordResetModel::verifyPasswordReset($user_id, $verification_code)) {
                 Session::set('user_id', $user_id);
                 Session::set('verification_code', $verification_code);
-                $this->View->render('login/changePassword');
+                $this->View->render('login/resetPassword');
             } else {
                 Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_RESET_COMBINATION_DOES_NOT_EXIST'));
                 Redirect::to('login/index');
@@ -39,13 +39,13 @@ class AccountController extends Controller {
     }
 
     /**
-     * Name: changePassword_action
+     * Name: resetPassword_action
      * Description:
-     * When the change password button is clicked this action is called. (changePassword.php L6)
+     * When the change password button is clicked this action is called. (resetPassword.php L6)
      * @author ?
      * @Date 4/9/2015
      */
-    public function changePassword_action() {
+    public function resetPassword_action() {
         $user_id = Session::get('user_id');
         $verification_code = Session::get('verification_code');
         $passwordNew = Request::post('password1');
@@ -56,7 +56,7 @@ class AccountController extends Controller {
                 $this->View->render('login/index');
             } else {
                 Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
-                $this->View->render('login/changePassword');
+                $this->View->render('login/resetPassword');
             }
         } else {
             $this->View->render('error/index');
@@ -64,26 +64,26 @@ class AccountController extends Controller {
     }
 
     /**
-     * Name: editPassword
+     * Name: changePassword
      * Description:
      * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
-     * Show This shows the editPassword Page...
+     * Show This shows the changePassword Page...
      * @author FRAMEWORK
      * @Date ?
      */
-    public function editPassword() {
+    public function changePassword() {
         Auth::checkAuthentication();
-        $this->View->render('login/editPassword');
+        $this->View->render('login/changePassword');
     }
 
     /**
-     * Name: editPassword_action
+     * Name: changePassword_action
      * Description:
      * When the edit password button is clicked.
      * @author Victoria Richardson
      * @Date 4/9/2015
      */
-    public function editPassword_action() {
+    public function changePassword_action() {
         //Auth::checkAuthentication();
         $user_id = Session::get('user_id');
         $passwordNew = Request::post('password1');
@@ -94,7 +94,7 @@ class AccountController extends Controller {
                 Redirect::to('login/index');
             } else {
                 Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_CHANGE_FAILED'));
-                $this->View->render('login/editPassword');
+                $this->View->render('login/changePassword');
             }
         /*} else {
             $this->View->render('error/index');
