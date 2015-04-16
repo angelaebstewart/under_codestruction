@@ -55,7 +55,6 @@
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>E-mail</th>
-                                        <!--<th>Password</th>-->
                                     </tr>
                                 </thead>
                                 <tbody id="studentList">
@@ -63,7 +62,6 @@
                                         <td><input id="fnInput" required pattern="[\u00C0-\u00FFA-Za-z]+" name="first_name" type="text" placeholder="First Name" class="form-control" ></td>
                                         <td><input id="lnInput" required pattern="[\u00C0-\u00FFA-Za-z]+" name="last_name" type="text" placeholder="Last Name" class="form-control" ></td>
                                         <td><input id="emInput" required pattern=".+@.+\..+" name="e_mail" type="text" placeholder="E-mail" class="form-control" ></td>
-                                        <!--<td><input id="passInput" required pattern=".+" name="password" type="text" placeholder="Password" class="form-control" ></td>-->
                                         <td><button id="addStudentBtn" class="btn btn-small btn-primary btn-block" type="submit" onclick="addStudent(<?php echo $_GET['classID'] ?>)">+</button></td>
                                     </tr>
                                 </tbody>
