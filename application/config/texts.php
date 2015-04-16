@@ -52,5 +52,7 @@ return array(
 	"FEEDBACK_PASSWORD_CHANGE_FAILED" => "Sorry, your password changing failed.",
 	"FEEDBACK_CLASS_CREATE_FAILED_NAME" => "Sorry, your class could not be created. Please choose a unique class name.",
         "FEEDBACK_ADD_STUDENT_EMAIL_IN_USE" => "Sorry, that email is already in use. Please choose an unused email.",
-        "FEEDBACK_WRONG_EMAIL" => "Sorry, that is not your email."
+        "FEEDBACK_WRONG_EMAIL" => "Sorry, that is not your email.",
+        "FEEDBACK_PIN_SET_SUCCESSFUL" => "Pin successfully entered.",
+	"FEEDBACK_PIN_SET_FAILED" => "Sorry, your pin setting failed."
 );

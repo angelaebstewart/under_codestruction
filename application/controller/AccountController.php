@@ -99,7 +99,7 @@ class AccountController extends Controller {
         /*} else {
             $this->View->render('error/index');
         }*/
-    }
+        }
     }
 
     /**
@@ -128,14 +128,10 @@ class AccountController extends Controller {
                 $role = AccountModel::getUserRoleByID($user_id);
            
                 if ($role == "1"){
-            //RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
-            //AccountModel::createLoginRecord($user_id);
                     $this->View->render('login/editPassword');
                 }
-                else if ($role == "2"){
-                //RegistrationModel::verifyNewUser($user_id, $user_activation_verification_code);
-                //AccountModel::createLoginRecord($user_id);
-                    $this->View->render('login/index');
+                else if ($role == "2"){               
+                    $this->View->render('login/enterPin');
                 }
                 else{
                     Redirect::to('error/index');
@@ -146,6 +142,30 @@ class AccountController extends Controller {
         else {
             Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_FAILED'));
             Redirect::to('login/index');
+        }
+    }
+    
+        /**
+     * Name: enterPin_action
+     * Description:
+     * When the set pin button is pressed a new pin will be set for the teacher.
+     * @author Victoria Richardson
+     * @Date 4/14/2015
+     */
+    public function enterPin_action() {
+        //Auth::checkAuthentication();
+        $user_id = Session::get('user_id');
+        $pinNew = Request::post('pin1');
+        $pinRetyped = Request::post('pin2');
+        if (isset($user_id) && isset($pinNew) && isset($pinRetyped)) {
+            if (($pinNew == $pinRetyped) && (strlen($pinNew) == 4 && strlen($pinRetyped) == 4)) {
+                SetPinModel::setNewPin($user_id, $pinNew, $pinRetyped);
+                Redirect::to('login/index');
+            } else {
+                Session::add('feedback_negative', Text::get('FEEDBACK_PIN_SET_FAILED'));
+                $this->View->render('login/enterPin');
+            }
+        
         }
     }
 
