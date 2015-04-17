@@ -1,7 +1,7 @@
 <div id="contentArea">
     <div class="contentDivision"> 
-
-
+<h1>About Us</h1><br />
+<div class="container">
 
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
@@ -14,8 +14,16 @@
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                     <div class="panel-body">
-                        <p>This is an interactive website that was created to teach computer science principles to high school students. We are approaching this task by having students solve everyday problems from a computer science prospective. The lessons consist of an animation to introduce the ideas, game play to reinforce the principles, and an assessment to challenge the students. The teachers are able to view the feedback that results from the students interaction with the game play and assessment to check the progress of the student as they work through each lesson.</p>
-                    </div>
+                        <center><img src="<?php echo Config::get('URL', 'gen'); ?>images/Logo_1pxBlackOutline.png"></center><br>
+                        
+                        <p>This is an interactive website that was created to teach computer science principles to high school students.
+                            We are approaching this task by having students solve everyday problems from a computer science prospective.
+                            The lessons consist of an animation to introduce the ideas, game play to reinforce the principles,
+                            and an assessment to challenge the students.
+                            The teachers are able to view the feedback that results from the students interaction with the game play
+                            and assessment to check the progress of the student as they work through each lesson.</p>
+ 
+                        </div>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -32,11 +40,11 @@
 
                         <div class="container">
 
-                            <div class="well well-lg"><p><h1>The Under Codestruction Team</h1></p></div>
                             <div class="bs-example" data-example-id="thumbnails-with-custom-content">
                                 <div class="row">
 
-                                    <div class="col-sm-5 col-md-2">
+                                    <div class="row">
+                                    <div class="col-sm-3 col-md-3 col-sm-offset-1">
                                         <div class="thumbnail">
 
                                             <img src="<?php echo Config::get('URL', 'gen'); ?>images/team/seals.png" alt="..." class="img-circle" style="display: block;">
@@ -47,7 +55,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-6 col-md-2">
+                                    <div class="col-sm-3 col-md-3">
                                         <div class="thumbnail">
 
                                             <img src="<?php echo Config::get('URL', 'gen'); ?>images/team/angela.png" alt="..." class="img-circle">
@@ -57,7 +65,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-5 col-md-2">
+                                    <div class="col-sm-3 col-md-3">
                                         <div class="thumbnail">
 
                                             <img src="<?php echo Config::get('URL', 'gen'); ?>images/team/ethan.png" alt="..." class="img-circle">
@@ -67,7 +75,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-5 col-md-2">
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-sm-3 col-md-3 col-sm-offset-1">
                                         <div class="thumbnail">
 
                                             <img src="<?php echo Config::get('URL', 'gen'); ?>images/team/ryan.png" alt="..." class="img-circle" style="display: block;">
@@ -78,7 +88,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-5 col-md-2">
+                                    <div class="col-sm-3 col-md-3">
                                         <div class="thumbnail">
 
                                             <img src="<?php echo Config::get('URL', 'gen'); ?>images/team/victoria.png" alt="..." class="img-circle" style="display: block;">
@@ -90,7 +100,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-5 col-md-2">
+                                    <div class="col-sm-3 col-md-3">
                                         <div class="thumbnail">
 
                                             <img src="<?php echo Config::get('URL', 'gen'); ?>images/team/walter.png" alt="..." class="img-circle" style="display: block;">
@@ -100,13 +110,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div><!-- end of nested row -->
+                                </div><!--end of initial row -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
     </div>
 
     <!-- echo out the system feedback (error and success messages) -->

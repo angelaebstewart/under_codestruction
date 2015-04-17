@@ -26,47 +26,12 @@ class AccountModel {
     }
 
     /**
-     * Gets a user's profile data, according to the given $user_id
-     * @param int $user_id The user's id
-     * @return mixed The selected user's profile
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
-     * @Date ?
-     */
-    public static function getPublicProfileOfUser($user_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-
-        $sql = "SELECT UserID, FirstName, LastName, Email, 
-                        CAST(Type AS unsigned integer) AS Type, 
-                        CAST(verified AS unsigned integer) AS verified
-                FROM codestructionuser 
-                WHERE UserID = :user_id LIMIT 1";
-        $query = $database->prepare($sql);
-        $query->execute(array(':user_id' => $user_id));
-
-        $user = $query->fetch();
-
-        if ($query->rowCount() != 1) {
-            Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
-        }
-
-        return $user;
-    }
-
-    /**
-     * Gets the user's id
-     *
      * @param $user_email
-     *
      * @return mixed
-     * 
      * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: getUserIdByEmail
      * Description:
-     * ?
+     * Gets the user's id
      * @author ?
      * @Date ?
      * NOTE: If the return statement changes then change requestPasswordReset_action method
