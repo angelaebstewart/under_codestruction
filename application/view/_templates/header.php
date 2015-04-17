@@ -25,6 +25,7 @@
         <!-- Auburn's Styling -->
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/stretch.css" media="screen" type="text/css" />
         <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/game.css"  type="text/css">
+        <link rel="stylesheet" href="<?php echo Config::get('URL', 'gen'); ?>css/assessment.css"  type="text/css">
         <!-- javascripts that will be used on every page-->
         <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/jquery.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="<?php echo Config::get('URL', 'gen'); ?>js/bootstrap.min.js"></script>

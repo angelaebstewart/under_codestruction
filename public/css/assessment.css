@@ -1,0 +1,96 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 17, 2015, 9:40 AM
+    Author     : Ryan Lewis
+*/
+
+            .assessmentContent {
+                position: relative;
+                height: 600px;
+            }
+            
+            .assessmentContent #canvas {
+                margin-left: 10px;
+                margin-top: 10px;
+                background: #7d7878;
+                border: thin solid #aaaaaa;
+            }
+            .assessmentContent #assessmentDiv {
+                display: block;
+                position:absolute;
+                color: #eeeeee;
+                padding: 10px;
+                width: 640px;
+            }
+            
+            #assessmentDiv select {
+                position: absolute;
+            }
+            
+            #assessmentDiv #Q1 {
+                left: 15px;
+                top: 77px;
+            }
+            
+            #assessmentDiv #Q2 {
+                left: 15px;
+                top: 135px;
+            }
+            
+            #assessmentDiv #Q3 {
+                left: 490px;
+                top: 200px;
+            }
+            
+            #assessmentDiv #Q4 {
+                left: 290px;
+                top: 225px;
+            }
+            
+            #assessmentDiv #submit {
+                display: none;
+            }
+            
+            .assessmentContent #arrowOuter {
+                position: relative;
+            }
+            
+            .assessmentContent #arrow {
+                position: absolute;
+                top: 0;
+                left: 0;
+                opacity: 0;
+            }
+            
+            #arrow.flipped {
+                -moz-transform: scaleX(-1);
+                -o-transform: scaleX(-1);
+                -webkit-transform: scaleX(-1);
+                transform: scaleX(-1);
+                filter: FlipH;
+                -ms-filter: "FlipH";
+            }
+            
+            .assessmentContent #backgroundImages {
+                position: absolute;
+                display: inline-block;
+                width: 640px;
+                height: 400px;
+            }
+            
+            #backgroundImages img {
+                position: absolute;
+            }
+            
+            .assessmentContent select, 
+            .assessmentContent button {
+                color: #000000;
+            }
+            
+            .assessmentContent .assessmentElement {
+                display: inline-block;
+            }
