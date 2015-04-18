@@ -186,7 +186,6 @@ class AccountController extends Controller {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
      * Name: requestEmailReset_action
      * Description:
      * When the Email reset button is clicked.

@@ -96,7 +96,6 @@ class RegistrationModel {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
      * Name: writeNewUserToDatabase
      * Description:
      * Writes the new user's data to the database
@@ -155,7 +154,6 @@ class RegistrationModel {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
      * Name: generateActivationHash
      * Description:
      * Generates the user's activation hash
