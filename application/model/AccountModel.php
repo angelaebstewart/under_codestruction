@@ -26,15 +26,14 @@ class AccountModel {
     }
 
     /**
-     * @param $user_email
-     * @return mixed
-     * SEARCH-KEYWORD: NOT COMMENTED
      * Name: getUserIdByEmail
      * Description:
      * Gets the user's id
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * NOTE: If the return statement changes then change requestPasswordReset_action method
+     * @param $user_email
+     * @return mixed userID or otherwise -1
      */
     public static function getUserIdByEmail($user_email) {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -54,22 +53,16 @@ class AccountModel {
     }
 
     /**
-     * Gets the user's data
-     *
-     * @param $user_name string User's name
-     *
-     * @return mixed Returns false if user does not exist, returns object with user's data when user exists
-     * 
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: getUserDataByEmail
      * Description:
-     * ?
-     * @author ?
+     * Gets the user's data
+     * @author FRAMEWORK (Modified by: Ryan Lewis)
      * @Date ?
+     * @param $user_name string User's name
+     * @return mixed Returns false if user does not exist, returns object with user's data when user exists
      */
     public static function getUserDataByEmail($user_email) {
         $database = DatabaseFactory::getFactory()->getConnection();
-
         $sql = "SELECT  UserID, FirstName, LastName, Email,
                         CAST(Type AS unsigned integer) AS Type,
                         CAST(verified AS unsigned integer) AS verified, 
@@ -85,9 +78,17 @@ class AccountModel {
         return $query->fetch();
     }
     
+    /**
+     * Name: getUserRoleByID
+     * Description:
+     * Get the role of the user
+     * @author ?
+     * @Date ?
+     * @param type $user_ID
+     * @return type
+     */
     public static function getUserRoleByID($user_ID) {
         $database = DatabaseFactory::getFactory()->getConnection();
-
         $sql = "SELECT CAST(Type AS unsigned integer) AS Type FROM codestructionuser
                  WHERE UserID = :userID
                  LIMIT 1";
@@ -101,8 +102,8 @@ class AccountModel {
     /**
      * Name: isTeacher
      * Description:
-     * returns specific integer to represent the user as a 
-     * @author Ryan
+     * returns specific integer to represent the user as a teacher
+     * @author Ryan Lewis
      * @Date ?
      * @param type $role
      * @return true if the specific role is a teacher
@@ -112,11 +113,10 @@ class AccountModel {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: isStudent
      * Description:
-     * ?
-     * @author ?
+     * returns specific integer to represent the user as a student
+     * @author Ryan Lewis
      * @Date ?
      * @param type $role
      * @return type
@@ -128,14 +128,13 @@ class AccountModel {
     /*
      * Name: markUserInactive
      * Description:
-     *  Marks a user as inactive
+     * Marks a user as inactive
      * @author Ethan Mata
      * @Date 3/8/2015
      * @throws InvalidArgumentException when parameters are not used.
      * @param int $userID The userID to change
      * @return Boolean, whether a user was marked as inactive
      */
-
     public static function markUserInactive($userID) {
         if (isset($userID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
@@ -153,11 +152,10 @@ class AccountModel {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: deleteTeacherAccount
      * Description:
-     * ?
-     * @author ?
+     * Marks the specified userId as deleted, but doesn't delete the user.
+     * @author Ethan Mata
      * @Date ?
      * @param type $userID
      * @return type
@@ -180,14 +178,13 @@ class AccountModel {
     /*
      * Name: createLoginRecord
      * Description:
-     *  Creates a record of the user's failed login attempts
+     * Creates a record of the user's failed login attempts
      * @author Ethan Mata
      * @Date 3/9/2015
      * @throws InvalidArgumentException when parameters are not used.
      * @param int $userID The userID to create the record for
      * @return Boolean, whether a row was successfully created
      */
-
     public static function createLoginRecord($userID) {
         if (isset($userID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
