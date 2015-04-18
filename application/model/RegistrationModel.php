@@ -96,20 +96,20 @@ class RegistrationModel {
     }
 
     /**
-     * Writes the new user's data to the database
      * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: writeNewUserToDatabase
      * Description:
-     * ?
-     * @author ?
+     * Writes the new user's data to the database
+     * @author Ethan Mata and Victoria Richardson
      * @Date ?
      * @param $user_name
      * @param $user_password_hash
      * @param $user_email
      * @param $user_creation_timestamp
      * @param $user_activation_hash
-     *
      * @return bool
+     * Note: Later on try and take out manually incrementing the user id and do autoincrement using 
+     * SQL. This will lead to race conditions if not remedied. 
      */
     public static function writeNewUserToDatabase($user_firstName, $user_lastName, $user_email, $user_password_hash, $user_activation_hash, $user_type) {
         $database = DatabaseFactory::getFactory()->getConnection();
@@ -142,12 +142,10 @@ class RegistrationModel {
     }
 
     /**
-     * Creates the password hash.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: hasPassword
      * Description:
-     * ?
-     * @author ?
+     * Creates the password hash.
+     * @author FRAMEWORK
      * @Date ?
      * @param type $user_password_new
      */
@@ -157,12 +155,11 @@ class RegistrationModel {
     }
 
     /**
-     * Generates the user's activation hash
      * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: generateActivationHash
      * Description:
-     * ?
-     * @author ?
+     * Generates the user's activation hash
+     * @author FRAMEWORK
      * @Date ?
      * @return type
      */
@@ -171,13 +168,11 @@ class RegistrationModel {
     }
 
     /**
+     * Name: rollbackRegistrationByUserId
+     * Description:
      * Deletes the user from users table. Currently used to rollback a registration when verification mail sending
      * was not successful.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param $user_id
      */
@@ -189,17 +184,14 @@ class RegistrationModel {
     }
 
     /**
-     * Sends the verification email (to confirm the account)
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: sendVerificationEmail
      * Description:
-     * ?
-     * @author ?
+     * Sends the verification email (to confirm the account)
+     * @author FRAMEWORK
      * @Date ?
      * @param int $user_id user's id
      * @param string $user_email user's email
      * @param string $user_activation_hash user's mail verification hash string
-     *
      * @return boolean gives back true if mail has been sent, gives back false if no mail could been sent
      */
     public static function sendVerificationEmail($user_id, $user_email, $user_activation_hash) {
@@ -225,16 +217,13 @@ class RegistrationModel {
     }
 
     /**
-     * checks the email/verification code combination and set the user's activation status to true in the database
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: verifyNewUser
      * Description:
-     * ?
-     * @author ?
+     * checks the email/verification code combination and set the user's activation status to true in the database
+     * @author FRAMEWORK
      * @Date ?
      * @param int $user_id user id
      * @param string $user_activation_hash verification token
-     *
      * @return bool success status
      */
     public static function verifyNewUser($user_id, $user_activation_hash) {
@@ -246,10 +235,8 @@ class RegistrationModel {
         $query->execute(array(':user_id' => $user_id, ':user_activation_hash' => $user_activation_hash));
 
         if ($query->rowCount() == 1) {
-
             return true;
         }
         return false;
     }
-
 }

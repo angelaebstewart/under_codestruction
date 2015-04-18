@@ -8,15 +8,12 @@
 class PasswordResetModel {
 
     /**
-     * Perform the necessary actions to send a password reset mail
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: requestPasswordReset
      * Description:
-     * ?
-     * @author ?
+     * Perform the necessary actions to send a password reset mail
+     * @author FRAMEWORK (modified by: Walter Conway)
      * @Date ?
      * @param $email user's email
-     *
      * @return bool success status
      */
     public static function requestPasswordReset($email) {
@@ -28,8 +25,6 @@ class PasswordResetModel {
         }
         // generate random hash for email password reset verification (40 char string)
         $user_password_reset_hash = sha1(uniqid(mt_rand(), true));
-
-
         $token_set = PasswordResetModel::setPasswordResetDatabaseToken($result, $user_password_reset_hash);
         if (!$token_set) {
             return false;
@@ -46,17 +41,14 @@ class PasswordResetModel {
     }
 
     /**
-     * Set password reset token in database
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: setPasswordResetDatabaseToken
      * Description:
-     * ?
-     * @author ?
+     * Set password reset token in database
+     * @author FRAMEWORK (modified by: Walter Conway)
      * @Date ?
      * @param string $user_id user id
      * @param string $user_password_reset_hash password reset hash
      * @param int $temporary_timestamp timestamp
-     *
      * @return bool success status
      */
     public static function setPasswordResetDatabaseToken($user_id, $user_password_reset_hash) {
@@ -74,17 +66,14 @@ class PasswordResetModel {
     }
 
     /**
-     * Send the password reset mail
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: sendPasswordResetMail
      * Description:
-     * ?
-     * @author ?
+     * Send the password reset mail
+     * @author FRAMEWORK (modified by: Walter Conway)
      * @Date ?
      * @param string $user_id userid
      * @param string $user_password_reset_hash password reset hash
      * @param string $user_email user email
-     *
      * @return bool success status
      */
     public static function sendPasswordResetMail($user_id, $user_password_reset_hash, $user_email) {
@@ -102,17 +91,14 @@ class PasswordResetModel {
         if ($mail_sent) {
             return true;
         }
-
         return false;
     }
 
     /**
-     * Verifies the password reset request via the verification hash token (that's only valid for one hour)
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: verifyPasswordReset
      * Description:
-     * ?
-     * @author ?
+     * Verifies the password reset request via the verification hash token (that's only valid for one hour)
+     * @author FRAMEWORK
      * @Date ?
      * @param string $user_id User id
      * @param string $verification_code Hash token
@@ -140,17 +126,14 @@ class PasswordResetModel {
     }
 
     /**
-     * Writes the new password to the database
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: saveNewUserPassword
      * Description:
-     * ?
-     * @author ?
+     * Writes the new password to the database
+     * @author FRAMEWORK
      * @Date ?
      * @param string $user_id user id
      * @param string $user_password_hash
      * @param string $user_password_reset_hash
-     *
      * @return bool
      */
     public static function saveNewUserPassword($user_id, $user_password_hash, $user_password_reset_hash) {
@@ -178,21 +161,18 @@ class PasswordResetModel {
     }
 
     /**
+     * Name: setNewPassword
+     * Description:
      * Set the new password (for DEFAULT user)
      * Please note: At this point the user has already pre-verified via verifyPasswordReset() (within one hour),
      * so we don't need to check again for the 60min-limit here. In this method we authenticate
      * via user id & password-reset-hash from (hidden) form fields.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param string $user_id
      * @param string $user_password_reset_hash
      * @param string $user_password_new
      * @param string $user_password_repeat
-     *
      * @return bool success state of the password reset
      */
     public static function setNewPassword($user_id, $user_password_reset_hash, $user_password_new, $user_password_repeat) {
