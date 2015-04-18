@@ -82,17 +82,14 @@ class ChangeEmailModel {
     }
 
     /**
-     * Send the email reset mail
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: sendEmailResetMail
      * Description:
-     * ?
+     * Send the email reset mail
      * @author ?
      * @Date ?
      * @param string $user_id userid
      * @param string $user_password_reset_hash password reset hash
      * @param string $user_email user email
-     *
      * @return bool success status
      */
     public static function sendEmailResetMail($user_id, $user_password_reset_hash, $user_email) {
@@ -115,11 +112,9 @@ class ChangeEmailModel {
     }
 
     /**
-     * Verifies the password reset request via the verification hash token (that's only valid for one hour)
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: verifyEmailReset
      * Description:
-     * ?
+     * Verifies the password reset request via the verification hash token (that's only valid for one hour)
      * @author ?
      * @Date ?
      * @param string $user_name Username
@@ -128,7 +123,6 @@ class ChangeEmailModel {
      */
     public static function verifyEmailReset($user_id, $verification_code) {
         $database = DatabaseFactory::getFactory()->getConnection();
-
         // check if user-provided username + verification code combination exists
         $sql = "SELECT UserID
                   FROM codestructionuser
@@ -148,11 +142,9 @@ class ChangeEmailModel {
     }
 
     /**
-     * Writes the new password to the database
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: saveNewUserEmail
      * Description:
-     * ?
+     * Writes the new password to the database
      * @author ?
      * @Date ?
      * @param string $user_name username

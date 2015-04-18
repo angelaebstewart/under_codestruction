@@ -8,17 +8,14 @@
 class ChangePasswordModel {
 
     /**
-     * Writes the new password to the database
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: saveNewUserPassword
      * Description:
-     * ?
+     * Writes the new password to the database
      * @author ?
      * @Date ?
      * @param string $user_name username
      * @param string $user_password_hash
      * @param string $user_password_reset_hash
-     *
      * @return bool
      */
     public static function saveNewUserPassword($user_id, $user_password_hash) {
@@ -44,7 +41,6 @@ class ChangePasswordModel {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
      * Name: setNewPassword
      * Description:
      * Set the new password (for DEFAULT user)

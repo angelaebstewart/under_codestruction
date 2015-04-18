@@ -10,13 +10,11 @@
 class CaptchaModel {
 
     /**
+     * Name: generateAndShowCaptcha
+     * Description:
      * Generates the captcha, "returns" a real image, this is why there is header('Content-type: image/jpeg')
      * Note: This is a very special method, as this is echoes out binary data.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      */
     public static function generateAndShowCaptcha() {
@@ -35,13 +33,11 @@ class CaptchaModel {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: checkCaptcha
      * Description:
-     * ?
-     * @author ?
-     * @Date ?
      * Checks if the entered captcha is the same like the one from the rendered image which has been saved in session
+     * @author FRAMEWORK
+     * @Date ?
      * @param $captcha string The captcha characters
      * @return bool success of captcha check
      */
