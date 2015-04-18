@@ -15,25 +15,3 @@ biz|info|mobi|name|aero|asia|jobs|museum)\b" placeholder="New Email" name="new_e
     </div>
 
 </div>
-
-<script>
-    function check(passwordBox) {
-        var passwordBox1 = document.getElementById("password1");
-        var passwordBox2 = document.getElementById("password2");
-        var msgBox = document.getElementById("passwordMsg");
-        if(msgBox.style.visibility != "visibile"){
-        msgBox.style.visibility="visible";
-        }
-        var password1Text = passwordBox1.value;
-        var password2Text = passwordBox2.value;
-        if(password1Text == password2Text){
-            msgBox.setAttribute("class", "label label-success");
-            msgBox.innerHTML = "Passwords Match";
-        } else{
-            msgBox.setAttribute("class", "label label-danger");
-            msgBox.innerHTML = "Passwords Do Not Match";
-        }
-        
-        
-    }
-</script>
