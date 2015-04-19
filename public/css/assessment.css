@@ -27,7 +27,8 @@ and open the template in the editor.
                 width: 640px;
             }
             
-            #assessmentDiv select {
+            #assessmentDiv select,
+            #assessmentDiv button {
                 position: absolute;
             }
             
@@ -52,7 +53,8 @@ and open the template in the editor.
             }
             
             #assessmentDiv #submit {
-                display: none;
+                left: 400px;
+                top: 350px;
             }
             
             .assessmentContent #arrowOuter {

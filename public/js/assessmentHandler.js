@@ -1,3 +1,4 @@
+/*
 $("#Q1").change(function() {
     do_q1ToIf1();
 });
@@ -12,19 +13,22 @@ $("#Q3").change(function() {
 
 $("#Q4").change(function() {
     do_q4();
-});
+});*/
+
+var isInitialSubmit = true;
 
 function begin() {
+    $("select").prop("disabled", true);
+    $("#submit").prop("disabled", true);
+    
     $("#arrow").toggleClass("flipped", 1).animate({opacity: 1, top:"15px", left:"138px"}, 0, 
         function() {$("#arrow").animate({top:"15px", left:"95px"}, 1000, 
-            function() {$("#Q1").prop("disabled", false)}
+            function() {setTimeout(do_q1ToIf1, 500);}
         )}
     );
 }
 
 function do_q1ToIf1() {
-    $("#Q1").prop("disabled", true);
-    
     $("#arrow").toggleClass("flipped", 0).animate({top:"53px", left:"100px"}, 0, 
         function() {$("#arrow").animate({top:"53px", left:"363px"}, 2000, 
             function() {
@@ -54,13 +58,12 @@ function do_else1ToQ2() {
     //[110, 360, 1, 1] -> [110, 100, 1, 1]
     $("#arrow").toggleClass("flipped", 1).animate({top:"110px", left:"360px"}, 0, 
         function() {$("#arrow").animate({top:"110px", left:"100px"}, 2000, 
-            function() {$("#Q2").prop("disabled", false)}
+            function() {setTimeout(do_q2ToIf2, 500);}
         )}
     );
 }
 
 function do_q2ToIf2() {
-    $("#Q2").prop("disabled", true);
     var answer = $("#Q2")[0].value;
     
     if (answer === 'right') {
@@ -84,13 +87,12 @@ function do_if2ToFail() {
 function do_if2ToWhile() {
     $("#arrow").toggleClass("flipped", 0).animate({top:"145px", left:"111px"}, 0, 
         function() {$("#arrow").animate({top:"145px", left:"364px"}, 2000, 
-            function() {$("#Q3").prop("disabled", false)}
+            function() {setTimeout(do_q3, 500);}
         )}
     );
 }
 
 function do_q3() {
-    $("#Q3").prop("disabled", true);
     var answer = $("#Q3")[0].value;
     
     if (answer === 'right') {
@@ -118,13 +120,12 @@ function do_stuckInWhile(iterations) {
 function do_whileToQ4() {
     $("#arrow").toggleClass("flipped", 1).animate({top:"201px", left:"520px"}, 0, 
         function() {$("#arrow").animate({top:"201px", left:"395px"}, 1500, 
-            function() {$("#Q4").prop("disabled", false)}
+            function() {setTimeout(do_q4, 500);}
         )}
     );
 }
 
 function do_q4() {
-    $("#Q4").prop("disabled", true);
     var answer = $("#Q4")[0].value;
     
     if (answer === 'right') {
@@ -158,10 +159,33 @@ function do_q4ToEnd() {
 
 function failAssessment() {
     $("select").prop("disabled", false);
-    $("#questions").submit();
+    $("#submit").prop("disabled", false);
+    $("#submit").click();
 }
 
 function passAssessment() {
     $("select").prop("disabled", false);
-    $("#questions").submit();
+    $("#submit").prop("disabled", false);
+    $("#submit").click();
+}
+
+$("#questions").submit(function(e) {
+    if (isInitialSubmit) {
+        e.preventDefault();
+        if (validateForm($("#questions")[0].elements)) {
+            isInitialSubmit = false;
+            begin();
+        }
+    }
+});
+
+function validateForm() {
+    var elem = document.getElementById('questions').elements;
+    for(var i = 0; i < elem.length; i++) {
+        if (elem[i].value==='Please make a selection.') {
+            alert("Answer all blanks before submitting.");
+            return false;
+        }
+    }
+    return true;
 }
