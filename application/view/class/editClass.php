@@ -25,7 +25,8 @@
                                 ?>
                                 <tr>
                                     <td><?php echo $firstName." ".$lastName; ?></td>
-                                    <td><button type="button" class="btn btn-xs btn-danger" onclick="confirmDeleteStudent(this,<?php echo $userID ?>)">Delete</button></td>
+                                    <td><button type="button" class="btn btn-xs btn-danger" 
+                                                class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalPin">Delete</button></th>
                                 </tr>
 
                                 <?php
@@ -35,6 +36,30 @@
                         </tbody>
                     </table>
 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalPin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="enter-pin">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Enter Pin</div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <table class="table">
+                                <tbody id="pin">
+                                    <tr>
+                                        <td><input id="pinInput" required pattern="[0-9]+" name="user_pin" type="text" placeholder="Pin" class="form-control" ></td>
+                                        <td><button id="enterPinBtn" class="btn btn-small btn-primary btn-block" type="submit" onclick="confirmDeleteStudent(this,<?php echo $userID ?>)">Delete</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
