@@ -391,5 +391,31 @@ class ClassModel {
             throw new InvalidArgumentException("Invalid Parameters");
         }
     }
+    /*
+     * 
+     */
+    public function checkPin($userPin){
+        
+        $pinHash = new PasswordHash(Config::get("HASH_COST_LOG2", 'gen'), Config::get("HASH_PORTALBE", 'gen'));
+        
+        if (empty($userPin)) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_USERNAME_OR_PASSWORD_FIELD_EMPTY'));
+            return false;
+        }
+        
+        $result = AccountModel::getUserDataByEmail(Session::get('user_email'));
+        if (!$result) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_LOGIN_FAILED'));
+            return false;
+        }
+        
+        if (!$pinHash->CheckPassword($userPin, $result->Pin)) {
+            // we say "password wrong" here, but less details like "login failed" would be better (= less information)
+            Session::add('feedback_negative', Text::get('FEEDBACK_PASSWORD_WRONG'));
+
+            return false;
+        }
+        return true;
+    }
 
 }

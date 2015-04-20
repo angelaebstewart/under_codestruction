@@ -42,9 +42,10 @@
     </div>
 </div>
 
-<div class="modal fade" id="myModalPin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
+
+    <div class="modal fade" id="myModalPin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        
             <div class="enter-pin">
                 <div class="panel panel-default">
                     <div class="panel-heading">Enter Pin</div>
@@ -54,7 +55,8 @@
                                 <tbody id="pin">
                                     <tr>
                                         <td><input id="pinInput" required pattern="[0-9]+" name="user_pin" type="text" placeholder="Pin" class="form-control" ></td>
-                                        <td><button id="enterPinBtn" class="btn btn-small btn-primary btn-block" type="submit" onclick="confirmDeleteStudent(this,<?php echo $userID ?>)">Delete</button></td>
+                                        <td><button id="enterPinBtn" class="btn btn-small btn-primary btn-block" type="submit" onclick="checkPin(this,<?php echo $userID ?>)">Delete</button></td>
+                                        <!--onclick="confirmDeleteStudent(this,<?/php echo $userID ?>)"-->
                                     </tr>
                                 </tbody>
                             </table>
@@ -62,9 +64,11 @@
                     </div>
                 </div>
             </div>
+       
         </div>
     </div>
-</div>
+
+
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -164,6 +168,7 @@ function addStudent(classID_in) {
 }
 
 
+
 function confirmDeleteStudent(param,studentID_in) {
 var result = window.confirm("Are you sure you want to delete this student?");
     if (result == true) {
@@ -171,8 +176,27 @@ var result = window.confirm("Are you sure you want to delete this student?");
         var row = param.parentElement.parentElement;
         row.parentElement.removeChild(row);
     }
-    
-    
+      
+}
+
+
+// returns True on success, false if error occurs
+function checkPin(param,studentID_in) {
+        var pinInputBox = document.getElementById('pinInput');
+        var pin_in = pinInputBox.value;
+        var data = {
+        pin : pin_in
+        };
+        $.ajax({
+        type: "POST",
+        url: "<?php echo Config::get('URL', 'gen'); ?>class/checkPin_action",
+        data: data,
+        success: function () {
+            confirmDeleteStudent(param,studentID_in);
+        },
+        error: function () {
+            alert("Not so much.");}
+        });
 }
 
 // returns True on success, false if error occurs

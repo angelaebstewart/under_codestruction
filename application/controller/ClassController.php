@@ -127,7 +127,22 @@ class ClassController extends Controller {
             echo json_encode($response_array);
         }
     }
-
+/**
+ * Name: checkPin_action
+ * Description:
+ * Used to verify the user's pin before deleting the student
+ * @author: Victoria Richardson
+ * @Date 4/20/2015
+ */
+    public function checkPin_action(){
+        Auth::checkAuthentication();
+        $userPin = Request::post('pin');
+        if (isset($userPin)){
+         
+            ClassModel::checkPin($userPin);
+        }
+    }
+    
     /**
      * Name: removeStudent_action
      * Description:
