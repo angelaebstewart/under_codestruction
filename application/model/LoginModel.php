@@ -212,7 +212,7 @@ class LoginModel {
 
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "INSERT INTO codestructionloginattempt(UserID) 
-                        VALUES (:user_id,)";
+                        VALUES (:user_id)";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id,));
         $result = $query->fetch();
