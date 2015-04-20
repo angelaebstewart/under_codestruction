@@ -103,7 +103,7 @@ class AccountModel {
      * @throws InvalidArgumentException when parameters are not used.
      */
     public static function getUserRoleByID($user_ID) {
-        if (isset($userID)) {
+        if (isset($user_ID)) {
             $database = DatabaseFactory::getFactory()->getConnection();
             $sql = "SELECT CAST(Type AS unsigned integer) AS Type FROM codestructionuser
                  WHERE UserID = :userID
