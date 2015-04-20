@@ -21,8 +21,8 @@ return array(
     /**
      * Configuration for: Default controller and action
      */
-    'DEFAULT_CONTROLLER' => 'index',
-    'DEFAULT_ACTION' => 'about',
+    'DEFAULT_CONTROLLER' => 'login',
+    'DEFAULT_ACTION' => 'index',
     /*
      * Configuration for phpass
      * HASH_COST_LOG2 - Base-2 logarithm of the iteration count used for password stretching

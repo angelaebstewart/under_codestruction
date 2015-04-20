@@ -14,98 +14,68 @@ class AccountModel {
      * @Date 4/11/2015
      * @param $user_email string email
      * @return bool
+     * @throws InvalidArgumentException when parameters are not used.
      */
     public static function doesEmailAlreadyExist($user_email) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-        $query = $database->prepare("SELECT UserID FROM codestructionuser WHERE Email = :user_email AND IsValid = True LIMIT 1");
-        $query->execute(array(':user_email' => $user_email));
-        if ($query->rowCount() == 0) {
-            return false;
+        if (isset($user_email)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $query = $database->prepare("SELECT UserID FROM codestructionuser WHERE Email = :user_email AND IsValid = True LIMIT 1");
+            $query->execute(array(':user_email' => $user_email));
+            if ($query->rowCount() == 0) {
+                return false;
+            }
+            return true;
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
         }
-        return true;
     }
 
     /**
-     * Gets a user's profile data, according to the given $user_id
-     * @param int $user_id The user's id
-     * @return mixed The selected user's profile
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: getUserIdByEmail
      * Description:
-     * ?
-     * @author ?
-     * @Date ?
-     */
-    public static function getPublicProfileOfUser($user_id) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-
-        $sql = "SELECT UserID, FirstName, LastName, Email, 
-                        CAST(Type AS unsigned integer) AS Type, 
-                        CAST(verified AS unsigned integer) AS verified
-                FROM codestructionuser 
-                WHERE UserID = :user_id LIMIT 1";
-        $query = $database->prepare($sql);
-        $query->execute(array(':user_id' => $user_id));
-
-        $user = $query->fetch();
-
-        if ($query->rowCount() != 1) {
-            Session::add('feedback_negative', Text::get('FEEDBACK_USER_DOES_NOT_EXIST'));
-        }
-
-        return $user;
-    }
-
-    /**
      * Gets the user's id
-     *
-     * @param $user_email
-     *
-     * @return mixed
-     * 
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * NOTE: If the return statement changes then change requestPasswordReset_action method
+     * @param $user_email
+     * @return mixed userID or otherwise -1
+     * @throws InvalidArgumentException when parameters are not used.
      */
     public static function getUserIdByEmail($user_email) {
-        $database = DatabaseFactory::getFactory()->getConnection();
+        if (isset($user_email)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT UserID FROM codestructionuser WHERE Email = :user_email LIMIT 1";
-        $query = $database->prepare($sql);
+            $sql = "SELECT UserID FROM codestructionuser WHERE Email = :user_email LIMIT 1";
+            $query = $database->prepare($sql);
 
-        $query->execute(array(':user_email' => $user_email));
+            $query->execute(array(':user_email' => $user_email));
 
-        $result = $query->fetch();
+            $result = $query->fetch();
 
-        if (!empty($result)) {
-            return $result->UserID;
+            if (!empty($result)) {
+                return $result->UserID;
+            } else {
+                return -1;
+            }
         } else {
-            return -1;
+            throw new InvalidArgumentException("Invalid Parameters");
         }
     }
 
     /**
-     * Gets the user's data
-     *
-     * @param $user_name string User's name
-     *
-     * @return mixed Returns false if user does not exist, returns object with user's data when user exists
-     * 
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: getUserDataByEmail
      * Description:
-     * ?
-     * @author ?
+     * Gets the user's data
+     * @author FRAMEWORK (Modified by: Ryan Lewis)
      * @Date ?
+     * @param $user_name string User's name
+     * @return mixed Returns false if user does not exist, returns object with user's data when user exists
+     * @throws InvalidArgumentException when parameters are not used.
      */
     public static function getUserDataByEmail($user_email) {
-        $database = DatabaseFactory::getFactory()->getConnection();
-
-        $sql = "SELECT  UserID, FirstName, LastName, Email,
+        if (isset($user_email)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT  UserID, FirstName, LastName, Email,
                         CAST(Type AS unsigned integer) AS Type,
                         CAST(verified AS unsigned integer) AS verified, 
                         CAST(passwordUpdated AS unsigned integer) AS passwordUpdated, 
@@ -113,57 +83,81 @@ class AccountModel {
                   FROM codestructionuser
                  WHERE Email = :user_email
                  LIMIT 1";
-        $query = $database->prepare($sql);
-        $query->execute(array(':user_email' => $user_email));
-
-        // return one row (we only have one result or nothing)
-        return $query->fetch();
+            $query = $database->prepare($sql);
+            $query->execute(array(':user_email' => $user_email));
+            // return one row (we only have one result or nothing)
+            return $query->fetch();
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
-    
-    public static function getUserRoleByID($user_ID) {
-        $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT CAST(Type AS unsigned integer) AS Type FROM codestructionuser
+    /**
+     * Name: getUserRoleByID
+     * Description:
+     * Get the role of the user
+     * @author ?
+     * @Date ?
+     * @param type $user_ID
+     * @return type
+     * @throws InvalidArgumentException when parameters are not used.
+     */
+    public static function getUserRoleByID($user_ID) {
+        if (isset($userID)) {
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT CAST(Type AS unsigned integer) AS Type FROM codestructionuser
                  WHERE UserID = :userID
                  LIMIT 1";
-        $query = $database->prepare($sql);
-        $query->execute(array(':userID' => $user_ID));
-        $result = $query->fetch();
-        $string = $result->Type;
-        return $string;
+            $query = $database->prepare($sql);
+            $query->execute(array(':userID' => $user_ID));
+            $result = $query->fetch();
+            $string = $result->Type;
+            return $string;
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
 
     /**
      * Name: isTeacher
      * Description:
-     * returns specific integer to represent the user as a 
-     * @author Ryan
+     * returns specific integer to represent the user as a teacher
+     * @author Ryan Lewis
      * @Date ?
      * @param type $role
      * @return true if the specific role is a teacher
+     * @throws InvalidArgumentException when parameters are not used.
      */
     public static function isTeacher($role) {
-        return ($role == Config::get('ROLE_TEACHER', 'gen'));
+        if (isset($role)) {
+            return ($role == Config::get('ROLE_TEACHER', 'gen'));
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: isStudent
      * Description:
-     * ?
-     * @author ?
+     * returns specific integer to represent the user as a student
+     * @author Ryan Lewis
      * @Date ?
      * @param type $role
      * @return type
+     * @throws InvalidArgumentException when parameters are not used.
      */
     public static function isStudent($role) {
-        return ($role == Config::get('ROLE_STUDENT', 'gen'));
+        if (isset($role)) {
+            return ($role == Config::get('ROLE_STUDENT', 'gen'));
+        } else {
+            throw new InvalidArgumentException("Invalid Parameters");
+        }
     }
 
     /*
      * Name: markUserInactive
      * Description:
-     *  Marks a user as inactive
+     * Marks a user as inactive
      * @author Ethan Mata
      * @Date 3/8/2015
      * @throws InvalidArgumentException when parameters are not used.
@@ -188,11 +182,10 @@ class AccountModel {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: deleteTeacherAccount
      * Description:
-     * ?
-     * @author ?
+     * Marks the specified userId as deleted, but doesn't delete the user.
+     * @author Ethan Mata
      * @Date ?
      * @param type $userID
      * @return type
@@ -215,7 +208,7 @@ class AccountModel {
     /*
      * Name: createLoginRecord
      * Description:
-     *  Creates a record of the user's failed login attempts
+     * Creates a record of the user's failed login attempts
      * @author Ethan Mata
      * @Date 3/9/2015
      * @throws InvalidArgumentException when parameters are not used.

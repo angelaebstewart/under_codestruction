@@ -6,16 +6,15 @@
 class LessonModel {
 
     /**
+     * Name: getLessonList
+     * Description:
      * Get a list of all lessons in the system, with an indication of which
      * are currently accessible to the user.
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @param $user_id int The user's UserID
      * @param $user_role int The user's role (student=1, teacher=2)
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return array List of all lessons in the system. All module "name"s
      * are given, but module "id"s are only given for those accessible to the 
      * user
@@ -62,10 +61,11 @@ class LessonModel {
     }
 
     /**
+     * Name: getAllLessons
+     * Description:
      * Get a list of all lessons in the system.
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @return array List of all ModuleIDs and ModuleNames in the system
      */
     public static function getAllLessons() {
@@ -77,14 +77,12 @@ class LessonModel {
     }
 
     /**
+     * Name: getLessonDescription
+     * Description:
      * Get the Descritpion of the lesson specified.
-     * 
      * @author Ryan Lewis
-     * 
      * @param $lesson_id int The ModuleID for the lesson in question
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return List of module description strings associated with this lesson id
      * (should just be one)
      */
@@ -103,17 +101,16 @@ class LessonModel {
     }
 
     /**
+     * Name: getLessonData
+     * Description:
      * For any given lesson, return its ModuleName, GameLink, AssessmentLink,
      * and VideoLink.
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @param $user_id int The user's UserID
      * @param $user_role int The user's role (student=1, teacher=2)
      * @param $lesson_id int The ModuleID for the lesson in question
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return array containing the ModuleName, GameLink, AssessmentLink, and
      * VideoLink of the lesson; if the lesson_id does not correspond to a
      * lesson in the system, the lessonData key value will be set to NULL
@@ -140,15 +137,14 @@ class LessonModel {
     }
 
     /**
+     * Name: getHighestCompletedLesson
+     * Description:
      * For any given user, get the ModuleID of the highest lesson he or she
      * has completed.
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @param $user_id int The user's UserID
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return int ModuleID of the highest lesson the user has completed; -1
      * if no lessons have been completed, or if the given user ID is invalid
      */
@@ -173,15 +169,14 @@ class LessonModel {
     }
 
     /**
+     * Name: hasStartedLesson
+     * Description:
      * Get whether or not a user has started a particular lesson
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return bool True if the user has started the lesson, false otherwise
      */
     public static function hasStartedLesson($user_id, $lesson_id) {
@@ -199,16 +194,15 @@ class LessonModel {
     }
 
     /**
+     * Name: hasViewedVideoAndGame
+     * Description:
      * Get whether or not a user has viewed both the video and the game for
      * a particular lesson.
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return bool True if the user has viewed both the video and the game
      * for the lesson, false otherwise
      */
@@ -220,7 +214,6 @@ class LessonModel {
                 AND VideoStatus='Completed' AND GameStatus='Completed'";
             $query = $database->prepare($sql);
             $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
-
             return ($query->rowCount() >= 1);
         } else {
             throw new InvalidArgumentException("Invalid Parameters");
@@ -228,15 +221,14 @@ class LessonModel {
     }
     
     /**
+     * Name: recordStartedLesson
+     * Description:
      * Record in the database that a user has started a particular lesson.
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return int "1" if the user had not already started the lesson and the
      * data was successfully stored, "-1" otherwise
      */
@@ -259,15 +251,14 @@ class LessonModel {
     }
 
     /**
+     * Name: recordViewedVideo
+     * Description:
      * Record in the database that a user has viewed a particular lesson's video.
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return int "1" if the user had not already viewed the video and the 
      * data was successfully stored, "-1" otherwise
      */
@@ -291,15 +282,14 @@ class LessonModel {
     }
 
     /**
+     * Name: recordViewedGame
+     * Description:
      * Record in the database that a user has viewed a particular lesson's game.
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return int "1" if the user had not already viewed the game and the 
      * data was successfully stored, "-1" otherwise
      */
@@ -323,16 +313,15 @@ class LessonModel {
     }
 
     /**
+     * Name: recordViewedAssessment
+     * Description:
      * Record in the database that a user has viewed a particular lesson's
      * assessment.
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @param $user_id int The user's UserID
      * @param $lesson_id int The ModuleID for the lesson in question
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return int "1" if the user had not already viewed the assessment and the 
      * data was successfully stored, "-1" otherwise
      */
@@ -356,15 +345,14 @@ class LessonModel {
     }
 
     /**
+     * Name: isValidLessonID
+     * Description:
      * Determine whether a given lesson ID corresponds to an actual lesson in
      * the system.
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @param $lesson_id int ModuleID of a lesson in the system
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return bool True if the given ID does correspond to a lesson in the
      * system, false otherwise
      */
@@ -385,16 +373,15 @@ class LessonModel {
     }
 
     /**
+     * Name: canViewLesson
+     * Description:
      * For a given user, user role, and lesson, determine whether or not the
      * user has access to that lesson.
-     * 
      * @author Ryan Lewis
-     * 
+     * @Date ?
      * @param $user_id int The user's UserID
      * @param $user_role int The user's role (student=1, teacher=2)
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return bool True if the user does have access to the given lesson;
      * false otherwise, or if the $user_id or $lesson_id are invalid
      */

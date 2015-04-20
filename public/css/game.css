@@ -20,7 +20,7 @@ and open the template in the editor.
                 border: thin solid #aaaaaa;
             }
             .gameContent #gameDiv {
-                display: inline-block;
+                display: block;
                 color: #eeeeee;
                 background: rgba(125, 120, 120, 0.9);
                 padding: 10px;
