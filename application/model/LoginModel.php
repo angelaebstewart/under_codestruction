@@ -10,16 +10,13 @@ require_once ('../vendor/phpass-0.3/PasswordHash.php');
 class LoginModel {
 
     /**
-     * Login process (for DEFAULT user accounts).
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: login
      * Description:
-     * ?
-     * @author ?
+     * Login process.
+     * @author FRAMEWORK
      * @Date ?
      * @param $user_name string The user's name
      * @param $user_password string The user's password
-     * 
      * @return bool success state
      */
     public static function login($user_email, $user_password) {
@@ -69,13 +66,11 @@ class LoginModel {
     }
 
     /**
+     * Name: validLogin
+     * Description:
      * For a valid login attempt, this will reset the AttemptNumber in the database to 0
      * so that the next time the user logs in the counter of errors will start at 0. 
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author FRAMEWORK
      * @Date ?
      * @param type $userID
      */
@@ -87,13 +82,11 @@ class LoginModel {
     }
 
     /**
+     * Name: invalidLogin
+     * Description:
      * This will be called in the event of an invalid login attempt. It will increment the 
      * AttemptNumber everytime a login fails.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
-     * Description:
-     * ?
-     * @author ?
+     * @author Victoria Richardson & Ethan Mata
      * @Date ?
      * @param type $userID
      */
@@ -137,12 +130,10 @@ class LoginModel {
     }
 
     /**
-     * Same function as in RegistrationModel, but moved for PasswordHash issues
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: sendVerificationEmail
      * Description:
-     * ?
-     * @author ?
+     * Same function as in RegistrationModel, but moved for PasswordHash issues
+     * @author FRAMEWORK
      * @Date ?
      * @param type $user_id
      * @param type $user_email
@@ -169,12 +160,10 @@ class LoginModel {
     }
 
     /**
-     * Log out process: delete session
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: logout
      * Description:
-     * ?
-     * @author ?
+     * Log out process: delete session
+     * @author FRAMEWORK
      * @Date ?
      */
     public static function logout() {
@@ -182,13 +171,10 @@ class LoginModel {
     }
 
     /**
-     * The real login process: The user's data is written into the session.
-     * Cheesy name, maybe rename. Also maybe refactoring this, using an array.
-     * SEARCH-KEYWORD: NOT COMMENTED
-     * Name: ?
+     * Name: setSuccessfulLoginIntoSession
      * Description:
-     * ?
-     * @author ?
+     * The real login process: The user's data is written into the session.
+     * @author FRAMEWORK
      * @Date ?
      * @param $user_id
      * @param $user_firstName
@@ -226,7 +212,7 @@ class LoginModel {
 
         $database = DatabaseFactory::getFactory()->getConnection();
         $sql = "INSERT INTO codestructionloginattempt(UserID) 
-                        VALUES (:user_id,)";
+                        VALUES (:user_id)";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id,));
         $result = $query->fetch();

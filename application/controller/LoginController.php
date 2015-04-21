@@ -59,16 +59,12 @@ class LoginController extends Controller {
      * Name: loginHome
      * Description:
      * Directs the student or teacher to their 'home page'
-     * @author Ryan Lewis
-     * @Date ?
+     * @author Ryan Lewis (Modified by: Walter Conway, goto the about page)
+     * @Date 4/16/2015
      */
     public function loginHome() {
         Auth::checkAuthentication();
-        if (AccountModel::isTeacher(Session::get('user_role'))) {
-            Redirect::to('class/index');
-        } else {
-            Redirect::to('lesson/index');
-        }
+        Redirect::to('index/about');
     }
 
     /**

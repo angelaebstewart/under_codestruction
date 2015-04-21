@@ -89,7 +89,7 @@ class AccountController extends Controller {
         $passwordNew = Request::post('password1');
         $passwordRetyped = Request::post('password2');
         if (isset($user_id) && isset($passwordNew) && isset($passwordRetyped)) {
-            if (($passwordNew == $passwordRetyped) && (strlen($passwordNew) >= 6 && strlen($passwordRetyped) >= 6)) {
+            if (($passwordNew == $passwordRetyped) && mb_strlen($passwordNew) >= 6) {
                 ChangePasswordModel::setNewPassword($user_id, $passwordNew, $passwordRetyped);
                 Redirect::to('login/index');
             } else {
@@ -186,7 +186,6 @@ class AccountController extends Controller {
     }
 
     /**
-     * SEARCH-KEYWORD: NOT COMMENTED
      * Name: requestEmailReset_action
      * Description:
      * When the Email reset button is clicked.

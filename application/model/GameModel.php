@@ -6,17 +6,16 @@
 class GameModel {
     
     /**
+     * Name: saveNewUserPassword
+     * Description:
      * For a given user, user role, and lesson, determine whether or not the
      * user has access to that lesson's game.
-     * 
      * @author Ryan Lewis
-     *
+     * @Date ?
      * @param $user_id int The user's UserID
      * @param $user_role int The user's role (student=1, teacher=2)
      * @param $lesson_id int The ModuleID for the lesson in question
-     * 
      * @throws InvalidArgumentException when parameters are not used.
-     * 
      * @return bool True if the user does have access to the game;
      * false otherwise, or if the $user_id or $lesson_id are invalid
      */
