@@ -50,7 +50,7 @@
                 <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
                     <div class="panel-body">
                         A: Nothing! Each lesson is designed to teach the <i>principles</i> of
-                        programming without getting too much into the nitty-gritty details.
+                        computer science and programming without getting too much into the nitty-gritty details.
                     </div>
                 </div>
             </div>
