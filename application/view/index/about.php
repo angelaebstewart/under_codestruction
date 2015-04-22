@@ -16,12 +16,10 @@
                         <div class="panel-body">
                             <center><img src="<?php echo Config::get('URL', 'gen'); ?>images/Logo_1pxBlackOutline.png"></center><br>
 
-                            <p>This is an interactive website that was created to teach computer science principles to high school students.
-                                We are approaching this task by having students solve everyday problems from a computer science prospective.
+                            <p>Under Codestruction is an interactive website created to teach computer science principles to high school students.
+                                We are approaching this task by having students solve everyday problems from a computer science perspective.
                                 The lessons consist of an animation to introduce the ideas, game play to reinforce the principles,
-                                and an assessment to challenge the students.
-                                The teachers are able to view the feedback that results from the students interaction with the game play
-                                and assessment to check the progress of the student as they work through each lesson.</p>
+                                and an assessment to challenge the students while providing teachers with feedback on student progress.</p>
 
                         </div>
                     </div>
