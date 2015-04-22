@@ -139,7 +139,14 @@ class ClassController extends Controller {
         $userPin = Request::post('pin');
         if (isset($userPin)){
          
-            ClassModel::checkPin($userPin);
+            if (ClassModel::checkPin($userPin)){
+                $response_array['status'] = 'success';
+                echo json_encode($response_array);
+            }
+            //return Json(new{ success = true}); 
+            else
+                $response_array['status'] = 'error';
+                echo json_encode($response_array);
         }
     }
     

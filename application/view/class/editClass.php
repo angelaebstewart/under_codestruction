@@ -54,7 +54,7 @@
                             <table class="table">
                                 <tbody id="pin">
                                     <tr>
-                                        <td><input id="pinInput" required pattern="[0-9]+" name="user_pin" type="text" placeholder="Pin" class="form-control" ></td>
+                                        <td><input id="pinInput" required pattern="[0-9]{4}" name="user_pin" type="password" placeholder="Pin" class="form-control" ></td>
                                         <td><button id="enterPinBtn" class="btn btn-small btn-primary btn-block" type="submit" onclick="checkPin(this,<?php echo $userID ?>)">Delete</button></td>
                                         <!--onclick="confirmDeleteStudent(this,<?/php echo $userID ?>)"-->
                                     </tr>
@@ -197,6 +197,7 @@ function checkPin(param,studentID_in) {
         error: function () {
             alert("Not so much.");}
         });
+        $('#myModalPin').modal('hide');
 }
 
 // returns True on success, false if error occurs
