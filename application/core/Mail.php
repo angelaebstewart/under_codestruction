@@ -35,7 +35,7 @@ class Mail {
      * @Date ?
      * @param string $errorMessage
      */
-    public function setError(string $errorMessage) {
+    public function setError($errorMessage) {
         $this->error = $errorMessage;
     }
 
