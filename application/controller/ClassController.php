@@ -138,16 +138,25 @@ class ClassController extends Controller {
         Auth::checkAuthentication();
         $userPin = Request::post('pin');
         if (isset($userPin)){
-         
+            
             if (ClassModel::checkPin($userPin)){
                 $response_array['status'] = 'success';
                 echo json_encode($response_array);
+                if (ClassController::removeStudent_action()){
+                    $response_array['status'] = 'success';
+                    echo json_encode($response_array);
+                }
+                //$this->View->render('class/editClass');
             }
             //return Json(new{ success = true}); 
-            else
+            else {
                 $response_array['status'] = 'error';
-                echo json_encode($response_array);
+                return json_encode($response_array);
+            }
         }
+        else
+                $response_array['status'] = 'error';
+                return json_encode($response_array);
     }
     
     /**

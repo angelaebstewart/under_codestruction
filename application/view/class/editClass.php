@@ -54,9 +54,9 @@
                             <table class="table">
                                 <tbody id="pin">
                                     <tr>
-                                        <td><input id="pinInput" required pattern="[0-9]{4}" name="user_pin" type="password" placeholder="Pin" class="form-control" ></td>
+                                        <td><input id="pinInput" required pattern="^[0-9]{4}$" name="user_pin" type="password" placeholder="Pin" class="form-control" ></td>
                                         <td><button id="enterPinBtn" class="btn btn-small btn-primary btn-block" type="submit" onclick="checkPin(this,<?php echo $userID ?>)">Delete</button></td>
-                                        <!--onclick="confirmDeleteStudent(this,<?/php echo $userID ?>)"-->
+                                        <!--onclick="confirmDeleteStudent(this,<?/php echo $userID ?>)"maxlength ="4"-->
                                     </tr>
                                 </tbody>
                             </table>
@@ -185,14 +185,16 @@ function checkPin(param,studentID_in) {
         var pinInputBox = document.getElementById('pinInput');
         var pin_in = pinInputBox.value;
         var data = {
-        pin : pin_in
+        pin : pin_in,
+        studentID : studentID_in
         };
         $.ajax({
         type: "POST",
         url: "<?php echo Config::get('URL', 'gen'); ?>class/checkPin_action",
         data: data,
         success: function () {
-            confirmDeleteStudent(param,studentID_in);
+            //confirmDeleteStudent(param,studentID_in);
+            //alert("The method was called");
         },
         error: function () {
             alert("Not so much.");}

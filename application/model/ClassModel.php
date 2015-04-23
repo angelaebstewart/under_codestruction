@@ -4,6 +4,8 @@
  * Description of ClassModel
  * Handles the business logic for anything class related.
  */
+require_once ('../vendor/phpass-0.3/PasswordHash.php');
+
 class ClassModel {
     /*
      * Name: isClassTaughtByTeacher
