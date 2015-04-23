@@ -140,8 +140,7 @@ class ClassController extends Controller {
         if (isset($userPin)){
             
             if (ClassModel::checkPin($userPin)){
-                $response_array['status'] = 'success';
-                echo json_encode($response_array);
+                
                 if (ClassController::removeStudent_action()){
                     $response_array['status'] = 'success';
                     echo json_encode($response_array);
