@@ -53,7 +53,6 @@ class PasswordResetModel {
      */
     public static function setPasswordResetDatabaseToken($user_id, $user_password_reset_hash) {
         $database = DatabaseFactory::getFactory()->getConnection();
-
         $sql = "UPDATE codestructionuser SET ResetHash = :user_password_reset_hash, PasswordUpdated = 0 WHERE UserID = :user_id LIMIT 1";
         $query = $database->prepare($sql);
         $query->execute(array(':user_password_reset_hash' => $user_password_reset_hash, ':user_id' => $user_id));
