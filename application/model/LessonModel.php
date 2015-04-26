@@ -329,7 +329,7 @@ class LessonModel {
         if (isset($user_id) && isset($lesson_id)) {
             $database = DatabaseFactory::getFactory()->getConnection();
             $sql = "UPDATE codestructionmoduleprogress 
-                    SET AssessmentStatus='In Progress'
+                    SET AssessmentStatus='In Progress', CompletionAttemptNumber=CompletionAttemptNumber+1
                     WHERE UserID = :user_id AND ModuleID = :lesson_id AND AssessmentStatus<>'Completed'";
             $query = $database->prepare($sql);
             $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
