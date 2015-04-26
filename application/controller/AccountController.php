@@ -322,7 +322,16 @@ class AccountController extends Controller {
      */
     public function options() {
         Auth::checkAuthentication();
-        $this->View->render('login/options');
+        //if is teacher, direct to options
+        //else direct to Studentoptions
+        $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
+        if($isTeacher){
+            $this->View->render('login/options');
+        }
+        else {
+            $this->View->render('login/studentOptions');
+        }
+            
     }
 
     /**
@@ -353,6 +362,19 @@ class AccountController extends Controller {
     public function editUserEmail() {
         Auth::checkAuthentication();
         $this->View->render('login/editUserEmail');
+    }
+    
+        /**
+     * Name: editTeacherEmail
+     * Description:
+     * Show edit-my-user-email page
+     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
+     * @author FRAMEWORK
+     * @Date ?
+     */
+    public function editTeacherEmail() {
+        Auth::checkAuthentication();
+        $this->View->render('login/editTeacherEmail');
     }
 
     /**
