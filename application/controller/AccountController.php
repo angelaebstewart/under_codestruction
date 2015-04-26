@@ -170,7 +170,7 @@ class AccountController extends Controller {
     }
 
         /**
-     * Name: changePassword
+     * Name: changePin
      * Description:
      * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
      * Show This shows the changePassword Page...
@@ -183,11 +183,11 @@ class AccountController extends Controller {
     }
 
     /**
-     * Name: changePassword_action
+     * Name: changePin_action
      * Description:
-     * When the edit password button is clicked.
+     * When the edit pin button is clicked.
      * @author Victoria Richardson
-     * @Date 4/9/2015
+     * @Date 4/26/2015
      */
     public function changePin_action() {
         Auth::checkAuthentication();
