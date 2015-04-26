@@ -169,6 +169,46 @@ class AccountController extends Controller {
         }
     }
 
+        /**
+     * Name: changePassword
+     * Description:
+     * Auth::checkAuthentication() makes sure that only logged in users can use this action and see this page
+     * Show This shows the changePassword Page...
+     * @author FRAMEWORK
+     * @Date ?
+     */
+    public function changePin() {
+        Auth::checkAuthentication();
+        $this->View->render('login/changePin');
+    }
+
+    /**
+     * Name: changePassword_action
+     * Description:
+     * When the edit password button is clicked.
+     * @author Victoria Richardson
+     * @Date 4/9/2015
+     */
+    public function changePin_action() {
+        Auth::checkAuthentication();
+        $user_id = Session::get('user_id');
+        $pinNew = Request::post('pin1');
+        $pinRetyped = Request::post('pin2');
+        if (isset($user_id) && isset($pinNew) && isset($pinRetyped)) {
+            if (($pinNew == $pinRetyped) && (strlen($pinNew) == 4 && strlen($pinRetyped) == 4)) {
+                SetPinModel::setNewPin($user_id, $pinNew, $pinRetyped);
+                Redirect::to('login/index');
+            } else {
+                Session::add('feedback_negative', Text::get('FEEDBACK_PIN_SET_FAILED'));
+                $this->View->render('login/enterPin');
+            }
+        
+        }
+        else {
+            $this->View->render('error/index');
+        }
+    }
+    
     /**
      * Name: requestPasswordReset
      * Description:

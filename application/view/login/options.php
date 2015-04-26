@@ -12,6 +12,7 @@
                 <div class="panel-body">
                     <form action="#">
                         <button type="button" class="btn btn-lg btn-primary btn-block" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>account/changePassword'">Change Password</button>
+                        <button type="button" class="btn btn-lg btn-primary btn-block" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>account/changePin'">Change Pin</button>
                         <button type="button" class="btn btn-lg btn-primary btn-block" onclick="window.location.href = '<?php echo Config::get('URL', 'gen'); ?>account/editTeacherEmail'">Change Email</button>
                     </form>
                 </div>
