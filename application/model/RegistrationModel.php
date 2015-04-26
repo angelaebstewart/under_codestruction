@@ -44,7 +44,6 @@ class RegistrationModel {
 
         // send verification email
         if (RegistrationModel::sendVerificationEmail($user_id, $user_email, $user_activation_hash)) {
-            Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_SUCCESSFULLY_CREATED'));
             return true;
         }
 
@@ -197,21 +196,19 @@ class RegistrationModel {
         $body = Config::get('EMAIL_VERIFICATION_CONTENT', 'email') . Config::get('URL', 'gen') . Config::get('EMAIL_VERIFICATION_URL', 'email')
                 . '/' . urlencode($user_id) . '/' . urlencode($user_activation_hash);
 
-        Session::add('feedback_positive', "Email sent:<br><br>" . $body);
-
         // create instance of Mail class, try sending and check
         $mail = new Mail;
         $mail_sent = $mail->sendMail(
                 $user_email, Config::get('EMAIL_VERIFICATION_FROM_EMAIL', 'email'), Config::get('EMAIL_VERIFICATION_FROM_NAME', 'email'), Config::get('EMAIL_VERIFICATION_SUBJECT', 'email'), $body
         );
-
+        
         if ($mail_sent) {
             Session::add('feedback_positive', Text::get('FEEDBACK_VERIFICATION_MAIL_SENDING_SUCCESSFUL'));
             return true;
+        } else {
+            Session::add('feedback_negative', Text::get('FEEDBACK_VERIFICATION_MAIL_SENDING_ERROR') . $mail->getError());
+            return false;
         }
-
-        Session::add('feedback_negative', Text::get('FEEDBACK_VERIFICATION_MAIL_SENDING_ERROR') . $mail->getError());
-        return false;
     }
 
     /**
