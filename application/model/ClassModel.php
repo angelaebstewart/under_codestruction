@@ -247,7 +247,7 @@ class ClassModel {
             $classID = ClassModel::getNextClassID();
 
             // Prevent duplicate class names
-            if (ClassModel::doesValidClassExistWithName($classTitle)) {
+            if (ClassModel::doesDuplicateNameExist($classTitle, $teacherID)) {
                 Session::add('feedback_negative', Text::get('FEEDBACK_CLASS_CREATE_FAILED_NAME'));
                 return false;
             }
@@ -288,21 +288,21 @@ class ClassModel {
     }
 
     /*
-     * Name: doesClassExistWithName
+     * Name: doesDuplicateNameExist
      * Description:
-     * Returns true if a class exists with that name, false otherwise
+     * Returns true if a valid class exists with that name that is taught by the given teacher, false otherwise
      * @author Ethan Mata
      * @Date 3/8/2015
      * @throws InvalidArgumentException when parameters are not used.
      * @param String $classTitle The class' name
      * @return Boolean, if the class exists
      */
-    public static function doesValidClassExistWithName($className) {
-        if (isset($className)) {
+    public static function doesDuplicateNameExist($className, $teacherID) {
+        if (isset($className) && isset($teacherID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
-            $sql = "SELECT COUNT(*) as result FROM codestructionclass Class WHERE ClassName = :className AND IsValid = 1";
+            $sql = "SELECT COUNT(*) as result FROM codestructionclass Class WHERE ClassName = :className AND IsValid = 1 AND TeacherID = :teacherID";
             $query = $db->prepare($sql);
-            $query->execute(array(':className' => $className));
+            $query->execute(array(':className' => $className,':teacherID' => $teacherID));
             $result = $query->fetchAll();
 
             if ($result[0]->result == 0) {

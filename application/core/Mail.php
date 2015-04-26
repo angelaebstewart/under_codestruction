@@ -17,12 +17,12 @@ class Mail {
         if (function_exists('mail')) {
             $result = mail($user_email, $subject, $body);
             if ($result == FALSE) {
-                setError("Wasn't able to send the verification e-mail.");
+                $this->setError("Wasn't able to send the verification e-mail.");
                 return FALSE;
             }
             return true;
         } else {
-            setError("The Mail function is not enabled in PHP.");
+            $this->setError("The Mail function is not enabled in PHP.");
             return FALSE;
         }
     }
@@ -35,7 +35,7 @@ class Mail {
      * @Date ?
      * @param string $errorMessage
      */
-    public function setError(string $errorMessage) {
+    public function setError($errorMessage) {
         $this->error = $errorMessage;
     }
 
