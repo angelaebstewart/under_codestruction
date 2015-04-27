@@ -102,7 +102,12 @@ class ClassController extends Controller {
         $email = Request::post('email');
         $classID = Request::post('classID');
         if (isset($fname) && isset($lname) && isset($email) && isset($classID)) {
-
+            
+            if ($fname == "" || $lname == "" || $email == "")
+            {
+                return false; // Prevent empty inputs.
+            }
+            
             // Make sure the email is not already in use
             if (AccountModel::doesEmailAlreadyExist($email)) {
                 Session::add('feedback_negative', Text::get('FEEDBACK_ADD_STUDENT_EMAIL_IN_USE'));
