@@ -79,6 +79,7 @@ class AccountModel {
                         CAST(Type AS unsigned integer) AS Type,
                         CAST(verified AS unsigned integer) AS verified, 
                         CAST(passwordUpdated AS unsigned integer) AS passwordUpdated, 
+                        CAST(IsValid AS unsigned integer) AS IsValid, 
                         passwordHash
                   FROM codestructionuser
                  WHERE Email = :user_email
