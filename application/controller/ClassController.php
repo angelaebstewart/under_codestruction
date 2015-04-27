@@ -76,7 +76,7 @@ class ClassController extends Controller {
         $classTitle = Request::post('classTitle');
         $teacherID = Session::get('user_id');
         $isTeacher = AccountModel::isTeacher(Session::get('user_role'));
-        if (isset($classTitle) && isset($teacherID) && isset($isTeacher) && preg_match("/[A-Za-z\d\s]+/", $classTitle) == 1) {
+        if (isset($classTitle) && isset($teacherID) && isset($isTeacher) && preg_match("/^[A-Za-z\d\s]+$/", $classTitle) != 0) {
             if ($isTeacher) {
                 $resultText = ClassModel::createClassWithTitleAndTeacher($classTitle, $teacherID);
                 $resultJSON = json_encode($resultText);
@@ -102,7 +102,12 @@ class ClassController extends Controller {
         $email = Request::post('email');
         $classID = Request::post('classID');
         if (isset($fname) && isset($lname) && isset($email) && isset($classID)) {
-
+            
+            if ($fname == "" || $lname == "" || $email == "")
+            {
+                return false; // Prevent empty inputs.
+            }
+            
             // Make sure the email is not already in use
             if (AccountModel::doesEmailAlreadyExist($email)) {
                 Session::add('feedback_negative', Text::get('FEEDBACK_ADD_STUDENT_EMAIL_IN_USE'));
