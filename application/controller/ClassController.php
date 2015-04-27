@@ -119,8 +119,6 @@ class ClassController extends Controller {
             RegistrationModel::sendVerificationEmail($user_id, $email, $activation_hash);
             // Enroll the student
             ClassModel::enrollStudentInClass($user_id, $classID);
-            // Create a record in the login attempts table for this student
-            LoginModel::createLoginRecordForStudent($user_id);
 
             $response_array['status'] = 'success';
 
