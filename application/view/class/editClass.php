@@ -199,6 +199,7 @@ function checkPin(param,studentID_in) {
             alert("Not so much.");}
         });
         $('#myModalPin').modal('hide');
+        $(document).ajaxStop(function() { location.reload(true); });
 }
 
 // returns True on success, false if error occurs

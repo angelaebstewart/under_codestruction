@@ -145,7 +145,6 @@ class ClassController extends Controller {
                     $response_array['status'] = 'success';
                     echo json_encode($response_array);
                 }
-                //$this->View->render('class/editClass');
             }
             //return Json(new{ success = true}); 
             else {
