@@ -119,10 +119,11 @@ function addStudent(classID_in) {
     var emInputBox = document.getElementById('emInput');
     var emValue = emInputBox.value;
     emInputBox.value = '';
-    
-    /*var passwordInputBox = document.getElementById('passInput');
-    var passwordValue = passwordInputBox.value;
-    passwordInputBox.value = '';*/
+        
+    if (firstNameValue.split(" ").join("") == "" || lastNameValue.split(" ").join("") == "" || emValue.split(" ").join("") == "") {
+        alert("Error: First name, last name, and email address are required.");
+        return;
+    }
 
 
     var tablerow = document.createElement("tr");

@@ -35,7 +35,14 @@ class LoginModel {
             Session::add('feedback_negative', Text::get('FEEDBACK_LOGIN_FAILED'));
             return false;
         }
-
+        
+        // Check to make sure that the user account has not been deactivated
+        if ($result->IsValid == 0) {
+            Session::add('feedback_negative', Text::get('FEEDBACK_LOGIN_FAILED'));
+            return false;
+        }
+        
+        
         // hash of provided password does NOT match the hash in the database
         if (!$pwdHasher->CheckPassword($user_password, $result->passwordHash)) {
             // we say "password wrong" here, but less details like "login failed" would be better (= less information)

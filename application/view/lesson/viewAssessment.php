@@ -4,8 +4,9 @@
     
 <div class="contentDivision assessmentContent"> 
     
-    <p>Fill in the blanks so that the program executes from "Begin" to "End" 
-        without getting stuck or going off into the red paths!</p>
+    <p>Fill in the blanks so that the program executes from "Begin" to "End." <br>
+        Stay on the blue paths and avoid the red paths. <br> Here's a hint, x 
+        and y are initially set to 0.</p>
     
     <div id="backgroundImages">
         <img src="<?php echo Config::get('URL','gen'); ?>images/assessment/assessment_background.png">
