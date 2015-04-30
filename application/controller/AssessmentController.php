@@ -70,12 +70,10 @@ class AssessmentController extends Controller {
             if (AssessmentModel::didPassAssessment(Request::get('id'), $answers)) {
                 AssessmentModel::recordPassedAssessment($userID, Request::get('id'));
 
-                Session::add('feedback_positive', 'You passed the assessment!');
+                Session::add('feedback_positive', Text::get('FEEDBACK_ASSESSMENT_PASSED'));
                 Redirect::to('lesson/index');
             } else {
-                AssessmentModel::recordFailedAssessment($userID, Request::get('id'));
-
-                Session::add('feedback_negative', 'You failed the assessment. Try again!');
+                Session::add('feedback_negative', Text::get('FEEDBACK_ASSESSMENT_FAILED'));
                 Redirect::to('lesson/viewLesson/?id=' . Request::get('id'));
             }
         } else {

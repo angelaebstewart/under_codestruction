@@ -158,12 +158,14 @@ function do_q4ToEnd() {
 }
 
 function failAssessment() {
+    $(window).off('beforeunload ', navigationWarning);
     $("select").prop("disabled", false);
     $("#submit").prop("disabled", false);
     $("#submit").click();
 }
 
 function passAssessment() {
+    $(window).off('beforeunload ', navigationWarning);
     $("select").prop("disabled", false);
     $("#submit").prop("disabled", false);
     $("#submit").click();
@@ -188,4 +190,10 @@ function validateForm() {
         }
     }
     return true;
+}
+
+$(window).on('beforeunload ', navigationWarning);
+
+function navigationWarning() {
+    return "Warning: If you leave the page now, you will fail the assessment.";
 }

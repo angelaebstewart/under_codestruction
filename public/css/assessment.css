@@ -30,6 +30,7 @@ and open the template in the editor.
             #assessmentDiv select,
             #assessmentDiv button {
                 position: absolute;
+                background: #ffffff;
             }
             
             #assessmentDiv #Q1 {

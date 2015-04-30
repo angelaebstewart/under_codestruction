@@ -66,8 +66,7 @@ class AssessmentModel {
      * Name: recordPassedAssessment
      * Description:
      * Record in the database that a user has completed the assessment for a lesson,
-     * and increment the completion attempt number (only if it is the first time
-     * this user has completed it)
+     * (only if it is the first time this user has completed it)
      * @author Ryan Lewis
      * @Date ?
      * @param $user_id int The user's UserID
@@ -80,36 +79,8 @@ class AssessmentModel {
         if (isset($user_id) && isset($lesson_id)) {
             $database = DatabaseFactory::getFactory()->getConnection();
             $sql = "UPDATE codestructionmoduleprogress 
-                    SET AssessmentStatus='Completed', CompletionAttemptNumber=CompletionAttemptNumber+1
-                    WHERE UserID = :user_id AND ModuleID = :lesson_id";
-            $query = $database->prepare($sql);
-            $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
-            return $query->rowCount();
-        } else {
-            throw new InvalidArgumentException("Invalid Parameters");
-        }
-    }
-    
-    /**
-     * Name: recordFailedAssessment
-     * Description:
-     * Record in the database that a user has failed the assessment for a lesson,
-     * and increment the completion attempt number (Note: no change will take
-     * place if the user has already passed it before)
-     * @author Ryan Lewis
-     * @Date ?
-     * @param $user_id int The user's UserID
-     * @param $lesson_id int The ModuleID of the lesson
-     * @throws InvalidArgumentException when parameters are not used.
-     * @return int "1" if the user failed a lesson that has not previously
-     * been passed, "0" otherwise
-     */
-    public static function recordFailedAssessment($user_id, $lesson_id) {
-        if (isset($user_id) && isset($lesson_id)) {
-            $database = DatabaseFactory::getFactory()->getConnection();
-            $sql = "UPDATE codestructionmoduleprogress 
-                    SET AssessmentStatus='In Progress', CompletionAttemptNumber=CompletionAttemptNumber+1
-                    WHERE UserID = :user_id AND ModuleID = :lesson_id AND AssessmentStatus <> 'Completed'";
+                    SET AssessmentStatus='Completed'
+                    WHERE UserID = :user_id AND ModuleID = :lesson_id AND AssessmentStatus<>'Completed'";
             $query = $database->prepare($sql);
             $query->execute(array(':user_id' => $user_id, ':lesson_id' => $lesson_id));
             return $query->rowCount();

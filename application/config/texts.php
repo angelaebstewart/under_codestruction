@@ -37,7 +37,7 @@ return array(
 	"FEEDBACK_VERIFICATION_MAIL_SENDING_FAILED" => "Sorry, we could not send you an verification mail. Your account has NOT been created.",
 	"FEEDBACK_ACCOUNT_CREATION_FAILED" => "Sorry, your registration failed. Please go back and try again.",
 	"FEEDBACK_VERIFICATION_MAIL_SENDING_ERROR" => "Verification mail could not be sent due to: ",
-	"FEEDBACK_VERIFICATION_MAIL_SENDING_SUCCESSFUL" => "A verification mail has been sent successfully.",
+	"FEEDBACK_VERIFICATION_MAIL_SENDING_SUCCESSFUL" => "Your account has been created and we have sent you an email. Please click the VERIFICATION LINK within that mail.",
 	"FEEDBACK_ACCOUNT_ACTIVATION_SUCCESSFUL" => "Activation was successful! You can now log in.",
 	"FEEDBACK_ACCOUNT_ACTIVATION_FAILED" => "Sorry, no such id/verification code combination here...",
 	"FEEDBACK_NEW_USER_EMAIL_FAILED" => "Sorry, could not save new email.",
@@ -52,5 +52,7 @@ return array(
 	"FEEDBACK_PASSWORD_CHANGE_FAILED" => "Sorry, your password changing failed.",
 	"FEEDBACK_CLASS_CREATE_FAILED_NAME" => "Sorry, your class could not be created. Please choose a unique class name.",
         "FEEDBACK_ADD_STUDENT_EMAIL_IN_USE" => "Sorry, that email is already in use. Please choose an unused email.",
-        "FEEDBACK_WRONG_EMAIL" => "Sorry, that is not your email."
+        "FEEDBACK_WRONG_EMAIL" => "Sorry, that is not your email.",
+        "FEEDBACK_ASSESSMENT_PASSED" => "You passed the assessment!",
+        "FEEDBACK_ASSESSMENT_FAILED" => "You failed the assessment. Try again!"
 );
