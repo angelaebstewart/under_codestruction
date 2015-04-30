@@ -131,6 +131,7 @@ class RegistrationModel {
             ':user_activation_hash' => $user_activation_hash,
             ':user_type' => $user_type,));
         $count = $query->rowCount();
+        
         $sql = "INSERT INTO codestructionloginattempt(UserID) VALUES (:user_id)";
         $query = $database->prepare($sql);
         $query->execute(array(':user_id' => $user_id,));

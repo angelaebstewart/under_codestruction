@@ -219,7 +219,7 @@ class AccountModel {
     public static function createLoginRecord($userID) {
         if (isset($userID)) {
             $db = DatabaseFactory::getFactory()->getConnection();
-            $sql = "INSERT INTO codestructionloginattempt (UserID, AttemptNumber) VALUES(:userID, 0)";
+            $sql = "UPDATE codestructionloginattempt SET AttemptNumber = '0' WHERE :userID = '$userID'";
             $query = $db->prepare($sql);
             $arrayVariable = array(':userID' => $userID);
             $query->execute($arrayVariable);
